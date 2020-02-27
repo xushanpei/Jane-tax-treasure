@@ -178,3 +178,13 @@ table {
 .ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after{
   border-right: 3px solid #43CF7C !important;
 }
+.ant-menu-item:hover{
+  background: #E6F7FF;
+}
+.ant-menu-item>a{
+  text-decoration: none;
+}
+.ant-menu-item>a:hover{
+  text-decoration: none;
+  color: #43CF7C;
+}
