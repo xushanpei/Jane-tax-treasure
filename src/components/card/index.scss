@@ -1,0 +1,156 @@
+.dayCard-container{
+    // 
+    height: 160px;
+    width: calc(25% - 20px);
+    background: #ffffff;
+    padding:12px;
+    position: relative;
+    // margin-top:20px;
+    .title{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #EBEDEF;
+        // line-height: 20px;
+        padding-bottom: 5px;
+        &>span:first-child{
+            color: #333546;
+            font-size: 14px;;
+        }
+        &>span:last-child{
+            color: #65CB33;
+            font-size: 10px;
+            display: inline-block;
+            border:1px solid #65CB33;
+            border-radius: 3px;
+            padding:0 5px;
+        }
+    }
+    .number{
+        font-size: 25px;
+        font-weight:600;
+        line-height: 50px;;
+    }
+    .volum{
+
+    }
+    .total{
+        width: calc(100% - 30px);
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 0;
+        border-top:1px solid #EBEDEF;
+        line-height: 30px;
+        font-size: 12px;;
+    }
+    .fall{
+        color: #1BBE6C;
+    }
+    .rise{
+        color: #EE481D;
+    }
+}
+
+.monthCard-container{
+    height: 160px;
+    width: calc(25% - 20px);
+    background: #ffffff;
+    padding:12px;
+    position: relative;
+    // margin-top:20px;
+    .title{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #EBEDEF;
+        // line-height: 20px;
+        padding-bottom: 5px;
+        &>span:first-child{
+            color: #333546;
+            font-size: 14px;;
+        }
+        &>span:last-child{
+            color: #44A3FF;
+            font-size: 10px;
+            display: inline-block;
+            border:1px solid #44A3FF;
+            border-radius: 3px;
+            padding:0 5px;
+        }
+    }
+    .number{
+        font-size: 25px;
+        font-weight:600;
+        line-height: 50px;;
+    }
+    .volum{
+
+    }
+    .total{
+        width: calc(100% - 30px);
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 0;
+        border-top:1px solid #EBEDEF;
+        line-height: 30px;
+        font-size: 12px;;
+    }
+    .fall{
+        color: #1BBE6C;
+    }
+    .rise{
+        color: #EE481D;
+    }
+}
+
+.weekCard-container{
+    height: 160px;
+    width: calc(25% - 20px);
+    background: #ffffff;
+    padding:12px;
+    position: relative;
+    // margin-top:20px;
+    .title{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #EBEDEF;
+        // line-height: 20px;
+        padding-bottom: 5px;
+        &>span:first-child{
+            color: #333546;
+            font-size: 14px;;
+        }
+        &>span:last-child{
+            color: #F62935;
+            font-size: 10px;
+            display: inline-block;
+            border:1px solid #F62935;
+            border-radius: 3px;
+            padding:0 5px;
+        }
+    }
+    .number{
+        font-size: 25px;
+        font-weight:600;
+        line-height: 50px;;
+    }
+    .volum{
+
+    }
+    .total{
+        width: calc(100% - 30px);
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 0;
+        border-top:1px solid #EBEDEF;
+        line-height: 30px;
+        font-size: 12px;;
+    }
+    .fall{
+        color: #1BBE6C;
+    }
+    .rise{
+        color: #EE481D;
+    }
+}

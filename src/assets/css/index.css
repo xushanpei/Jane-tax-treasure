@@ -197,3 +197,47 @@ table {
 .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after, .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before{
   background: #43CF7C;
 }
+.ant-menu{
+  color: #505050 !important;
+}
+.ant-menu-vertical .ant-menu-submenu, .ant-menu-vertical-left .ant-menu-submenu, .ant-menu-vertical-right .ant-menu-submenu, .ant-menu-inline .ant-menu-submenu{
+  padding-bottom: -10px !important;
+}
+.ant-menu-vertical .ant-menu-submenu, .ant-menu-vertical-left .ant-menu-submenu, .ant-menu-vertical-right .ant-menu-submenu, .ant-menu-inline .ant-menu-submenu{
+  padding-bottom: -10px !important;
+}
+.ant-menu-vertical .ant-menu-submenu, .ant-menu-vertical-left .ant-menu-submenu, .ant-menu-vertical-right .ant-menu-submenu, .ant-menu-inline .ant-menu-submenu{
+  padding-bottom: -10px !important;
+}
+.ant-menu-inline .ant-menu-item, .ant-menu-inline .ant-menu-submenu-title{
+  width: 100% !important;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar  
+{  
+    width: 1px;    
+    background-color: #fff;  
+}  
+
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px lightgray;  
+    border-radius: 10px;  
+    background-color: lightgray;  
+}  
+
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;  
+    /* -webkit-box-shadow: inset 0 0 6px #A1A1A1;   */
+    background-color: #A1A1A1;  
+}  
+/*定义最上方和最下方的按钮*/
+::-webkit-scrollbar-button{
+     background-color:#B3B3B3;
+     border:none ;
+     height:0
+}
+
