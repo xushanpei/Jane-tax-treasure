@@ -47,7 +47,7 @@ function* test() {
             isShow: "1",
             resourceName: "产品列表",
             resourceType:"html",
-            url: "/132"
+            url: "/product"
           },
           {
             icon: "radar-chart",
