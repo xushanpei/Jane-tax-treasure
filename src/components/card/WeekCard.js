@@ -112,7 +112,7 @@ class WeekCard extends Component {
         },
         lineStyle: {
             normal: {
-                width: 3
+                width: 2
             }
         }
     }]

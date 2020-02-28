@@ -11,3 +11,15 @@
     }
   }
 }
+
+.ant-tabs-nav .ant-tabs-tab{
+  margin:0 !important
+}
+.ant-calendar-picker:focus .ant-calendar-picker-input:not(.ant-input-disabled){
+  border-color: none !important;
+  outline: none !important;
+}
+.ant-input:focus{
+  box-shadow: none !important;
+  outline: none !important;
+}
