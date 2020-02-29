@@ -26,9 +26,8 @@
     padding: 10px;
 }
 
-// .ant-btn:hover, .ant-btn:focus{
-//     border-color:none !important;
-// }
-// .ant-btn:active, .ant-btn.active{
-//     border-color: none !important;
-// }
+.btn-diy{
+    .ant-btn:hover, .ant-btn:focus{
+        border-color: #17A2A9 !important;
+    }
+}

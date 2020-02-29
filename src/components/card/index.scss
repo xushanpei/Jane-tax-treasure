@@ -1,7 +1,7 @@
 .dayCard-container{
     // 
     // height: 160px;
-    height:170px;
+    height:200px;
     width: calc(25% - 20px);
     background: #ffffff;
     padding:12px;
@@ -12,10 +12,11 @@
         justify-content: space-between;
         border-bottom: 1px solid #EBEDEF;
         // line-height: 20px;
-        padding-bottom: 5px;
+        padding-bottom: 10px;
         &>span:first-child{
             color: #333546;
-            font-size: 14px;;
+            font-size: 16px;
+            font-weight: 500;
         }
         &>span:last-child{
             color: #65CB33;
@@ -23,17 +24,18 @@
             display: inline-block;
             border:1px solid #65CB33;
             border-radius: 3px;
-            padding:0 5px;
+            padding:2px 5px;
         }
     }
     .number{
-        font-size: 25px;
+        font-size: 30px;
         font-weight:600;
-        line-height: 50px;;
+        line-height: 60px;
     }
-    // .volum{
-
-    // }
+    .volum{
+        font-size: 14px;
+        margin-top: 5px;
+    }
     .total{
         width: calc(100% - 30px);
         display: flex;
@@ -41,8 +43,8 @@
         position: absolute;
         bottom: 0;
         border-top:1px solid #EBEDEF;
-        line-height: 30px;
-        font-size: 12px;;
+        line-height: 40px;
+        font-size: 14px;;
     }
     .fall{
         color: #1BBE6C;
@@ -53,7 +55,7 @@
 }
 
 .monthCard-container{
-    height: 170px;
+    height: 200px;
     width: calc(25% - 20px);
     background: #ffffff;
     padding:12px;
@@ -64,10 +66,11 @@
         justify-content: space-between;
         border-bottom: 1px solid #EBEDEF;
         // line-height: 20px;
-        padding-bottom: 5px;
+        padding-bottom: 10px;
         &>span:first-child{
             color: #333546;
-            font-size: 14px;;
+            font-size: 16px;
+            font-weight: 500;
         }
         &>span:last-child{
             color: #44A3FF;
@@ -75,17 +78,17 @@
             display: inline-block;
             border:1px solid #44A3FF;
             border-radius: 3px;
-            padding:0 5px;
+            padding:2px 5px;
         }
     }
     .number{
-        font-size: 25px;
+        font-size: 30px;
         font-weight:600;
-        line-height: 50px;;
+        line-height: 60px;
     }
-    // .volum{
-
-    // }
+    .volum{
+        padding-top:5px;
+    }
     .total{
         width: calc(100% - 30px);
         display: flex;
@@ -93,8 +96,8 @@
         position: absolute;
         bottom: 0;
         border-top:1px solid #EBEDEF;
-        line-height: 30px;
-        font-size: 12px;;
+        line-height: 40px;
+        font-size: 14px;;
     }
     .fall{
         color: #1BBE6C;
@@ -105,7 +108,7 @@
 }
 
 .weekCard-container{
-    height: 170px;
+    height: 200px;
     width: calc(25% - 20px);
     background: #ffffff;
     padding:12px;
@@ -116,10 +119,11 @@
         justify-content: space-between;
         border-bottom: 1px solid #EBEDEF;
         // line-height: 20px;
-        padding-bottom: 5px;
+        padding-bottom: 10px;
         &>span:first-child{
             color: #333546;
-            font-size: 14px;;
+            font-size: 16px;
+            font-weight: 500;
         }
         &>span:last-child{
             color: #F62935;
@@ -127,17 +131,17 @@
             display: inline-block;
             border:1px solid #F62935;
             border-radius: 3px;
-            padding:0 5px;
+            padding:2px 5px;
         }
     }
     .number{
-        font-size: 25px;
+        font-size: 30px;
         font-weight:600;
-        line-height: 50px;;
+        line-height: 60px;
     }
-    // .volum{
-
-    // }
+    .volum{
+        padding-top: 5px;
+    }
     .total{
         width: calc(100% - 30px);
         display: flex;
@@ -145,8 +149,8 @@
         position: absolute;
         bottom: 0;
         border-top:1px solid #EBEDEF;
-        line-height: 30px;
-        font-size: 12px;;
+        line-height: 40px;
+        font-size: 14px;;
     }
     .fall{
         color: #1BBE6C;

@@ -73,10 +73,13 @@ const columns = [
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <span>
+          <>
+          <span className="btn-diy">
              <Button  style={{backgroundColor:"#17A2A9",color:"#FFF",marginRight:"10px"}}>编辑</Button>
-             <Button  type="danger" style={{backgroundColor:"#FF4D4F",color:"#FFF",marginRight:"10px"}}>删除</Button>
           </span>
+          <Button  type="danger" style={{backgroundColor:"#FF4D4F",color:"#FFF",marginRight:"10px"}}>删除</Button>
+          </>
+          
         ),
       },
   ];
