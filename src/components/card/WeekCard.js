@@ -13,7 +13,7 @@ class WeekCard extends Component {
   
   init(){
     // echarts 实例初始化
-    let weekCharts =  echarts.init(document.querySelector(`.weekCharts${this.props.id}`));
+    let weekCharts =  echarts.init(this.refs[`weekCharts${this.props.id}`]);
     weekCharts.setOption({
       grid:{
         top:10,
@@ -40,7 +40,7 @@ class WeekCard extends Component {
         data: ['周一','周二','周三','周四','周五','周六','周日'],
         boundaryGap: false,
         splitLine: {
-            show: true,
+            show: false,
             interval: 'auto',
             lineStyle: {
                 color: ['#D4DFF5']
@@ -118,11 +118,9 @@ class WeekCard extends Component {
     }]
     },true);
     //页面大小改变 ehcarts 重新渲染自适应
-   window.addEventListener("resize",()=>{
-      this.init();
-      weekCharts.resize();
-   })
-    
+        window.addEventListener("resize",()=>{
+            weekCharts.resize();
+        })
   }
 
 
@@ -142,7 +140,7 @@ class WeekCard extends Component {
         </p>
         <div className="number">1680</div>
         <div className="volum">
-        <div className={`weekCharts${this.props.id}`} style={{width:"100%",height:"40px"}}>
+        <div ref={`weekCharts${this.props.id}`} style={{width:"100%",height:"40px"}}>
           {/* echarts 图表 */}
         </div>
         </div>

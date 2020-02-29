@@ -15,7 +15,7 @@ class OrderLineCharts extends Component {
       
       init(){
         // echarts 实例初始化
-        let weekCharts =  echarts.init(document.querySelector(`.charts-left`));
+        let weekCharts =  echarts.init(this.refs["charts-left"]);
         weekCharts.setOption({
             tooltip: {
                 trigger: 'axis',
@@ -108,9 +108,9 @@ class OrderLineCharts extends Component {
                                 }],
                                 globalCoord: false // 缺省为 false
                             },
-                            shadowColor: 'rgba(245,128,128, 0.5)',
-                            shadowBlur: 10,
-                            shadowOffsetY: 7
+                            // shadowColor: 'rgba(245,128,128, 0.5)',
+                            // shadowBlur: 10,
+                            // shadowOffsetY: 7
                         }
                     },
                     itemStyle: {
@@ -150,8 +150,8 @@ class OrderLineCharts extends Component {
                                 ],
                                 globalCoord: false // 缺省为 false
                             },
-                            shadowColor: 'rgba(71,216,190, 0.5)',
-                            shadowBlur: 2,
+                            // shadowColor: 'rgba(71,216,190, 0.5)',
+                            // shadowBlur: 2,
                             // shadowOffsetY: 7
                         }
                     },
@@ -169,14 +169,17 @@ class OrderLineCharts extends Component {
             ]
         },true);
         //页面大小改变 ehcarts 重新渲染自适应
-       window.addEventListener("resize",()=>{
-          this.init();
-          weekCharts.resize();
-       })
+            window.addEventListener("resize",()=>{
+                    // this.init();
+                    console.log("123",weekCharts);
+                    weekCharts.resize();
+                })
+        
+       
         
       }
 
-
+      
 
 
    
@@ -184,7 +187,7 @@ class OrderLineCharts extends Component {
     render() {
 
         return (
-            <div className="charts-left" style={{width:"63%",height:"300px"}}>
+            <div ref="charts-left" style={{width:"63%",height:"300px"}}>
 
             </div>);
     }
