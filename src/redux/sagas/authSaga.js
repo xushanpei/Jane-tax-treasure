@@ -53,25 +53,9 @@ function* test() {
             icon: "radar-chart",
             id: "2-2",
             isShow: "1",
-            resourceName: "新增产品",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "2-3",
-            isShow: "1",
             resourceName: "产品分类",
             resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "2-4",
-            isShow: "1",
-            resourceName: "新增分类",
-            resourceType:"html",
-            url: "/456"
+            url: "/productClassify"
           }
         ]
       },
@@ -80,33 +64,7 @@ function* test() {
         id: "3",
         isShow: "1",
         resourceName: "订单",
-        // url: "/userManage"
-        children:[
-          {
-            icon: "radar-chart",
-            id: "3-1",
-            isShow: "1",
-            resourceName: "订单管理",
-            resourceType:"html",
-            url: "/132"
-          },
-          {
-            icon: "radar-chart",
-            id: "3-2",
-            isShow: "1",
-            resourceName: "订单详情 已完成",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "3-3",
-            isShow: "1",
-            resourceName: "订单详情 付款中",
-            resourceType:"html",
-            url: "/456"
-          }
-        ]
+        url: "/order"
       },
       {
         icon: "laptop",
@@ -127,42 +85,10 @@ function* test() {
             icon: "radar-chart",
             id: "4-2",
             isShow: "1",
-            resourceName: "公司操作审核中",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "4-3",
-            isShow: "1",
-            resourceName: "公司操作设立中",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "4-4",
-            isShow: "1",
-            resourceName: "公司操作已设立",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "4-5",
-            isShow: "1",
             resourceName: "法人库",
             resourceType:"html",
             url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "4-6",
-            isShow: "1",
-            resourceName: "法人详情",
-            resourceType:"html",
-            url: "/456"
-          },
+          }
         ]
       },
       {
@@ -170,99 +96,22 @@ function* test() {
         id: "5",
         isShow: "1",
         resourceName: "用户",
-        // url: "/userManage"
-        children:[
-          {
-            icon: "radar-chart",
-            id: "5-1",
-            isShow: "1",
-            resourceName: "用户列表",
-            resourceType:"html",
-            url: "/132"
-          },
-          {
-            icon: "radar-chart",
-            id: "5-2",
-            isShow: "1",
-            resourceName: "用户详情",
-            resourceType:"html",
-            url: "/456"
-          }
-        ]
+        url: "/456"
       },
       {
         icon: "switcher",
         id: "6",
         isShow: "1",
         resourceName: "发票",
-        // url: "/userManage"
-        children:[
-          {
-            icon: "radar-chart",
-            id: "6-1",
-            isShow: "1",
-            resourceName: "申请列表",
-            resourceType:"html",
-            url: "/132"
-          },
-          {
-            icon: "radar-chart",
-            id: "6-2",
-            isShow: "1",
-            resourceName: "发票申请详情审核中",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "6-2",
-            isShow: "1",
-            resourceName: "发票申请详情开票中",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "6-2",
-            isShow: "1",
-            resourceName: "发票申请详情已开票",
-            resourceType:"html",
-            url: "/456"
-          },
-          {
-            icon: "radar-chart",
-            id: "6-2",
-            isShow: "1",
-            resourceName: "发票列表",
-            resourceType:"html",
-            url: "/456"
-          },
-        ]
+        url: "/777"
+       
       },
       {
         icon: "usergroup-add",
         id: "7",
         isShow: "1",
         resourceName: "客服",
-        // url: "/userManage"
-        children:[
-          {
-            icon: "radar-chart",
-            id: "7-1",
-            isShow: "1",
-            resourceName: "客服列表",
-            resourceType:"html",
-            url: "/132"
-          },
-          {
-            icon: "radar-chart",
-            id: "7-2",
-            isShow: "1",
-            resourceName: "新增客服",
-            resourceType:"html",
-            url: "/456"
-          }
-        ]
+        url: "/999"
       },
     ]
   });

@@ -8,7 +8,11 @@ import Loading from "../components/layout/Loading";
 //仪表盘
 const Dashboard = loadable(() => import("../pages/dashboard/Dashboard"), { fallback: <Loading /> });
 // 产品列表
-const Product = loadable(()=> import("../pages/product/Product"),{fallback : <Loading/>})
+const Product = loadable(()=> import("../pages/product/Product"),{fallback : <Loading/>});
+//产品分类
+const ProductClassify = loadable(()=> import("../pages/product/ProductClassify"), { fallback: <Loading/> });
+//订单管理
+const Order = loadable(()=> import("../pages/order/Order"), { fallback :<Loading/> })
 
 // 注意区分前端路由和前端菜单是两个不同的东西
 // 注：菜单和路由都是基于该路由数据生成
@@ -28,6 +32,20 @@ const routes = [
     path: "/product",
     exact: true,
     component: Product
+  },
+  {
+    key:"3",
+    name:"产品分类",
+    path:"/productClassify",
+    exact:true,
+    component:ProductClassify
+  },
+  {
+    key:"3",
+    name:"订单管理",
+    path:"/order",
+    exact:true,
+    component:Order
   }
 ];
 

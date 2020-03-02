@@ -1,35 +1,32 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
-import AddProductModal from "./AddProduct";
-import EditProductModal from "./EditProduct"
 
-const { Option } = Select
-// key: '1',
-//       name: '套餐一',
-//       type: 32,
-//       number: 'New York No. 1 Lake Park',
-//       state: ['nice', 'developer'],
-//       time:"2019.01.20",
-//       action:"操作"
+const { Option } = Select  ;
+const { RangePicker } = DatePicker
 
-  
-  
-
-class Product extends Component {
+class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        // 筛选属性
+        select:{
+            orderState:0,
+            orderType:0,
+            payType:0,
+            createTime:0
+        },
+
       routerList: [
         {
           name: "首页",
           url: "/"
         },
         {
-          name: "产品管理",
-          url: "/product"
+          name: "订单管理",
+          url: "/order"
         }
       ],
       columns : [
@@ -197,30 +194,70 @@ class Product extends Component {
   });
 }
 
+// 订单状态
+setOrderState = (value) =>{
+    this.setState({
+        select:{
+            orderState:value,
+            orderType:this.state.select.orderType,
+            payType:this.state.select.payType,
+            createTime:this.state.select.createTime
+        }
+    })
+}
+
+// 订单类型
+setOrderType = (value)=>{
+    this.setState({
+        select:{
+            orderState:this.state.select.orderState,
+            orderType:value,
+            payType:this.state.select.payType,
+            createTime:this.state.select.createTime
+        }
+    })
+}
+// 支付方式 
+setPayType = (value)=>{
+   this.setState({
+    select:{
+        orderState:this.state.select.orderState,
+        orderType:this.state.select.orderType,
+        payType:value,
+        createTime:this.state.select.createTime
+    }
+   })
+}
+//创建时间
+setCreateTime = (value) =>{
+    this.setState({
+        select:{
+            orderState:this.state.select.orderState,
+            orderType:this.state.select.orderType,
+            payType:this.state.select.payType,
+            createTime:value
+        }
+       })
+}
+onChange = (date, dateString) => {
+  console.log(date,dateString)
+  this.setState({
+    select:{
+        orderState:this.state.select.orderState,
+        orderType:this.state.select.orderType,
+        payType:this.state.select.payType,
+        createTime:date
+    }
+   })
+}
 
 
 
-
-
-
-   onChange(value) {
-    console.log(`selected ${value}`);
-  }
   
-   onBlur() {
-    console.log('blur');
-  }
-  
-   onFocus() {
-    console.log('focus');
-  }
-  
-   onSearch(val) {
-    console.log('search:', val);
-  }
 
   render() {
     let { routerList } = this.state;
+    let {orderState, orderType,payType,createTime } = this.state.select
 
     return (
       <div className="product-container">
@@ -229,49 +266,48 @@ class Product extends Component {
         <BreadeHeader routerList={routerList} />
         {/* 内容部分 */}
         <div className="search-content">
-          <div>
-              <span>产品分类</span>
-            <Select
-              showSearch
-              style={{ width: "15%",marginRight:"30px" }}
-              placeholder="请选择"
-              optionFilterProp="children"
-              onChange={this.onChange}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              onSearch={this.onSearch}
-              
-            >
-              <Option value="jack">个人独资</Option>
-              <Option value="lucy">合伙企业</Option>
-              <Option value="tom">有限公司</Option>
-              <Option value="tom1">个体户</Option>
-            </Select>
+            {/* 筛选 */}
+            <div className="line">
+                <div>订单状态 ：</div>
+                <div>
+                    <span onClick = {this.setOrderState.bind(this,0)} className={orderState == 0 ? "active-bg" :""}>全部</span>
+                    <span onClick = {this.setOrderState.bind(this,1)} className={orderState == 1 ? "active-bg" :""}>未支付</span>
+                    <span onClick = {this.setOrderState.bind(this,2)} className={orderState == 2 ? "active-bg" :""}>已支付</span>
+                    <span onClick = {this.setOrderState.bind(this,3)} className={orderState == 3 ? "active-bg" :""}>已取消</span>
+                </div>
+            </div>
+            <div className="line">
+                <div>订单类型 ：</div>
+                <div>
+                    <span onClick = {this.setOrderType.bind(this,0)} className={orderType == 0 ? "active-bg" :""}>全部</span>
+                    <span onClick = {this.setOrderType.bind(this,1)} className={orderType == 1 ? "active-bg" :""}>个人独资</span>
+                    <span onClick = {this.setOrderType.bind(this,2)} className={orderType == 2 ? "active-bg" :""}>合伙企业</span>
+                    <span onClick = {this.setOrderType.bind(this,3)} className={orderType == 3 ? "active-bg" :""}>有限公司</span>
+                    <span onClick = {this.setOrderType.bind(this,4)} className={orderType == 4 ? "active-bg" :""}>个体户</span>
+                </div>
+            </div>
+            <div className="line">
+                <div>支付方式 ：</div>
+                <div>
+                    <span onClick = {this.setPayType.bind(this,0)} className={payType == 0 ? "active-bg" :""}>全部</span>
+                    <span onClick = {this.setPayType.bind(this,1)} className={payType == 1 ? "active-bg" :""}>支付宝</span>
+                    <span onClick = {this.setPayType.bind(this,2)} className={payType == 2 ? "active-bg" :""}>微信支付</span>
+                    <span onClick = {this.setPayType.bind(this,3)} className={payType == 3 ? "active-bg" :""}>线下付款</span>
+                </div>
+            </div>
+            <div className="line">
+                <div>创建时间 ：</div>
+                <div>
+                    <span onClick = {this.setCreateTime.bind(this,"")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+                    <RangePicker
+                    onChange={this.onChange}
+                    // value={}
+                  size="small"
+                  style={{ width: "259px", }}
+                />
+                </div>
+            </div>
 
-            <span>产品状态 </span>
-            <Select
-              showSearch
-              style={{ width: "15%" ,marginRight:"30px"}}
-              placeholder="请选择"
-              optionFilterProp="children"
-              onChange={this.onChange}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              onSearch={this.onSearch}
-              
-            >
-              <Option value="jack1">上架中</Option>
-              <Option value="lucy2">下架中</Option>
-            </Select>
-
-            <span>搜索</span>
-            <Input style={{ width: "20%" ,marginRight:"30px"}}  placeholder="请输入商品名称" />
-            <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>搜索</Button>
-            <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>导出</Button>
-
-            <br/>
-            <Button onClick={this.showModal} style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px",marginTop:"15px"}}>新增产品</Button>
-          </div>
         </div>
         {/* table 部分 */}
             <div className="table-content">
@@ -279,28 +315,11 @@ class Product extends Component {
                 <Table bordered  columns={this.state.columns} dataSource={this.state.data} />
             </div>
 
-{/* 新增产品 */}
-        <AddProductModal
-          title="新增产品"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-        </AddProductModal>
 
-        {/* 编辑 */}
-        <EditProductModal 
-         title="编辑产品"
-         visible={this.state.editVisible}
-         onOk={this.editHandleOk}
-         onCancel={this.editHandleCancel}
-        >
-
-        </EditProductModal>
 
       </div>
     );
   }
 }
 
-export default Product;
+export default Order;

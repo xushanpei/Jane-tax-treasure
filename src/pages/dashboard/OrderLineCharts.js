@@ -171,16 +171,10 @@ class OrderLineCharts extends Component {
         //页面大小改变 ehcarts 重新渲染自适应
             window.addEventListener("resize",()=>{
                     // this.init();
-                    console.log("123",weekCharts);
+                    // console.log("123",weekCharts);
                     weekCharts.resize();
                 })
-        
-       
-        
       }
-
-      
-
 
    
 
