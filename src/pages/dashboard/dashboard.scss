@@ -5,7 +5,7 @@
     height:auto;
     .cards1{
         width: 100%;
-        height:200px;
+        height:180px;
         display: flex;
         justify-content: space-between;
         padding:0 20px;
@@ -14,7 +14,7 @@
     }
     .cards2{
         width: 100%;
-        height:200px;
+        height:180px;
         display: flex;
         justify-content: space-between;
         padding:0 20px;
@@ -25,7 +25,7 @@
         display: flex;
         justify-content: space-between;
         padding: 0 20px;
-        height: 100px;
+        height: 95px;
         & > div {
             height: 100%;
             width: calc(14% - 15px);
@@ -34,7 +34,7 @@
             text-align: center;
             & > span{
                 display: inline-block;
-                margin-top: 40px;
+                margin-top: 35px;
                 font-size: 16px;
             }
         }
@@ -42,7 +42,7 @@
     // 订单
     .order-container{
         width: 100%;
-        height: 385px;
+        height: 345px;
         padding:0 20px;
         & > .order-content{
             width: 100%;
@@ -53,9 +53,9 @@
                 display: flex;
                 justify-content: space-between;
                 border-bottom: 1px solid #E5E5E5;
-                height: 53px;
+                height: 43px;
                 overflow: hidden;
-                line-height: 53px;
+                line-height: 43px;
                 & > div:first-child{
                     margin-left: 20px;
                     font-size: 16px;
