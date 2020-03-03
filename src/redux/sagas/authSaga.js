@@ -79,7 +79,7 @@ function* test() {
             isShow: "1",
             resourceName: "公司列表",
             resourceType:"html",
-            url: "/132"
+            url: "/companyList"
           },
           {
             icon: "radar-chart",

@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
-class Order extends Component {
+class CompanyList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +27,7 @@ class Order extends Component {
           url: "/"
         },
         {
-          name: "订单管理",
+          name: "公司列表",
           url: "/order"
         }
       ],
@@ -39,17 +39,17 @@ class Order extends Component {
           render: text => text,
         },
         {
-          title: '订单号',
+          title: '公司名称',
           dataIndex: 'name',
           key: 'name',
         },
         {
-          title: '手机号',
+          title: '公司类型',
           dataIndex: 'type',
           key: 'type',
         },
         {
-          title: '产品名称',
+          title: '公司地区',
           key: 'number',
           dataIndex: 'number',
           //   render: tags => (
@@ -69,7 +69,7 @@ class Order extends Component {
           //   ),
         },
         {
-          title: '实际支付',
+          title: '公司行业',
           key: 'state',
           dataIndex: 'state',
           // render: (text, record) => (
@@ -80,7 +80,7 @@ class Order extends Component {
           // ),
         },
         {
-          title: '支付方式',
+          title: '公司法人',
           key: 'payType',
           dataIndex: 'payType',
           // render: (text, record) => (
@@ -91,7 +91,7 @@ class Order extends Component {
           // ),
         },
         {
-          title: '订单状态',
+          title: '设立状态',
           key: 'orderState',
           dataIndex: 'orderState',
           // render: (text, record) => (
@@ -102,7 +102,7 @@ class Order extends Component {
           // ),
         },
         {
-          title: '下单时间',
+          title: '设立时间',
           key: 'time',
           render: (text, record) => (
             <span>
@@ -117,15 +117,11 @@ class Order extends Component {
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key="0">
-                    <Link to="/orderDetail/0">
-                        订单详情
+                    <Link to="/companyListTwo">
+                        公司操作
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="1">
-                  <a href="http://www.taobao.com/">订单修改</a>
-                </Menu.Item>
-                <Menu.Item key="3">订单备注</Menu.Item>
-                <Menu.Item key="4">订单记录</Menu.Item>
+                <Menu.Item key="1">公司详情</Menu.Item>
               </Menu>
             } trigger={['click']}>
               <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
@@ -315,16 +311,17 @@ class Order extends Component {
         <div className="search-content">
           {/* 筛选 */}
           <div className="line">
-            <div>订单状态 ：</div>
+            <div>公司状态 ：</div>
             <div>
               <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>未支付</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>已支付</span>
-              <span onClick={this.setOrderState.bind(this, 3)} className={orderState == 3 ? "active-bg" : ""}>已取消</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>待设立</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>审核中</span>
+              <span onClick={this.setOrderState.bind(this, 3)} className={orderState == 3 ? "active-bg" : ""}>设立中</span>
+              <span onClick={this.setOrderState.bind(this, 4)} className={orderState == 4 ? "active-bg" : ""}>已设立</span>
             </div>
           </div>
           <div className="line">
-            <div>订单类型 ：</div>
+            <div>公司类型 ：</div>
             <div>
               <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
               <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
@@ -334,16 +331,7 @@ class Order extends Component {
             </div>
           </div>
           <div className="line">
-            <div>支付方式 ：</div>
-            <div>
-              <span onClick={this.setPayType.bind(this, 0)} className={payType == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setPayType.bind(this, 1)} className={payType == 1 ? "active-bg" : ""}>支付宝</span>
-              <span onClick={this.setPayType.bind(this, 2)} className={payType == 2 ? "active-bg" : ""}>微信支付</span>
-              <span onClick={this.setPayType.bind(this, 3)} className={payType == 3 ? "active-bg" : ""}>线下付款</span>
-            </div>
-          </div>
-          <div className="line">
-            <div>创建时间 ：</div>
+            <div>设立时间 ：</div>
             <div>
               <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
               <RangePicker
@@ -383,4 +371,4 @@ class Order extends Component {
   }
 }
 
-export default Order;
+export default CompanyList;
