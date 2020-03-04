@@ -5,12 +5,12 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-import data from "./city"
+
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
-class CorporateLibrary extends Component {
+class UserDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,29 +25,33 @@ class CorporateLibrary extends Component {
                     url: "/"
                 },
                 {
-                    name: "法人库",
+                    name: "用户管理",
+                    url: "/order"
+                },
+                {
+                    name: "用户详情",
                     url: "/order"
                 }
             ],
             columns: [
                 {
-                    title: '',
+                    title: '订单号',
                     dataIndex: 'key',
                     key: 'key',
                     render: text => text,
                 },
                 {
-                    title: '法人姓名',
+                    title: '手机号',
                     dataIndex: 'name',
                     key: 'name',
                 },
                 {
-                    title: '法人手机号',
+                    title: '产品名称',
                     dataIndex: 'type',
                     key: 'type',
                 },
                 {
-                    title: '用户手机',
+                    title: '实际支付',
                     key: 'number',
                     dataIndex: 'number',
                     //   render: tags => (
@@ -67,7 +71,7 @@ class CorporateLibrary extends Component {
                     //   ),
                 },
                 {
-                    title: '公司数量',
+                    title: '支付方式',
                     key: 'state',
                     dataIndex: 'state',
                     // render: (text, record) => (
@@ -78,7 +82,18 @@ class CorporateLibrary extends Component {
                     // ),
                 },
                 {
-                    title: '最近设立时间',
+                    title: '订单状态',
+                    key: 'states',
+                    dataIndex: 'states',
+                    // render: (text, record) => (
+                    //   <span>
+                    //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
+                    //     <Switch  defaultChecked  />
+                    //   </span>
+                    // ),
+                },
+                {
+                    title: '下单时间',
                     key: 'time',
                     render: (text, record) => (
                         <span>
@@ -90,23 +105,7 @@ class CorporateLibrary extends Component {
                     title: '操作',
                     key: 'action',
                     render: (text, record) => (
-                        <Dropdown overlay={
-                            <Menu>
-                                <Menu.Item key="0">
-                                    <Link to="/corporateLibraryDetail/0">
-                                        法人详情
-                                    </Link>
-                                </Menu.Item>
-                                <Menu.Item key="1">
-                                    <a href="http://www.taobao.com/">锁定法人</a>
-                                </Menu.Item>
-                            </Menu>
-                        } trigger={['click']}>
-                            <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                                操作 <Icon type="down" />
-                            </span>
-                        </Dropdown>
-
+                        <a>查看详情</a>
                     ),
                 },
             ],
@@ -180,9 +179,6 @@ class CorporateLibrary extends Component {
     }
 
 
-
-
-
     render() {
         let { routerList, searchValue } = this.state;
         let { orderState, orderType, payType, createTime } = this.state.select
@@ -193,60 +189,59 @@ class CorporateLibrary extends Component {
                 {/* 头部 */}
                 <BreadeHeader routerList={routerList} />
                 {/* 内容部分 */}
-                <div className="search-content">
-                    {/* 筛选 */}
-                    <div className="line">
-                        <div>法人地区 ：</div>
-                        {/* <div> */}
-                        <Cascader
-                            size="small"
-                            style={{ width: "260px" }}
-                            options={data}
-                            // onChange={this.handleSelectedPosition.bind(this)}
-                            placeholder="请选法人地区"
-                        />
-
-                        {/* </div> */}
-                    </div>
-                    <div className="line">
-                        <div>设立时间 ：</div>
+                <div className="userContent">
+                    {/* top1 */}
+                    <div className="userContent-base">
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
-                            <RangePicker
-                                onChange={this.onChange}
-                                value={searchValue}
-                                size="small"
-                                style={{ width: "259px", }}
-                            />
+                            <img src={require("../../assets/image/sfz.png")} alt="" />
                         </div>
-                    </div>
-                    <div className="line">
-                        <div>搜索 ：</div>
                         <div>
-                            <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
+                            <p>13288123456</p>
+                            <p>注册时间: 2020-02-15  18:26:29
+                                <span>最近登录时间: 2020-02-15  18:26:29 </span>
+                            </p>
+                        </div>
+                        <div>
+                            <span className="btn-diy">
+
+                                <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>修改</Button>
+
+                            </span>
+                            <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
                         </div>
                     </div>
-
-                    <div className="line">
-                        <div></div>
-                        <div style={{ marginLeft: "62px" }}>
-                            <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
-                            <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
+                    {/* 基本信息 */}
+                    <div className="userBase">
+                        <p>基本信息</p>
+                        <div className="userBase-content">
+                            {/* 基本信息3列 */}
+                            <div>
+                                <span>手机号: 18861851261</span><br />
+                                <span>微信号: 1129197725</span>
+                            </div>
+                            <div>
+                                <span>姓名: 未完善</span><br />
+                                <span>联系地址: 南京市北京东路330号</span>
+                            </div>
+                            <div>
+                                <span>法人邮箱: 18861851261@163.com</span><br />
+                                <span>注册时间: 2020-56-89 88:88:88</span>
+                            </div>
                         </div>
                     </div>
-
+                    {/* 订单,记录 */}
+                    <div className="orderList">
+                        <p>订单记录</p>
+                        <div className="orderList-content">
+                            {/*  */}
+                            <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+                        </div>
+                    </div>
                 </div>
-                {/* table 部分 */}
-                <div className="table-content">
-                    {/* 123 */}
-                    <Table bordered columns={this.state.columns} dataSource={this.state.data} />
-                </div>
-
-
 
             </div>
         );
     }
 }
 
-export default CorporateLibrary;
+export default UserDetail;

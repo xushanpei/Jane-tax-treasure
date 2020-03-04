@@ -49,12 +49,12 @@ class CompanyListThree extends Component {
                   type: 'xsp',
                 },
                 {
-                  key: '2020-12-20 15:25:00',
+                  key: '2020-12-20 15:25:01',
                   name: '不通过,原因:XXXX',
                   type: "xushanpei",
                 },
                 {
-                  key: '2020-12-20 15:25:00',
+                  key: '2020-12-20 15:25:02',
                   name: '不通过,原因:XXXX',
                   type: "XXXXX",
                 },

@@ -5,12 +5,12 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-import data from "./city"
+
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
-class CorporateLibrary extends Component {
+class User extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,29 +25,34 @@ class CorporateLibrary extends Component {
                     url: "/"
                 },
                 {
-                    name: "法人库",
+                    name: "用户管理",
                     url: "/order"
                 }
             ],
             columns: [
                 {
-                    title: '',
+                    title: '用户ID',
                     dataIndex: 'key',
                     key: 'key',
                     render: text => text,
                 },
                 {
-                    title: '法人姓名',
-                    dataIndex: 'name',
+                    title: '头像',
+                    // dataIndex: 'name',
                     key: 'name',
+                    render: () => (
+                        <div className="avatar">
+                            <img src={require("../../assets/image/jsb-logoX.png")} alt=""/>
+                        </div>
+                    )
                 },
                 {
-                    title: '法人手机号',
+                    title: '手机号',
                     dataIndex: 'type',
                     key: 'type',
                 },
                 {
-                    title: '用户手机',
+                    title: '姓名',
                     key: 'number',
                     dataIndex: 'number',
                     //   render: tags => (
@@ -67,7 +72,7 @@ class CorporateLibrary extends Component {
                     //   ),
                 },
                 {
-                    title: '公司数量',
+                    title: '电子邮箱',
                     key: 'state',
                     dataIndex: 'state',
                     // render: (text, record) => (
@@ -78,7 +83,18 @@ class CorporateLibrary extends Component {
                     // ),
                 },
                 {
-                    title: '最近设立时间',
+                    title: '购买次数',
+                    key: 'num',
+                    dataIndex: 'num',
+                    // render: (text, record) => (
+                    //   <span>
+                    //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
+                    //     <Switch  defaultChecked  />
+                    //   </span>
+                    // ),
+                },
+                {
+                    title: '加入时间',
                     key: 'time',
                     render: (text, record) => (
                         <span>
@@ -93,12 +109,12 @@ class CorporateLibrary extends Component {
                         <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key="0">
-                                    <Link to="/corporateLibraryDetail/0">
-                                        法人详情
+                                    <Link to="/userDetail/0">
+                                        用户详情
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Item key="1">
-                                    <a href="http://www.taobao.com/">锁定法人</a>
+                                    <span onClick={this.deleteUser}>删除</span>
                                 </Menu.Item>
                             </Menu>
                         } trigger={['click']}>
@@ -114,32 +130,35 @@ class CorporateLibrary extends Component {
                 {
                     key: '1',
                     name: '套餐一',
-                    type: '个人独资',
-                    number: 100,
-                    state: 1,
-                    payType: "支付宝",
+                    type: '18861851261',
+                    number: "舜贝佳",
+                    state: "xu_shan_pei@163.com",
+                    num:100,
+                    payType: "100",
                     orderState: "已支付",
                     time: "2019.01.20",
                     action: "操作"
                 },
                 {
                     key: '2',
-                    name: '套餐二',
-                    type: "个人独资",
-                    number: 100,
-                    state: 0,
-                    payType: "支付宝",
+                    name: '套餐一',
+                    type: '18861851261',
+                    number: "舜贝佳",
+                    state: "xu_shan_pei@163.com",
+                    num:100,
+                    payType: "100",
                     orderState: "已支付",
                     time: "2019.01.20",
                     action: "操作"
                 },
                 {
                     key: '3',
-                    name: '套餐三',
-                    type: "个人独资",
-                    number: 20,
-                    state: 0,
-                    payType: "支付宝",
+                    name: '套餐一',
+                    type: '18861851261',
+                    number: "舜贝佳",
+                    state: "xu_shan_pei@163.com",
+                    num:100,
+                    payType: "100",
                     orderState: "已支付",
                     time: "2019.01.20",
                     action: "操作"
@@ -151,7 +170,7 @@ class CorporateLibrary extends Component {
     }
 
 
-    //设立时间
+    //时间
     setCreateTime = (value) => {
         if (value == "") {
             this.setState({
@@ -179,6 +198,9 @@ class CorporateLibrary extends Component {
         })
     }
 
+    deleteUser = () => {
+        console.log("提示是否需要删除");
+    }
 
 
 
@@ -196,20 +218,7 @@ class CorporateLibrary extends Component {
                 <div className="search-content">
                     {/* 筛选 */}
                     <div className="line">
-                        <div>法人地区 ：</div>
-                        {/* <div> */}
-                        <Cascader
-                            size="small"
-                            style={{ width: "260px" }}
-                            options={data}
-                            // onChange={this.handleSelectedPosition.bind(this)}
-                            placeholder="请选法人地区"
-                        />
-
-                        {/* </div> */}
-                    </div>
-                    <div className="line">
-                        <div>设立时间 ：</div>
+                        <div>注册时间 ：</div>
                         <div>
                             <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
                             <RangePicker
@@ -249,4 +258,4 @@ class CorporateLibrary extends Component {
     }
 }
 
-export default CorporateLibrary;
+export default User;

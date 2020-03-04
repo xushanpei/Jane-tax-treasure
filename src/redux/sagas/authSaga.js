@@ -96,14 +96,32 @@ function* test() {
         id: "5",
         isShow: "1",
         resourceName: "用户",
-        url: "/456"
+        url: "/user"
       },
       {
         icon: "switcher",
         id: "6",
         isShow: "1",
         resourceName: "发票",
-        url: "/777"
+        children:[
+          {
+            icon: "radar-chart",
+            id: "6-1",
+            isShow: "1",
+            resourceName: "申请列表",
+            resourceType:"html",
+            url: "/applyBill"
+          },
+          {
+            icon: "radar-chart",
+            id: "6-2",
+            isShow: "1",
+            resourceName: "发票列表",
+            resourceType:"html",
+            url: "/billList"
+          }
+        ]
+
        
       },
       {

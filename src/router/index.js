@@ -26,7 +26,16 @@ const CompanyListThree = loadable(()=> import ("../pages/company/CompanyListThre
 //法人库
 const CorporateLibrary = loadable(()=> import("../pages/corporateLibrary/CorporateLibrary"), { fallback: <Loading/> });
 //法人详情
-const CorporateLibraryDetail = loadable(()=> import("../pages/corporateLibrary/CorporateLibraryDetail"), { fallback: <Loading/> })
+const CorporateLibraryDetail = loadable(()=> import("../pages/corporateLibrary/CorporateLibraryDetail"), { fallback: <Loading/> });
+//用户管理
+const User = loadable(()=> import("../pages/user/User"), { fallback: <Loading/> });
+//用户详情
+const UserDetail = loadable(()=> import("../pages/user/UserDetail"), { fallback: <Loading/> });
+// 申请列表
+const ApplyBill = loadable(()=> import("../pages/bill/ApplyBill"), { fallback:<Loading/> });
+//发票列表
+const BillList = loadable(()=> import("../pages/bill/BillList"), { fallback: <Loading/> })
+
 
 // 注意区分前端路由和前端菜单是两个不同的东西
 // 注：菜单和路由都是基于该路由数据生成
@@ -108,6 +117,34 @@ const routes = [
     path:"/corporateLibraryDetail/:id",
     exact:true,
     component:CorporateLibraryDetail
+  },
+  {
+    key:"9",
+    name:"用户管理",
+    path:"/user",
+    exact:true,
+    component:User
+  },
+  {
+    keyL:"10",
+    name:"用户详情",
+    path:"/userDetail/:id",
+    exact:true,
+    component:UserDetail
+  },
+  {
+    key:"11",
+    name:"申请列表",
+    path:"/applyBill",
+    exact:true,
+    component:ApplyBill
+  },
+  {
+    keyL:"12",
+    name:"发票列表",
+    path:"/billList",
+    exact:true,
+    component:BillList
   }
 ];
 

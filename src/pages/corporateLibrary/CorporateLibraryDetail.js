@@ -27,6 +27,100 @@ class CorporateLibraryDetail extends Component {
                     url: "/order"
                 },
             ],
+            columns : [
+                {
+                  title: '',
+                  dataIndex: 'key',
+                  key: 'key',
+                  render: text => text,
+                },
+                {
+                  title: '公司名称',
+                  dataIndex: 'name',
+                  key: 'name',
+                },
+                {
+                  title: '公司类型',
+                  dataIndex: 'type',
+                  key: 'type',
+                },
+                {
+                  title: '公司地区',
+                  key: 'number',
+                //   dataIndex: 'number',
+                  render: tags => (
+                    <span>
+                      江苏省南京市鼓楼区
+                    </span>
+                  ),
+                },
+                {
+                  title: '注册资金',
+                  key: 'state',
+                  render: (text, record) => (
+                    <span>
+                      200万人命币
+                    </span>
+                  ),
+                },
+                {
+                    title: '纳税类型',
+                    key: 'time',
+                    render: (text, record) => (
+                      <span>
+                        <span>{"一般纳税人"}</span>
+                        
+                      </span>
+                    ),
+                  },
+                  {
+                    title: '申请日期',
+                    key: 'times',
+                    render: (text, record) => (
+                      <span>
+                        <span>2020-02-99</span>
+                        
+                      </span>
+                    ),
+                  },
+                  {
+                    title: '公司状态',
+                    key: 'action',
+                    render: (text, record) => (
+                      <span>审核中</span>
+                      
+                    ),
+                  },
+              ],
+              data:[
+                {
+                  key: '1',
+                  name: '套餐一',
+                  type: '个人独资',
+                  number: 100,
+                  state: 1,
+                  time:"2019.01.20",
+                  action:"操作"
+                },
+                {
+                  key: '2',
+                  name: '套餐二',
+                  type: "个人独资",
+                  number: 100,
+                  state: 0,
+                  time:"2019.01.20",
+                  action:"操作"
+                },
+                {
+                  key: '3',
+                  name: '套餐三',
+                  type: "个人独资",
+                  number: 20,
+                  state: 0,
+                  time:"2019.01.20",
+                  action:"操作"
+                },
+              ],
         }
     }
 
@@ -70,6 +164,46 @@ class CorporateLibraryDetail extends Component {
                         <div>
                         <span>公司所在地区</span>
                             <p>5家</p>
+                        </div>
+                    </div>
+                    {/* top3 */}
+                    <div className="baseInfo">
+                        <p>基本信息</p>
+                        <div className="baseInfo-list">
+                            <div className="baseInfo-list-content">
+                                <span>法人姓名 : 严大海</span><br/>
+                                <span>法人邮箱 : xu_shan_pei@123.com</span>
+                            </div>
+                            <div className="baseInfo-list-content">
+                                <span>法人手机 : 18861851261</span><br/>
+                                <span>法人证件 : 已提交</span>
+                            </div>
+                            <div className="baseInfo-list-content">
+                                <span> </span><br/>
+                                <span>人脸验证 : 正确</span>
+                            </div>
+                        </div>
+                        {/* pic */}
+                        <div className="basePic">
+                            {/* 身份证 */}
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt=""/>
+                                <p>身份证正面</p>
+                            </div>
+
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt=""/>
+                                <p>身份证反面</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* top4 */}
+                    <div className="baseInfo">
+                        <p>严大海的公司列表</p>
+                        <div className="baseInfo-table">
+                            {/* table */}
+                            <Table  bordered  columns={this.state.columns} dataSource={this.state.data} />
                         </div>
                     </div>
                 </div>
