@@ -76,10 +76,10 @@ class CompanyListThree extends Component {
                             <span>南京严氏文化传媒 (随机名称)</span>
                             <span>
                                 {/* 通过不通过按钮组 */}
+                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
                                 <span className="btn-diy">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
                                 </span>
-                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>不通过</Button>
                             </span>
                         </div>
                         <div className="title-detail">
@@ -91,11 +91,15 @@ class CompanyListThree extends Component {
                                 <span>审核人 : 徐梦绮</span>
                                 <span>审核时间 : 2020-02-30 18:48:00</span>
                             </div>
+                            <div>
+                                <span>审核人 : 徐梦绮</span>
+                                <span>审核时间 : 2020-02-30 18:48:00</span>
+                            </div>
                         </div>
                         {/* 状态 */}
                         <div className="state">
                             <p>状态</p>
-                            <p>待审核</p>
+                            <p>已设立</p>
                         </div>
                     </div>
                     {/* 设立流程 */}
@@ -115,14 +119,17 @@ class CompanyListThree extends Component {
                             </div>
                             <div>
                                 <span>设立</span><br />
-                                <span>经办人 : 徐善培</span>
+                                <span>经办人 : 徐善培</span><br/>
+                                <span>已花费 24小时56分钟</span><br/>
+                                <a href="#">经办资料下载</a>
                             </div>
                             <div>
                                 <span>已设立</span><br />
-                                <span>经办人 : 徐善培</span>
+                                <span>经办人 : 徐善培</span><br/>
+                                <span>已花费 24小时56分钟</span>
                             </div>
                         </div>
-                        <p style={{ width: "58%" }} className="progress-line"></p>
+                        <p style={{ width: "100%" }} className="progress-line"></p>
                         </div>
                     </div>
                     {/* 基本信息 */}

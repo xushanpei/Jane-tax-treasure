@@ -117,7 +117,7 @@ class CompanyList extends Component {
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key="0">
-                    <Link to="/companyListTwo">
+                    <Link to="/companyListThree">
                         公司操作
                     </Link>
                 </Menu.Item>

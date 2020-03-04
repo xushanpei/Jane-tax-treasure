@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Checkbox,Form } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Checkbox, Form } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
-const FormItem = Form.Item ;
+const FormItem = Form.Item;
 
 class CompanyListTwos extends Component {
     constructor(props) {
@@ -51,28 +51,46 @@ class CompanyListTwos extends Component {
                     type: 'xsp',
                 },
                 {
-                    key: '2020-12-20 15:25:00',
+                    key: '2020-12-20 15:25:01',
                     name: '不通过,原因:XXXX',
                     type: "xushanpei",
                 },
                 {
-                    key: '2020-12-20 15:25:00',
+                    key: '2020-12-20 15:25:02',
                     name: '不通过,原因:XXXX',
                     type: "XXXXX",
                 },
             ],
             plainOptions: [
-                "1、名称审核完成",
-                "2、工商阶段完成",
-                "3、银行开户完成"
+                // "1、名称审核完成",
+                // "2、工商阶段完成",
+                // "3、银行开户完成"
+                {
+                    label: '名称审核完成',
+                    value: 0
+                },
+                {
+                    label: '工商阶段完成',
+                    value: 1
+                },
+                {
+                    label: '银行开户完成',
+                    value: 2
+                },
             ],
-            checkedList: "",
+            checkedList: [],
             piclistOptions: [
-                "法人身份证",
-                "法人一寸白底照",
+                {
+                    label: '法人身份证',
+                    value: 0
+                },
+                {
+                    label: '法人一寸白底照',
+                    value: 1
+                },
             ],
-            piclist: "",
-            visible:false
+            piclist: [],
+            visible: false
         }
     }
 
@@ -95,38 +113,46 @@ class CompanyListTwos extends Component {
 
     showModal = () => {
         this.setState({
-          visible: true,
+            visible: true,
         });
-      };
-    
-      handleOk = e => {
+    };
+
+    handleOk = e => {
+        this.props.form.validateFields((err, values) => {
+            if (err) return;//检查Form表单填写的数据是否满足rules的要求
+            console.log(values)
+            let data = this.state.piclistOptions;
+            data.push(values);
+            this.setState({
+                visible: false,
+                piclistOptions:data
+            },()=>{
+                this.props.form.resetFields()
+            });
+        })
+    };
+
+    handleCancel = e => {
         console.log(e);
         this.setState({
-          visible: false,
+            visible: false,
         });
-      };
-    
-      handleCancel = e => {
-        console.log(e);
-        this.setState({
-          visible: false,
-        });
-      };
+    };
 
 
     render() {
         let { routerList } = this.state
-        const {getFieldDecorator} = this.props.form;
+        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
-              xs: { span: 24 },
-              sm: { span: 6 },
+                xs: { span: 24 },
+                sm: { span: 6 },
             },
             wrapperCol: {
-              xs: { span: 24 },
-              sm: { span: 16 },
+                xs: { span: 24 },
+                sm: { span: 16 },
             },
-          };
+        };
         return (
             <div>
                 <BreadeHeader routerList={routerList}></BreadeHeader>
@@ -324,25 +350,25 @@ class CompanyListTwos extends Component {
                     onCancel={this.handleCancel}
                 >
                     <Form {...formItemLayout}>
-          <FormItem label="上传名称">
-            {getFieldDecorator('productName', {
-              rules: [{required: true, message: '请输入上传名称'}],
-            })(
-              <Input placeholder="请输入上传名称"/>
-            )}
-          </FormItem>
-          <FormItem label="上传分类">
-            {getFieldDecorator('productName2', {
-              rules: [{required: true, message: '请选择上传分类'}],
-            })(
-              <Select placeholder="请选择上传分类" style={{width:"160px"}}>
-                  <Option value="1">图片</Option>
-                  <Option value="2">视频</Option>
-                  <Option value="3">文件</Option>
-              </Select>
-            )}
-          </FormItem>
-         </Form>
+                        <FormItem label="上传名称">
+                            {getFieldDecorator('label', {
+                                rules: [{ required: true, message: '请输入上传名称' }],
+                            })(
+                                <Input placeholder="请输入上传名称" />
+                            )}
+                        </FormItem>
+                        <FormItem label="上传分类">
+                            {getFieldDecorator('value', {
+                                rules: [{ required: true, message: '请选择上传分类' }],
+                            })(
+                                <Select placeholder="请选择上传分类" style={{ width: "160px" }}>
+                                    <Option value="1">图片</Option>
+                                    <Option value="2">视频</Option>
+                                    <Option value="3">文件</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                    </Form>
                 </Modal>
 
             </div>
