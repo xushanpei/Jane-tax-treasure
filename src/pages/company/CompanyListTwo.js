@@ -164,7 +164,9 @@ class CompanyListTwos extends Component {
                             <span>
                                 {/* 通过不通过按钮组 */}
                                 <span className="btn-diy">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>设立</Button>
+                                <Link to="/companyListThree">
+                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    </Link>
                                 </span>
                                 <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button>
                                 <span className="btn-diy">

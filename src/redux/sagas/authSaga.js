@@ -87,7 +87,7 @@ function* test() {
             isShow: "1",
             resourceName: "法人库",
             resourceType:"html",
-            url: "/456"
+            url: "/CorporateLibrary"
           }
         ]
       },

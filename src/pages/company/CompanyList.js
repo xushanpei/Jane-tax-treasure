@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
@@ -117,11 +117,15 @@ class CompanyList extends Component {
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key="0">
-                    <Link to="/companyListThree">
-                        公司操作
+                  <Link to="/companyListOne">
+                    公司操作
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="1">公司详情</Menu.Item>
+                <Menu.Item key="1">
+                  <Link to="/companyListThree">
+                    公司详情
+                    </Link>
+                </Menu.Item>
               </Menu>
             } trigger={['click']}>
               <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>

@@ -23,6 +23,10 @@ const CompanyListOne = loadable(()=> import ("../pages/company/CompanyListOne"),
 const CompanyListTwo = loadable(()=> import ("../pages/company/CompanyListTwo"), {fallback: <Loading/>});
 //公司操作已设立
 const CompanyListThree = loadable(()=> import ("../pages/company/CompanyListThree"), {fallback: <Loading/>});
+//法人库
+const CorporateLibrary = loadable(()=> import("../pages/corporateLibrary/CorporateLibrary"), { fallback: <Loading/> });
+//法人详情
+const CorporateLibraryDetail = loadable(()=> import("../pages/corporateLibrary/CorporateLibraryDetail"), { fallback: <Loading/> })
 
 // 注意区分前端路由和前端菜单是两个不同的东西
 // 注：菜单和路由都是基于该路由数据生成
@@ -90,6 +94,20 @@ const routes = [
     path:"/companyListThree",
     exact:true,
     component:CompanyListThree
+  },
+  {
+    key:"7",
+    name:"法人库",
+    path:"/corporateLibrary",
+    exact:true,
+    component:CorporateLibrary
+  },
+  {
+    keyL:"8",
+    name:"法人详情",
+    path:"/corporateLibraryDetail/:id",
+    exact:true,
+    component:CorporateLibraryDetail
   }
 ];
 

@@ -164,18 +164,6 @@ class CompanyListThree extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                         </div>
-                    
-                    {/* 身份证正反面 */}
-                    <div className="base-pic">
-                        <div className="zpic">
-                            <img src={require("../../assets/image/sfz.png")} alt=""/>
-                            <p>身份证正面</p>
-                        </div>
-                        <div className="fpic">
-                        <img src={require("../../assets/image/sfz.png")} alt=""/>
-                        <p>身份证反面</p>
-                        </div>
-                    </div>
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">

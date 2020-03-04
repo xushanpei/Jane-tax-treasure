@@ -26,39 +26,39 @@ class CompanyListOne extends Component {
 
             columns: [
                 {
-                  title: '操作时间',
-                  dataIndex: 'key',
-                  key: 'key',
-                  render: text => text,
+                    title: '操作时间',
+                    dataIndex: 'key',
+                    key: 'key',
+                    render: text => text,
                 },
                 {
-                  title: '操作记录',
-                  dataIndex: 'name',
-                  key: 'name',
+                    title: '操作记录',
+                    dataIndex: 'name',
+                    key: 'name',
                 },
                 {
-                  title: '操作人',
-                  dataIndex: 'type',
-                  key: 'type',
+                    title: '操作人',
+                    dataIndex: 'type',
+                    key: 'type',
                 }
-              ],
-              data: [
+            ],
+            data: [
                 {
-                  key: '2020-12-20 15:25:00',
-                  name: '不通过,原因:XXXX',
-                  type: 'xsp',
+                    key: '2020-12-20 15:25:00',
+                    name: '不通过,原因:XXXX',
+                    type: 'xsp',
                 },
                 {
-                  key: '2020-12-20 15:25:01',
-                  name: '不通过,原因:XXXX',
-                  type: "xushanpei",
+                    key: '2020-12-20 15:25:01',
+                    name: '不通过,原因:XXXX',
+                    type: "xushanpei",
                 },
                 {
-                  key: '2020-12-20 15:25:02',
-                  name: '不通过,原因:XXXX',
-                  type: "XXXXX",
+                    key: '2020-12-20 15:25:02',
+                    name: '不通过,原因:XXXX',
+                    type: "XXXXX",
                 },
-              ],
+            ],
 
         }
     }
@@ -77,7 +77,11 @@ class CompanyListOne extends Component {
                             <span>
                                 {/* 通过不通过按钮组 */}
                                 <span className="btn-diy">
+                                    <Link to="/companyListTwo">
                                     <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    </Link>
+
+                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
                                 </span>
                                 <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>不通过</Button>
                             </span>
@@ -102,27 +106,27 @@ class CompanyListOne extends Component {
                     <div className="process">
                         <p>设立流程</p>
                         <div className="pro-con">
-                        <div className="progress">
-                            <div>
-                                <span>申请</span><br />
-                                <span>申请人 : 18861851261</span><br/>
-                                <span>2020-02-16  15:26:26</span>
+                            <div className="progress">
+                                <div>
+                                    <span>申请</span><br />
+                                    <span>申请人 : 18861851261</span><br />
+                                    <span>2020-02-16  15:26:26</span>
+                                </div>
+                                <div>
+                                    <span>付款</span><br />
+                                    <span>审核人 : 徐梦绮</span> <br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
+                                <div>
+                                    <span>设立</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                </div>
+                                <div>
+                                    <span>已设立</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                </div>
                             </div>
-                            <div>
-                                <span>付款</span><br />
-                                <span>审核人 : 徐梦绮</span> <br/>
-                                <span>已花费 24小时56分钟</span>
-                            </div>
-                            <div>
-                                <span>设立</span><br />
-                                <span>经办人 : 徐善培</span>
-                            </div>
-                            <div>
-                                <span>已设立</span><br />
-                                <span>经办人 : 徐善培</span>
-                            </div>
-                        </div>
-                        <p style={{ width: "58%" }} className="progress-line"></p>
+                            <p style={{ width: "58%" }} className="progress-line"></p>
                         </div>
                     </div>
                     {/* 基本信息 */}
@@ -139,7 +143,7 @@ class CompanyListOne extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                             <div>
-                            <span>申请人 : 18861851261</span>
+                                <span>申请人 : 18861851261</span>
                                 <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
                                 <span>纳税人类型 : 一般纳税人</span>
                                 <span>简税宝服务期限 : 2022-02-10</span>
@@ -148,7 +152,7 @@ class CompanyListOne extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                             <div>
-                            <span>申请人 : 18861851261</span>
+                                <span>申请人 : 18861851261</span>
                                 <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
                                 <span>纳税人类型 : 一般纳税人</span>
                                 <span>简税宝服务期限 : 2022-02-10</span>
@@ -157,18 +161,18 @@ class CompanyListOne extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                         </div>
-                    
-                    {/* 身份证正反面 */}
-                    <div className="base-pic">
-                        <div className="zpic">
-                            <img src={require("../../assets/image/sfz.png")} alt=""/>
-                            <p>身份证正面</p>
+
+                        {/* 身份证正反面 */}
+                        <div className="base-pic">
+                            <div className="zpic">
+                                <img src={require("../../assets/image/sfz.png")} alt="" />
+                                <p>身份证正面</p>
+                            </div>
+                            <div className="fpic">
+                                <img src={require("../../assets/image/sfz.png")} alt="" />
+                                <p>身份证反面</p>
+                            </div>
                         </div>
-                        <div className="fpic">
-                        <img src={require("../../assets/image/sfz.png")} alt=""/>
-                        <p>身份证反面</p>
-                        </div>
-                    </div>
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">
@@ -179,25 +183,25 @@ class CompanyListOne extends Component {
                                 <span>对接人邮箱 : xu_shan_pei@163.com</span>
                             </div>
                             <div>
-                            <span>对接人身份证号 : 18861851261</span>
+                                <span>对接人身份证号 : 18861851261</span>
                                 <span>邮寄地址 : 南京严氏文化传媒公司 (随机名称)</span>
                             </div>
                             <div>
-                            <span>对接人手机 : 18861851261</span>
+                                <span>对接人手机 : 18861851261</span>
                             </div>
                         </div>
-                    
-                   
+
+
                     </div>
-                    
+
                     {/* 操作记录 */}
                     <div className="process">
                         <p>操作记录</p>
                         <div className="todo_table">
-                        <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
+                            <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
