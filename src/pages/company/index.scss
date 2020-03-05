@@ -136,7 +136,7 @@
     }
 
     .base{
-        min-height: 400px;
+        min-height: 200px;
         height: auto;
         .base-content{
             display: flex;
@@ -245,4 +245,32 @@
             }
         }
     }
+}
+
+.comBlock{
+    display: flex;
+    justify-content: space-between;
+    & > div{
+        width:calc( (100% - 60px)/4 );
+        background: #FFF;
+        height: 120px;
+        margin-top: 20px;
+        text-align: center;
+        & > span:first-child {
+            display: block;
+            margin-top: 30px;
+            font-weight: 550;
+        }
+        & > span:last-child{
+              font-weight: 600;
+              font-size: 26px;  
+        }
+    }
+}
+.zh{
+    img{
+        width: 300px;
+        height: 300px;
+    }
+
 }

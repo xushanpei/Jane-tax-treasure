@@ -26,39 +26,39 @@ class CompanyListThree extends Component {
 
             columns: [
                 {
-                  title: '操作时间',
-                  dataIndex: 'key',
-                  key: 'key',
-                  render: text => text,
+                    title: '操作时间',
+                    dataIndex: 'key',
+                    key: 'key',
+                    render: text => text,
                 },
                 {
-                  title: '操作记录',
-                  dataIndex: 'name',
-                  key: 'name',
+                    title: '操作记录',
+                    dataIndex: 'name',
+                    key: 'name',
                 },
                 {
-                  title: '操作人',
-                  dataIndex: 'type',
-                  key: 'type',
+                    title: '操作人',
+                    dataIndex: 'type',
+                    key: 'type',
                 }
-              ],
-              data: [
+            ],
+            data: [
                 {
-                  key: '2020-12-20 15:25:00',
-                  name: '不通过,原因:XXXX',
-                  type: 'xsp',
+                    key: '2020-12-20 15:25:00',
+                    name: '不通过,原因:XXXX',
+                    type: 'xsp',
                 },
                 {
-                  key: '2020-12-20 15:25:01',
-                  name: '不通过,原因:XXXX',
-                  type: "xushanpei",
+                    key: '2020-12-20 15:25:01',
+                    name: '不通过,原因:XXXX',
+                    type: "xushanpei",
                 },
                 {
-                  key: '2020-12-20 15:25:02',
-                  name: '不通过,原因:XXXX',
-                  type: "XXXXX",
+                    key: '2020-12-20 15:25:02',
+                    name: '不通过,原因:XXXX',
+                    type: "XXXXX",
                 },
-              ],
+            ],
 
         }
     }
@@ -106,32 +106,127 @@ class CompanyListThree extends Component {
                     <div className="process">
                         <p>设立流程</p>
                         <div className="pro-con">
-                        <div className="progress">
-                            <div>
-                                <span>申请</span><br />
-                                <span>申请人 : 18861851261</span><br/>
-                                <span>2020-02-16  15:26:26</span>
+                            <div className="progress">
+                                <div>
+                                    <span>申请</span><br />
+                                    <span>申请人 : 18861851261</span><br />
+                                    <span>2020-02-16  15:26:26</span>
+                                </div>
+                                <div>
+                                    <span>付款</span><br />
+                                    <span>审核人 : 徐梦绮</span> <br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
+                                <div>
+                                    <span>设立</span><br />
+                                    <span>经办人 : 徐善培</span><br />
+                                    <span>已花费 24小时56分钟</span><br />
+                                    <a href="#">经办资料下载</a>
+                                </div>
+                                <div>
+                                    <span>已设立</span><br />
+                                    <span>经办人 : 徐善培</span><br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
                             </div>
-                            <div>
-                                <span>付款</span><br />
-                                <span>审核人 : 徐梦绮</span> <br/>
-                                <span>已花费 24小时56分钟</span>
-                            </div>
-                            <div>
-                                <span>设立</span><br />
-                                <span>经办人 : 徐善培</span><br/>
-                                <span>已花费 24小时56分钟</span><br/>
-                                <a href="#">经办资料下载</a>
-                            </div>
-                            <div>
-                                <span>已设立</span><br />
-                                <span>经办人 : 徐善培</span><br/>
-                                <span>已花费 24小时56分钟</span>
-                            </div>
-                        </div>
-                        <p style={{ width: "100%" }} className="progress-line"></p>
+                            <p style={{ width: "100%" }} className="progress-line"></p>
                         </div>
                     </div>
+                    {/* 票税数据 */}
+                    <div className="comBlock">
+                        <div>
+                            <span>年开票额度</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>剩余额度</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>本月额度</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>本月剩余额度</span>
+                            <span>450000000</span>
+                        </div>
+                    </div>
+                    <div className="comBlock">
+                        <div>
+                            <span>税金预缴率</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>总开票</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>本月已开票</span>
+                            <span>450000000</span>
+                        </div>
+                        <div>
+                            <span>申请中</span>
+                            <span>450000000</span>
+                        </div>
+                    </div>
+
+                    {/* 工商信息 */}
+
+                    <div className="process base">
+                        <p>工商信息   <span className="updateData"></span> </p>
+                        <div className="base-content">
+                            <div>
+                                <span>申请人 : 18861851261</span>
+                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
+                                <span>纳税人类型 : 一般纳税人</span>
+                                <span>简税宝服务期限 : 2022-02-10</span>
+                                <span>公司地区 : 江苏省 南京市 江宁区</span>
+                                <span>公司法人 : 徐善培</span>
+                                <span>法人证件 : 已提交</span>
+                            </div>
+                            <div>
+                                <span>申请人 : 18861851261</span>
+                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
+                                <span>纳税人类型 : 一般纳税人</span>
+                                <span>简税宝服务期限 : 2022-02-10</span>
+                                <span>公司地区 : 江苏省 南京市 江宁区</span>
+                                <span>公司法人 : 徐善培</span>
+                                <span>法人证件 : 已提交</span>
+                            </div>
+                            <div className="zh">
+                                {/* <span>申请人 : 18861851261</span>
+                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
+                                <span>纳税人类型 : 一般纳税人</span>
+                                <span>简税宝服务期限 : 2022-02-10</span>
+                                <span>公司地区 : 江苏省 南京市 江宁区</span>
+                                <span>公司法人 : 徐善培</span>
+                                <span>法人证件 : 已提交</span> */}
+                                <img src={require("../../assets/image/sfz.png")} alt=""/> <br/>
+                                <span className="btn-diy" style={{display:"block",marginLeft:"85px"}}>
+                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>点击上传营业执照</Button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     {/* 基本信息 */}
                     <div className="process base">
                         <p>基本信息   <span className="updateData">修改</span> </p>
@@ -146,7 +241,7 @@ class CompanyListThree extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                             <div>
-                            <span>申请人 : 18861851261</span>
+                                <span>申请人 : 18861851261</span>
                                 <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
                                 <span>纳税人类型 : 一般纳税人</span>
                                 <span>简税宝服务期限 : 2022-02-10</span>
@@ -155,7 +250,7 @@ class CompanyListThree extends Component {
                                 <span>法人证件 : 已提交</span>
                             </div>
                             <div>
-                            <span>申请人 : 18861851261</span>
+                                <span>申请人 : 18861851261</span>
                                 <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
                                 <span>纳税人类型 : 一般纳税人</span>
                                 <span>简税宝服务期限 : 2022-02-10</span>
@@ -174,25 +269,25 @@ class CompanyListThree extends Component {
                                 <span>对接人邮箱 : xu_shan_pei@163.com</span>
                             </div>
                             <div>
-                            <span>对接人身份证号 : 18861851261</span>
+                                <span>对接人身份证号 : 18861851261</span>
                                 <span>邮寄地址 : 南京严氏文化传媒公司 (随机名称)</span>
                             </div>
                             <div>
-                            <span>对接人手机 : 18861851261</span>
+                                <span>对接人手机 : 18861851261</span>
                             </div>
                         </div>
-                    
-                   
+
+
                     </div>
-                    
+
                     {/* 操作记录 */}
                     <div className="process">
                         <p>操作记录</p>
                         <div className="todo_table">
-                        <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
+                            <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
