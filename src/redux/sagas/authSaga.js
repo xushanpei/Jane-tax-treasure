@@ -169,16 +169,19 @@ function* signout(action) {
 }
 
 function* signin(action) {
+  console.log("++++++++",action)
   try {
-    // yield put({
-    //   type: layoutPageTypes.SET_LOADING,
-    //   payload: {
-    //     loading: true
-    //   }
-    // });
-    // const res = yield call(Apis.login, action.payload);
+    yield put({
+      type: layoutPageTypes.SET_LOADING,
+      payload: {
+        loading: true
+      }
+    });
+    const res = yield call(Apis.login, action.payload);
 
-    //if (res.success) {
+    console.log("登录成功",res);
+
+    // if (res.success) {
     // yield put({ type: authTypes.AUTH_SUCCESS, data: res.data });
     // let res_menus = yield call(Apis.getTree);
     // yield put({ type: layoutPageTypes.GET_MENUS, menus: res_menus.result.list });
@@ -235,9 +238,9 @@ function* signin(action) {
     //   });
     //   yield put(push(url));
     // }
-    //}
+    // }
     // 正式使用的时候把上面放开即可，去掉下面一行
-    yield call(test);
+    // yield call(test);
   } catch (error) {
     message.info("用户名或密码错误");
     yield call(clearItem, "token");

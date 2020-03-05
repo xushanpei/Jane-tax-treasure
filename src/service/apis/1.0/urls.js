@@ -1,4 +1,4 @@
 export const urls = {
-  USER_TREERESOURCE: "/user/treeResource",
-  LOGIN: "/login/"
+  // USER_TREERESOURCE: "/user/treeResource",
+  LOGIN: "/jwt/token"
 };
