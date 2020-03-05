@@ -129,7 +129,7 @@ function* test() {
         id: "7",
         isShow: "1",
         resourceName: "客服",
-        url: "/999"
+        url: "/customerService"
       },
     ]
   });
