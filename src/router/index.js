@@ -34,7 +34,9 @@ const UserDetail = loadable(()=> import("../pages/user/UserDetail"), { fallback:
 // 申请列表
 const ApplyBill = loadable(()=> import("../pages/bill/ApplyBill"), { fallback:<Loading/> });
 //发票列表
-const BillList = loadable(()=> import("../pages/bill/BillList"), { fallback: <Loading/> })
+const BillList = loadable(()=> import("../pages/bill/BillList"), { fallback: <Loading/> });
+//发票详情
+const BillDetail = loadable(()=> import("../pages/bill/BillDetail"), { fallback: <Loading/> })
 
 
 // 注意区分前端路由和前端菜单是两个不同的东西
@@ -145,7 +147,15 @@ const routes = [
     path:"/billList",
     exact:true,
     component:BillList
-  }
+  },
+  {
+    keyL:"13",
+    name:"发票详情",
+    path:"/billDetail",
+    exact:true,
+    component:BillDetail
+  },
+
 ];
 
 export default routes;

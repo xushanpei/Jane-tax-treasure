@@ -150,7 +150,7 @@ class ApplyBill extends Component {
                     title: '操作',
                     key: 'action',
                     render: (text, record) => (
-                        <Link to="#">
+                        <Link to="/billDetail">
                             查看详情
                         </Link>
                         // <Dropdown overlay={

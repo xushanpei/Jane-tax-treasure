@@ -4,394 +4,298 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import OpenBill from "./OpenBill"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
 class BillDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // 筛选属性
-      select: {
-        orderState: 0,
-        orderType: 0,
-        payType: 0,
-        createTime: 0
-      },
-      searchValue: "",
-      routerList: [
-        {
-          name: "首页",
-          url: "/"
-        },
-        {
-          name: "发票列表",
-          url: "/order"
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            routerList: [
+                {
+                    name: "首页",
+                    url: "/"
+                },
+                {
+                    name: "申请列表",
+                    url: "/order"
+                },
+                {
+                    name: "申请详情",
+                    url: "/order"
+                }
+            ],
+
+            columns: [
+                {
+                    title: '操作时间',
+                    dataIndex: 'key',
+                    key: 'key',
+                    render: text => text,
+                },
+                {
+                    title: '操作记录',
+                    dataIndex: 'name',
+                    key: 'name',
+                },
+                {
+                    title: '操作人',
+                    dataIndex: 'type',
+                    key: 'type',
+                }
+            ],
+            data: [
+                {
+                    key: '2020-12-20 15:25:00',
+                    name: '不通过,原因:XXXX',
+                    type: 'xsp',
+                },
+                {
+                    key: '2020-12-20 15:25:01',
+                    name: '不通过,原因:XXXX',
+                    type: "xushanpei",
+                },
+                {
+                    key: '2020-12-20 15:25:02',
+                    name: '不通过,原因:XXXX',
+                    type: "XXXXX",
+                },
+            ],
+
         }
-      ],
-      columns: [
-        {
-          title: '',
-          dataIndex: 'key',
-          key: 'key',
-          render: text => text,
-        },
-        {
-          title: '申请公司',
-          dataIndex: 'name',
-          key: 'name',
-        },
-        {
-          title: '开票时间',
-          dataIndex: 'type',
-          key: 'type',
-        },
-        {
-          title: '公司类型',
-          key: 'number',
-          dataIndex: 'number',
-          //   render: tags => (
-          //     <span>
-          //       {tags.map(tag => {
-          //         let color = tag.length > 5 ? 'geekblue' : 'green';
-          //         if (tag === 'loser') {
-          //           color = 'volcano';
-          //         }
-          //         return (
-          //           <Tag color={color} key={tag}>
-          //             {tag.toUpperCase()}
-          //           </Tag>
-          //         );
-          //       })}
-          //     </span>
-          //   ),
-        },
-        {
-          title: '发票类型',
-          key: 'state',
-          dataIndex: 'state',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
-        },
-        {
-          title: '发票金额',
-          key: 'payType',
-          dataIndex: 'payType',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
-        },
-        {
-          title: '客户名称',
-          key: 'orderState',
-          dataIndex: 'orderState',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
-        },
-        {
-          title: '发票代码',
-          key: 'time',
-          render: (text, record) => (
-            <span>
-              <span>{record.time}</span>
-            </span>
-          ),
-        },
-        {
-            title: '发票号码',
-            key: 'time',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
-          },
-          {
-            title: '开户银行',
-            key: 'time',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
-          },
-          {
-            title: '开户账号',
-            key: 'time',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
-          },
-          {
-            title: '地址',
-            key: 'time',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
-          },
-          {
-            title: '电话',
-            key: 'time',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
-          }
-      ],
-      data: [
-        {
-          key: '1',
-          name: '套餐一',
-          type: '个人独资',
-          number: 100,
-          state: 1,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '2',
-          name: '套餐二',
-          type: "个人独资",
-          number: 100,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '3',
-          name: '套餐三',
-          type: "个人独资",
-          number: 20,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-      ],
-      visible: false,
-      editVisible: false
-    };
-  }
-
-  // 添加 modal 用的方法
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
-
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
-
-  // 编辑 modal 用的方法
-  editShowModal = () => {
-    this.setState({
-      editVisible: true,
-    });
-  };
-
-  editHandleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
-
-  editHandleCancel = e => {
-    console.log(e);
-    this.setState({
-      editVisible: false,
-    });
-  };
-
-
-  // 删除确认框
-  showDeleteConfirm = () => {
-    Modal.confirm({
-      title: '是否确认删除此分类?',
-      content: '删除后不可恢复',
-      okText: '是',
-      okType: 'danger',
-      cancelText: '否',
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  }
-
-  // 订单状态
-  setOrderState = (value) => {
-    this.setState({
-      select: {
-        orderState: value,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
-    })
-  }
-
-  // 订单类型
-  setOrderType = (value) => {
-    this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: value,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
-    })
-  }
-  // 支付方式 
-  setPayType = (value) => {
-    this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: value,
-        createTime: this.state.select.createTime
-      }
-    })
-  }
-  //创建时间
-  setCreateTime = (value) => {
-    if (value == "") {
-      this.setState({
-        select: {
-          orderState: this.state.select.orderState,
-          orderType: this.state.select.orderType,
-          payType: this.state.select.payType,
-          createTime: value
-        },
-        searchValue: value
-      })
     }
 
-  }
-  onChange = (date, dateString) => {
-    console.log(date, dateString)
-    this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: date
-      },
-      searchValue: date
-    })
-  }
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+      };
+
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
 
 
 
-
-
-  render() {
-    let { routerList, searchValue } = this.state;
-    let { orderState, orderType, payType, createTime } = this.state.select
-
-    return (
-      <div className="product-container">
-        {/* 产品列表 */}
-        {/* 头部 */}
-        <BreadeHeader routerList={routerList} />
-        {/* 内容部分 */}
-        <div className="search-content">
-          {/* 筛选 */}
-          <div className="line">
-            <div>发票类型 ：</div>
+    render() {
+        let { routerList } = this.state
+        return (
             <div>
-              <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>增值税普通发票</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>增值税专用发票</span>
+                <BreadeHeader routerList={routerList}></BreadeHeader>
+                <div className="one-content">
+                    {/* name-title */}
+                    <div className="name-content">
+                        <div className="title">
+                            <span>南京严氏文化传媒的发票申请
+                                <div className="billState">
+                                    <div>
+                                        <span>开票金额</span>
+                                        <span style={{ color: "#D43030", fontSize: "28px" }}>￥5000000</span>
+                                    </div>
+                                    <div>
+                                        <span>开票状态</span>
+                                        <span>审核中</span>
+                                    </div>
+                                </div>
+                            </span>
+                            <span className="divButton">
+                                {/* 通过不通过按钮组 */}
+                                <span className="btn-diy">
+                                    <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>查看发票</Button>
+                                </span>
+                                
+                                <span className="btn-diy">
+                                    <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>开票</Button>
+                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
+                                </span>
+                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button>
+                                
+                            </span>
+                        </div>
+                        {/* <div className="title-detail">
+                            <div>
+                                <span>申请人 : 18861851261</span>
+                                <span>申请时间 : 2020-02-30 18:48:00</span>
+                            </div>
+                            <div>
+                                <span>审核人 : 徐梦绮</span>
+                                <span>审核时间 : 2020-02-30 18:48:00</span>
+                            </div>
+                        </div> */}
+
+
+                        <div className="pro-con bill-con" style={{ padding: "20px 0 " }}>
+                            <div className="progress">
+                                <div>
+                                    <span>申请</span><br />
+                                    <span>申请人 : 18861851261</span><br />
+                                    <span>2020-02-16  15:26:26</span>
+                                </div>
+                                <div>
+                                    <span>审核</span><br />
+                                    <span>审核人 : 徐梦绮</span> <br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
+                                <div>
+                                    <span>开票中</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                    <span></span>
+                                </div>
+                                <div>
+                                    <span>已开票</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <p style={{ width: "58%" }} className="progress-line"></p>
+                        </div>
+                        {/* 状态 */}
+                        <div></div>
+                    </div>
+                    {/* 设立流程 */}
+                    {/* <div className="process">
+                        <p>设立流程</p>
+                        <div className="pro-con">
+                            <div className="progress">
+                                <div>
+                                    <span>申请</span><br />
+                                    <span>申请人 : 18861851261</span><br />
+                                    <span>2020-02-16  15:26:26</span>
+                                </div>
+                                <div>
+                                    <span>付款</span><br />
+                                    <span>审核人 : 徐梦绮</span> <br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
+                                <div>
+                                    <span>设立</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                </div>
+                                <div>
+                                    <span>已设立</span><br />
+                                    <span>经办人 : 徐善培</span>
+                                </div>
+                            </div>
+                            <p style={{ width: "58%" }} className="progress-line"></p>
+                        </div>
+                    </div> */}
+                    {/* 基本信息 */}
+                    <div className="process base" style={{ minHeight: "100px" }}>
+                        <p>基本信息   <span className="updateData"></span> </p>
+                        <div className="base-content base-contents">
+                            <div>
+                                <span>申请公司 : 南京严氏文化传媒公司</span>
+                                <span>开票金额 : ￥ 5000000</span>
+                            </div>
+                            <div>
+                                <span>纳税人类型 : 一般纳税人</span>
+                                <span>公司类型 : 个人独资</span>
+                            </div>
+                            <div>
+                                <span>发票类型 : 普通增值税发票</span>
+                                <span> </span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* 对接人信息 */}
+                    <div className="process base person">
+                        <p>客户开票信息   <span className="updateData">保存开票信息</span> </p>
+                        <div className="base-content person-content">
+                            <div>
+                                <span>开票客户名称：舜贝佳信息科技有限公司</span>
+                                <span>开户账号：6222 6662 1000 3188 326</span>
+                                <span>发票邮寄地址：南京市北京西路330号</span>
+                            </div>
+                            <div>
+                                <span>纳税人识别号：911545465mr46546</span>
+                                <span>客户地址：南京市雨花台区世茂52</span>
+                                <span> &nbsp; </span>
+                            </div>
+                            <div>
+                                <span>开户银行：南京银行玄武支行</span>
+                                <span>单位电话：025-86226667</span>
+                                <span> &nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* 合同信息 */}
+                    <div className="process base person persons" >
+                        <p>合同信息   <span className="updateData"></span> </p>
+                        <div className="base-content person-content">
+                            <div>
+                                <span>合同名称：广告合作推广的合同</span>
+                                <span>商品名称：推广</span>
+                                <span>合同附件</span>
+                            </div>
+                            <div>
+                                <span>合同状态：执行中</span>
+                                <span>合同金额：￥500,00.00 （可开票额度￥500,00.00 ）</span>
+                                <span> &nbsp; </span>
+                            </div>
+                            <div>
+                                <span>合同类型：服务类型</span>
+                                <span>合同签订日期：2020-01-15</span>
+                                <span> &nbsp;</span>
+                            </div>
+                        </div>
+                        {/* 合同附件 */}
+                        <div className="billPic">
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
+                                <span>合同附件X</span>
+                            </div>
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
+                                <span>合同附件X</span>
+                            </div>
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
+                                <span>合同附件X</span>
+                            </div>
+                            <div>
+                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
+                                <span>合同附件X</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    {/* 操作记录 */}
+                    <div className="process">
+                        <p>操作记录</p>
+                        <div className="todo_table">
+                            <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
+                        </div>
+                    </div>
+
+                </div>
+
+                <OpenBill
+                    title="提交开票信息"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                </OpenBill>
+
             </div>
-          </div>
-          <div className="line">
-            <div>公司类型 ：</div>
-            <div>
-              <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
-              <span onClick={this.setOrderType.bind(this, 2)} className={orderType == 2 ? "active-bg" : ""}>合伙企业</span>
-              <span onClick={this.setOrderType.bind(this, 3)} className={orderType == 3 ? "active-bg" : ""}>有限公司</span>
-              <span onClick={this.setOrderType.bind(this, 4)} className={orderType == 4 ? "active-bg" : ""}>个体户</span>
-            </div>
-          </div>
-
-          <div className="line">
-            <div>申请时间 ：</div>
-            <div>
-              <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
-              <RangePicker
-                onChange={this.onChange}
-                value={searchValue}
-                size="small"
-                style={{ width: "259px", }}
-              />
-            </div>
-          </div>
-          <div className="line">
-            <div>搜索 ：</div>
-            <div>
-              <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
-            </div>
-          </div>
-
-          <div className="line">
-            <div></div>
-            <div style={{ marginLeft: "62px" }}>
-              <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
-              <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
-            </div>
-          </div>
-
-        </div>
-        {/* table 部分 */}
-        <div className="table-content">
-          {/* 123 */}
-          <Table bordered columns={this.state.columns} dataSource={this.state.data} />
-        </div>
-
-
-
-      </div>
-    );
-  }
+        );
+    }
 }
 
 export default BillDetail;
