@@ -169,7 +169,6 @@ function* signout(action) {
 }
 
 function* signin(action) {
-  console.log("++++++++",action)
   try {
     yield put({
       type: layoutPageTypes.SET_LOADING,
@@ -179,7 +178,7 @@ function* signin(action) {
     });
     const res = yield call(Apis.login, action.payload);
 
-    console.log("登录成功",res);
+    console.log("触发登录接口状态",res);
 
     // if (res.success) {
     // yield put({ type: authTypes.AUTH_SUCCESS, data: res.data });

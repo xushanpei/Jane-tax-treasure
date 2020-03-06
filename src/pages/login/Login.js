@@ -22,7 +22,7 @@ class Login extends Component {
       if (!err) {
         this.props.authRequest({
           username: values.userName,
-          loginType:1,
+          loginType:"1",
           client:"web",
           password: values.password
         });
