@@ -11,7 +11,7 @@ export const authTypes = {
 };
 
 export default createActions({ 
-  [authTypes.AUTH_REQUEST]: ({ username, password,loginType,client }) => ({ username, password,loginType,client }),
+  [authTypes.AUTH_REQUEST]: ({ username, password,loginType,client,appClient,deviceNum }) => ({ username, password,loginType,client ,appClient,deviceNum}),
   [authTypes.AUTH_SUCCESS]: data => ({ data }),
   [authTypes.AUTH_FAILURE]: () => ({}),
   [authTypes.SIGN_OUT]: () => ({}),

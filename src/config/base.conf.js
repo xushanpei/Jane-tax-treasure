@@ -11,7 +11,8 @@ export default {
    * port :  端口号
    * 
    */
-  host: "http://47.116.4.10",
+  // host: "http://47.116.4.10",
+  host:"http://192.168.0.212",
   port: "8870", 
   persist: "root"
 };

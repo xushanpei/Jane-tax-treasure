@@ -24,7 +24,9 @@ class Login extends Component {
           username: values.userName,
           loginType:"1",
           client:"web",
-          password: values.password
+          password: values.password,
+          appClient:"SimpleTaxManage",
+          deviceNum: (Math.random() * 1000) + new Date().getTime() + 'jsb'
         });
       }
     });

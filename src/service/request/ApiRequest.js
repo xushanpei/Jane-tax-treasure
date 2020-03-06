@@ -2,6 +2,7 @@ import axios from "axios";
 import { message } from "antd";
 import config from "../../config/base.conf";
 
+
 /**
  * Http服务类
  * get
@@ -25,18 +26,24 @@ class ApiRequest {
    */
   setToken = token => {
     this.instance.defaults.headers.common["Authorization"] = token;
+    this.instance.defaults.headers.common["User-Client"] = "web";
   };
 
-  authentication = str => {
-    let errJson = JSON.parse(str);
-    console.log("判断token状态",errJson);
-    if (errJson.response && errJson.response.status === 401) {
-      message.error("用户认证出错，正在跳转登录页面！");
-      setTimeout(() => {
-        localStorage.removeItem(`persist:${config.persist}`);
-        window.location.href = "/login";
-      }, 1500);
-    }
+  authentication = data => {
+    console.log("判断token状态,是否过期",data);
+    setTimeout(() => {
+          // localStorage.removeItem(`persist:${config.persist}`);
+          // window.location.href = "/login";
+        }, 1500);
+    // let errJson = JSON.parse(str);
+    // console.log("判断token状态,是否过期",errJson);
+    // if (errJson.response && errJson.response.status === 401) {
+    //   message.error("用户认证出错，正在跳转登录页面！");
+    //   setTimeout(() => {
+    //     localStorage.removeItem(`persist:${config.persist}`);
+    //     window.location.href = "/login";
+    //   }, 1500);
+    // }
   };
 
   upload(url, formData) {
@@ -63,11 +70,21 @@ class ApiRequest {
       this.instance
         .get(url, { params: { ...params } })
         .then(({ data }) => {
+          // console.log("获取get接口状态",data.status)
+          // 判断返回的状态 
+          if(data.status == 50103 ){
+            this.authentication(data);
+            return;
+          }
+
+
+
           resolve(data);
         })
         .catch(error => {
           let errStr = JSON.stringify(error);
-          this.authentication(errStr);
+          // console.log("获取get接口状态",error)
+          // this.authentication(errStr);
           reject(errStr);
         });
     });

@@ -21,7 +21,7 @@ const historyRouterMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();
 
 // 组合middleware
-const middleWares = [sagaMiddleware, historyRouterMiddleware, logger];
+const middleWares = [sagaMiddleware, historyRouterMiddleware, logger,authTokenMiddleware];
 
 const migrations = {
   0: state => {

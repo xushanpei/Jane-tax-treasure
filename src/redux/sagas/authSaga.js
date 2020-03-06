@@ -179,6 +179,142 @@ function* signin(action) {
     const res = yield call(Apis.login, action.payload);
 
     console.log("触发登录接口状态",res);
+    if(res.status == 200){
+        message.success(res.message);
+    }
+    else{
+      message.warning(res.message)
+    }
+   //设置用户名和 token
+    yield put({
+      type: authTypes.AUTH_SUCCESS,
+      data: {
+        user: {
+          name: res.data.userInfo.name,
+          photo:res.data.userInfo.photo,
+          userId:res.data.userInfo.userId
+        },
+        token: res.data.token
+      }
+    });
+
+    //菜单初始化
+    yield put({
+      type: layoutPageTypes.GET_MENUS,
+      menus: [
+        {
+          icon: "radar-chart",
+          id: "1",
+          isShow: "1",
+          resourceName: "仪表盘",
+          url: "/"
+        },
+        {
+          icon: "shopping-cart",
+          id: "2",
+          isShow: "1",
+          resourceName: "产品",
+          // url: "/departmentManage"
+          children:[
+            {
+              icon: "radar-chart",
+              id: "2-1",
+              isShow: "1",
+              resourceName: "产品列表",
+              resourceType:"html",
+              url: "/product"
+            },
+            {
+              icon: "radar-chart",
+              id: "2-2",
+              isShow: "1",
+              resourceName: "产品分类",
+              resourceType:"html",
+              url: "/productClassify"
+            }
+          ]
+        },
+        {
+          icon: "hdd",
+          id: "3",
+          isShow: "1",
+          resourceName: "订单",
+          url: "/order"
+        },
+        {
+          icon: "laptop",
+          id: "4",
+          isShow: "1",
+          resourceName: "公司",
+          // url: "/userManage"
+          children:[
+            {
+              icon: "radar-chart",
+              id: "4-1",
+              isShow: "1",
+              resourceName: "公司列表",
+              resourceType:"html",
+              url: "/companyList"
+            },
+            {
+              icon: "radar-chart",
+              id: "4-2",
+              isShow: "1",
+              resourceName: "法人库",
+              resourceType:"html",
+              url: "/CorporateLibrary"
+            }
+          ]
+        },
+        {
+          icon: "user",
+          id: "5",
+          isShow: "1",
+          resourceName: "用户",
+          url: "/user"
+        },
+        {
+          icon: "switcher",
+          id: "6",
+          isShow: "1",
+          resourceName: "发票",
+          children:[
+            {
+              icon: "radar-chart",
+              id: "6-1",
+              isShow: "1",
+              resourceName: "申请列表",
+              resourceType:"html",
+              url: "/applyBill"
+            },
+            {
+              icon: "radar-chart",
+              id: "6-2",
+              isShow: "1",
+              resourceName: "发票列表",
+              resourceType:"html",
+              url: "/billList"
+            }
+          ]
+  
+         
+        },
+        {
+          icon: "usergroup-add",
+          id: "7",
+          isShow: "1",
+          resourceName: "客服",
+          url: "/customerService"
+        },
+      ]
+    });
+    yield put({
+      type: layoutPageTypes.SAVE_MENU_INDEX,
+      payload: {
+        keyPath: ["1"]
+      }
+    });
+    yield put(push("/"));
 
     // if (res.success) {
     // yield put({ type: authTypes.AUTH_SUCCESS, data: res.data });

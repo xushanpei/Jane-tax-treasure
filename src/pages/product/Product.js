@@ -4,7 +4,9 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal }
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import AddProductModal from "./AddProduct";
-import EditProductModal from "./EditProduct"
+import EditProductModal from "./EditProduct";
+import { connect } from "react-redux";
+import productAction from "../../redux/actions/productAction"
 
 const { Option } = Select
 // key: '1',
@@ -17,7 +19,13 @@ const { Option } = Select
 
   
   
-
+@connect(
+  ({ productReducer }) => ({ productReducer }),
+  {
+    productlist: productAction.productlist,
+    
+  }
+)
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -136,6 +144,19 @@ class Product extends Component {
       editVisible:false
     };
   }
+componentWillMount(){
+  // 产品页面初始化获取产品列表
+  this.props.productlist();
+}
+
+
+
+
+
+
+
+
+
 
   // 添加 modal 用的方法
   showModal = () => {

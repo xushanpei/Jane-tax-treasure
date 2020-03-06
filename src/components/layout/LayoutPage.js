@@ -81,7 +81,15 @@ class LayoutPage extends Component {
               {/* <div>通知</div> */}
               <Dropdown overlay={ddMenu} placement="bottomRight" className="right-header-right-dropdown">
                 <div className="username">
-                  <Avatar size="default" style={{ backgroundColor: "#87d068" }} icon="user" />
+                {/* 头像做判断 */}
+                {
+                  authReducer.get("user") && authReducer.getIn(["user","photo"]) ? (
+                    <Avatar size="default" src={authReducer.get("user") ? authReducer.getIn(["user", "photo"]) : ""} />
+                  ) : (
+                    <Avatar size="default" style={{ backgroundColor: "#87d068" }} icon="user" />
+                  )
+                }
+
                   <span style={{ marginLeft: 8 }}>{authReducer.get("user") ? authReducer.getIn(["user", "name"]) : "用户"}</span>
                   <Icon className="avata-down" type="down" />
                 </div>
