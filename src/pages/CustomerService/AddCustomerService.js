@@ -63,6 +63,16 @@ class AddCustomerServices extends Component {
       >
 
        <Form {...formItemLayout}>
+       <FormItem label="客服岗位">
+            {getFieldDecorator('productName3', {initialValue:this.state.value,
+              rules: [{required: true, message: '请输入分类简介'}],
+            })(
+                <Radio.Group  onChange={this.onChange} >
+                <Radio value={1}>运营部</Radio>
+                <Radio value={2}>园区拓展部</Radio>
+              </Radio.Group>
+            )}
+          </FormItem>
           <FormItem label="客服姓名">
             {getFieldDecorator('productName', {
               rules: [{required: true, message: '请输入分类名称'}],
@@ -84,16 +94,21 @@ class AddCustomerServices extends Component {
                 <Input.Password  placeholder="请输入分类排序"/>
             )}
           </FormItem>
-          <FormItem label="客服岗位">
-            {getFieldDecorator('productName3', {initialValue:1,
-              rules: [{required: true, message: '请输入分类简介'}],
+          {
+            this.state.value == 2 ? (
+              <FormItem label="园区拓展部">
+            {getFieldDecorator('productName10', {
+              rules: [{required: true, message: '请选择'}],
             })(
-                <Radio.Group defaultValue={1} onChange={this.onChange} value={this.state.value}>
-                <Radio value={1}>运营部</Radio>
-                <Radio value={2}>园区拓展部</Radio>
-              </Radio.Group>
+                <Select placeholder="请选择" style={{width:"160px"}}>
+                  <Option value="1">1</Option>
+                  <Option value="2">2</Option>
+                  <Option value="3">3</Option>
+              </Select>
             )}
           </FormItem>
+            ) : ""
+          }
           </Form>
           <div className="tip">
               <p>说明 : </p>
