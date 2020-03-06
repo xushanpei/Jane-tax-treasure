@@ -15,7 +15,8 @@ class ApiRequest {
   constructor() {
     //创建axios实例
     this.instance = axios.create({
-      baseURL: `${config.host}:${config.port}`
+      // baseURL: `${config.host}:${config.port}`
+      baseURL:"/api"
     });
   }
 
