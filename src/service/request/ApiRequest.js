@@ -29,6 +29,7 @@ class ApiRequest {
 
   authentication = str => {
     let errJson = JSON.parse(str);
+    console.log("判断token状态",errJson);
     if (errJson.response && errJson.response.status === 401) {
       message.error("用户认证出错，正在跳转登录页面！");
       setTimeout(() => {
