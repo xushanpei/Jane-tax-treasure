@@ -20,7 +20,7 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.authRequest({
+        this.props.authRequest({ 
           username: values.userName,
           loginType:"1",
           client:"web",
@@ -61,12 +61,14 @@ class Login extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
               <Form.Item>
                 {getFieldDecorator("userName", {
-                  rules: [{ required: true, message: "请输入用户名!" }]
-                })(<Input style={{ width: "100%" }} size="large" prefix={<Icon type="user" style={{ fontSize: "2rem", color: "rgba(0,0,0,.25)" }} />} placeholder="用户名" />)}
+                  rules: [{ required: true, message: "请输入手机号码 !" },
+                {pattern: new RegExp(/^1[3456789]\d{9}$/),message:"请输入正确的手机号码 !" }
+                ]
+                })(<Input style={{ width: "100%" }} size="large" prefix={<Icon type="user" style={{ fontSize: "2rem", color: "rgba(0,0,0,.25)" }} />} placeholder="手机号码" />)}
               </Form.Item>
               <Form.Item>
                 {getFieldDecorator("password", {
-                  rules: [{ required: true, message: "请输入密码!" }]
+                  rules: [{ required: true, message: "请输入密码 !" }]
                 })(<Input.Password size="large" prefix={<Icon type="lock" style={{ fontSize: "2rem", color: "rgba(0,0,0,.25)" }} />} placeholder="密码" />)}
               </Form.Item>
               <Form.Item>

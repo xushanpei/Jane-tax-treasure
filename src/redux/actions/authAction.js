@@ -10,7 +10,7 @@ export const authTypes = {
   CHANGE_PASSWORD: "CHANGE_PASSWORD"
 };
 
-export default createActions({
+export default createActions({ 
   [authTypes.AUTH_REQUEST]: ({ username, password,loginType,client }) => ({ username, password,loginType,client }),
   [authTypes.AUTH_SUCCESS]: data => ({ data }),
   [authTypes.AUTH_FAILURE]: () => ({}),

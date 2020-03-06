@@ -3,7 +3,7 @@ export default {
   title: "简税宝税务筹划系统",
   subTitle: "简税宝税务筹划系统",
   enTitle: "xushanpei Manage platform",
-  copyright: "Copyright © 2019 xushanpei All Rights Reserved.",
+  copyright: "Copyright © 2019 shunbega All Rights Reserved.",
   logo: require("../assets/image/jsb-logoX.png"),
 
   /**
