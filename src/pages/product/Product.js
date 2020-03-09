@@ -9,14 +9,6 @@ import { connect } from "react-redux";
 import productAction from "../../redux/actions/productAction"
 
 const { Option } = Select
-// key: '1',
-//       name: '套餐一',
-//       type: 32,
-//       number: 'New York No. 1 Lake Park',
-//       state: ['nice', 'developer'],
-//       time:"2019.01.20",
-//       action:"操作"
-
   
   
 @connect(
@@ -147,6 +139,12 @@ class Product extends Component {
 componentWillMount(){
   // 产品页面初始化获取产品列表
   this.props.productlist();
+}
+
+componentWillReceiveProps(nextProps){
+  if(nextProps){
+     console.log("+++++++++++++",nextProps.productReducer)
+  }
 }
 
 
@@ -297,7 +295,11 @@ componentWillMount(){
         {/* table 部分 */}
             <div className="table-content">
                 {/* 123 */}
-                <Table bordered  columns={this.state.columns} dataSource={this.state.data} />
+                <Table 
+                bordered 
+                total={50} 
+                columns={this.state.columns} 
+                dataSource={this.state.data} />
             </div>
 
 {/* 新增产品 */}

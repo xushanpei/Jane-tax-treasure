@@ -93,6 +93,52 @@ class OrderDetail extends Component {
                 
             
           },
+      ],
+
+      // 订单记录
+      dataList:[
+        {
+          key: '1',
+          name: '2020-02-16  15:26:26',
+          type: '订单生成',
+          number: "用户",
+        },
+        {
+          key: '2',
+          name: '2020-02-16  15:26:26',
+          type: '用户付款失败',
+          number: "用户",
+        },
+        {
+          key: '3',
+          name: '2020-02-16  15:26:26',
+          type: '用户付款成功',
+          number: "用户",
+        },
+        {
+          key: '4',
+          name: '2020-02-16  15:26:26',
+          type: '订单完成',
+          number: "系统",
+        },
+      ],
+      columnsList:[
+        {
+          title: '操作时间',
+          dataIndex: 'name',
+          key: 'name',
+          render: text => text,
+        },
+        {
+          title: '操作记录',
+          dataIndex: 'type',
+          key: 'type',
+        },
+        {
+          title: '操作人',
+          dataIndex: 'number',
+          key: 'number',
+        }
       ]
     };
   }
@@ -246,7 +292,7 @@ class OrderDetail extends Component {
                         订单记录
                     </p>
                     {/* 表格 */}
-                    <Table pagination={false} size="small"  bordered columns={this.state.columns} dataSource={this.state.data} />
+                    <Table pagination={false} size="small"  bordered columns={this.state.columnsList} dataSource={this.state.dataList} />
                 </div>
                 <p style={{textAlign:"center"}}>
                     <Button  style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px",marginTop:"15px",marginBottom:"15px"}}>款项已到确认收款</Button>
