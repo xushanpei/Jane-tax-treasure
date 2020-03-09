@@ -6,7 +6,8 @@ import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import AddProductModal from "./AddProduct";
 import EditProductModal from "./EditProduct";
 import { connect } from "react-redux";
-import productAction from "../../redux/actions/productAction"
+import productAction from "../../redux/actions/productAction";
+import { get, getIn } from "immutable";
 
 const { Option } = Select
   
@@ -15,7 +16,8 @@ const { Option } = Select
   ({ productReducer }) => ({ productReducer }),
   {
     productlist: productAction.productlist,
-    
+    productclassify: productAction.productclassify,
+    deleteproductlist:productAction.deleteproductlist
   }
 )
 class Product extends Component {
@@ -32,6 +34,24 @@ class Product extends Component {
           url: "/product"
         }
       ],
+      // 搜索字段
+      search:{
+        page:1,
+        limit:10,
+        companyTypeId:"",
+        packageState:"",
+        search:""
+      },
+      //返回字段
+      total:"",
+      //产品分类列表
+      productclassify:[],
+      //修改的list
+      editList:"",
+      data:[
+        
+      ],
+
       columns : [
         {
           title: '',
@@ -41,50 +61,38 @@ class Product extends Component {
         },
         {
           title: '产品名称',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'packageName',
+          key: 'packageName',
         },
         {
           title: '产品分类',
-          dataIndex: 'type',
-          key: 'type',
+          dataIndex: 'companyTypeName',
+          key: 'companyTypeName',
         },
         {
           title: '销量',
-          key: 'number',
-          dataIndex: 'number',
-        //   render: tags => (
-        //     <span>
-        //       {tags.map(tag => {
-        //         let color = tag.length > 5 ? 'geekblue' : 'green';
-        //         if (tag === 'loser') {
-        //           color = 'volcano';
-        //         }
-        //         return (
-        //           <Tag color={color} key={tag}>
-        //             {tag.toUpperCase()}
-        //           </Tag>
-        //         );
-        //       })}
-        //     </span>
-        //   ),
+          key: 'sales',
+          dataIndex: 'sales',
         },
         {
           title: '状态',
-          key: 'state',
-          render: (text, record) => (
-            <span>
-              <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-              <Switch  defaultChecked  />
+          key: 'packageState',
+          render: (text, record) => {
+            // console.log("123",record)
+            return (
+              <span>
+              <span>{record.packageState == 1 ? "上架" : "下架"}</span> &nbsp;
+              <Switch checked={ record.packageState == 1 ? true : false } onChange={this.switchOnChange}  />
             </span>
-          ),
+            )
+          }
         },
         {
             title: '添加时间',
-            key: 'time',
+            key: 'crtTime',
             render: (text, record) => (
               <span>
-                <span>{record.time}</span>
+                <span>{record.crtTime}</span>
                 
               </span>
             ),
@@ -92,59 +100,60 @@ class Product extends Component {
           {
             title: '操作',
             key: 'action',
-            render: (text, record) => (
-              <>
-              <span className="btn-diy">
-                 <Button onClick={this.editShowModal} style={{backgroundColor:"#17A2A9",color:"#FFF",marginRight:"10px"}}>编辑</Button>
-              </span>
-              <Button onClick={this.showDeleteConfirm} type="danger" style={{backgroundColor:"#FF4D4F",color:"#FFF",marginRight:"10px"}}>删除</Button>
-              </>
-              
-            ),
+            render: (text, record) => {
+              // console.log("8888",record)
+              return (
+                <>
+                <span className="btn-diy">
+                   <Button onClick={this.editShowModal.bind(this,record)} style={{backgroundColor:"#17A2A9",color:"#FFF",marginRight:"10px"}}>编辑</Button>
+                </span>
+                <Button onClick={this.showDeleteConfirm.bind(this,record)} type="danger" style={{backgroundColor:"#FF4D4F",color:"#FFF",marginRight:"10px"}}>删除</Button>
+                </>
+                
+              )
+            }
           },
       ],
-      data:[
-        {
-          key: '1',
-          name: '套餐一',
-          type: '个人独资',
-          number: 100,
-          state: 1,
-          time:"2019.01.20",
-          action:"操作"
-        },
-        {
-          key: '2',
-          name: '套餐二',
-          type: "个人独资",
-          number: 100,
-          state: 0,
-          time:"2019.01.20",
-          action:"操作"
-        },
-        {
-          key: '3',
-          name: '套餐三',
-          type: "个人独资",
-          number: 20,
-          state: 0,
-          time:"2019.01.20",
-          action:"操作"
-        },
-      ],
+    
       visible: false,
       editVisible:false
     };
   }
-componentWillMount(){
+componentDidMount(){
   // 产品页面初始化获取产品列表
-  this.props.productlist();
+  this.props.productlist(this.state.search);
+  //获取产品分类列表
+  this.props.productclassify();
 }
+
+searchList= ()=>{
+  console.log(this.state.search)
+  this.props.productlist(this.state.search);
+}
+
+
 
 componentWillReceiveProps(nextProps){
-  if(nextProps){
-     console.log("+++++++++++++",nextProps.productReducer)
+  if(nextProps.productReducer && nextProps.productReducer.getIn(["productlist"])){
+     console.log("+++++++++++++",nextProps.productReducer.getIn(["productlist","data"]))
+     let data = nextProps.productReducer.getIn(["productlist","data"]);
+     let list = data.rows;
+     for(let i=0 ; i< list.length; i++){
+        list[i].key = i+1;
+     }
+    this.setState({
+        total:data.total,
+        data:list
+    })
+
   }
+  if(nextProps.productReducer && nextProps.productReducer.getIn(["productclassify"])){
+    console.log("获取产品分类列表",nextProps.productReducer.getIn(["productclassify"]))
+    this.setState({
+      productclassify:nextProps.productReducer.getIn(["productclassify","data","rows"])
+    })
+  }
+
 }
 
 
@@ -154,7 +163,10 @@ componentWillReceiveProps(nextProps){
 
 
 
-
+// switchOnChange
+switchOnChange = (checked)=>{
+   console.log(checked)
+}
 
   // 添加 modal 用的方法
   showModal = () => {
@@ -178,9 +190,13 @@ componentWillReceiveProps(nextProps){
   };
 
   // 编辑 modal 用的方法
-  editShowModal = () => {
+  editShowModal = (record) => {
     this.setState({
       editVisible: true,
+    },()=>{
+      this.setState({
+        editList:record
+      })
     });
   };
 
@@ -200,15 +216,19 @@ componentWillReceiveProps(nextProps){
 
 
 // 删除确认框
- showDeleteConfirm = () => {
+ showDeleteConfirm = (record) => {
  Modal.confirm({
     title: '是否确认删除此分类?',
     content: '删除后不可恢复',
     okText: '是',
     okType: 'danger',
     cancelText: '否',
-    onOk() {
+    onOk: ()=>{
       console.log('OK');
+      this.props.deleteproductlist({packageId :record.packageId});
+      setTimeout(()=>{
+        this.props.productlist(this.state.search);
+      },10)
     },
     onCancel() {
       console.log('Cancel');
@@ -222,21 +242,44 @@ componentWillReceiveProps(nextProps){
 
 
 
-   onChange(value) {
-    console.log(`selected ${value}`);
+   onChange(data,value) {
+    // console.log(`选中 ${data} ${value}`);
+    if(data == "产品分类"){
+       this.setState({
+        search:{
+          page:this.state.search.page,
+          limit:this.state.search.limit,
+          companyTypeId:value,
+          packageState:this.state.search.packageState,
+          search:this.state.search.search
+        },
+       })
+    }
+    if(data =="产品状态"){
+      this.setState({
+        search:{
+          page:this.state.search.page,
+          limit:this.state.search.limit,
+          companyTypeId:this.state.search.companyTypeId,
+          packageState:value,
+          search:this.state.search.search
+        },
+       })
+    }
+    if(data =="搜索"){
+      this.setState({
+        search:{
+          page:this.state.search.page,
+          limit:this.state.search.limit,
+          companyTypeId:this.state.search.companyTypeId,
+          packageState:this.state.search.packageState,
+          search:value.target.value
+        },
+       })
+    }
   }
   
-   onBlur() {
-    console.log('blur');
-  }
   
-   onFocus() {
-    console.log('focus');
-  }
-  
-   onSearch(val) {
-    console.log('search:', val);
-  }
 
   render() {
     let { routerList } = this.state;
@@ -251,41 +294,36 @@ componentWillReceiveProps(nextProps){
           <div>
               <span>产品分类</span>
             <Select
-              showSearch
               style={{ width: "15%",marginRight:"30px" }}
               placeholder="请选择"
               optionFilterProp="children"
-              onChange={this.onChange}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              onSearch={this.onSearch}
-              
+              onChange={this.onChange.bind(this,"产品分类")}
             >
-              <Option value="jack">个人独资</Option>
+              {/* <Option value="jack">个人独资</Option>
               <Option value="lucy">合伙企业</Option>
               <Option value="tom">有限公司</Option>
-              <Option value="tom1">个体户</Option>
+              <Option value="tom1">个体户</Option> */}
+              {
+                this.state.productclassify.map((item,key)=>{
+                    return <Option key={key} value={item.id}> {item.name} </Option>
+                })
+              }
             </Select>
 
             <span>产品状态 </span>
             <Select
-              showSearch
               style={{ width: "15%" ,marginRight:"30px"}}
               placeholder="请选择"
               optionFilterProp="children"
-              onChange={this.onChange}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              onSearch={this.onSearch}
-              
+              onChange={this.onChange.bind(this,"产品状态")}
             >
-              <Option value="jack1">上架中</Option>
-              <Option value="lucy2">下架中</Option>
+              <Option value="1">上架中</Option>
+              <Option value="2">下架中</Option>
             </Select>
 
             <span>搜索</span>
-            <Input style={{ width: "20%" ,marginRight:"30px"}}  placeholder="请输入商品名称" />
-            <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>搜索</Button>
+            <Input onChange={this.onChange.bind(this,"搜索")} style={{ width: "20%" ,marginRight:"30px"}}  placeholder="请输入商品名称" />
+            <Button onClick={this.searchList} style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>搜索</Button>
             <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>导出</Button>
 
             <br/>
@@ -297,7 +335,10 @@ componentWillReceiveProps(nextProps){
                 {/* 123 */}
                 <Table 
                 bordered 
-                total={50} 
+                pagination={{
+                  total:this.state.total,
+                  showTotal: (total)=> `共 ${total} 条` 
+                }}
                 columns={this.state.columns} 
                 dataSource={this.state.data} />
             </div>
@@ -317,6 +358,8 @@ componentWillReceiveProps(nextProps){
          visible={this.state.editVisible}
          onOk={this.editHandleOk}
          onCancel={this.editHandleCancel}
+         data={this.state.editList}
+         productclassify={this.state.productclassify}
         >
 
         </EditProductModal>

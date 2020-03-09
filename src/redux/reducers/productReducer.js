@@ -14,12 +14,17 @@ const productReducer = handleActions(
         productlist: action.data
       });
     },
-    // [productTypes.SIGN_OUT]: (state, action) => {
-    //   return state.merge({
-    //     user: null,
-    //     token: ""
-    //   });
-    // }
+    [productTypes.PRODUCTCLASSIFY_SUCCESS]: (state, action) => {
+      return state.merge({
+        productclassify: action.data
+      });
+    },
+    [productTypes.DELETEPRODUCTLIST_SUCCESS]: (state, action) => {
+      return state.merge({
+        deleteproductlist: action.data
+      });
+    }
+    
   },
   initState
 );

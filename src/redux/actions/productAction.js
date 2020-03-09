@@ -1,23 +1,19 @@
 import { createActions } from "redux-actions";
 
 export const productTypes = {
-//   AUTH_REQUEST: "AUTH_REQUEST",
-//   AUTH_SUCCESS: "AUTH_SUCCESS",
-//   AUTH_FAILURE: "AUTH_FAILURE",
-
-//   SIGN_OUT: "SIGN_OUT",
-
-//   CHANGE_PASSWORD: "CHANGE_PASSWORD"
-
+//产品列表
 PRODUCTLIST:"PRODUCTLIST",
 PRODUCTLIST_SUCCESS:"PRODUCTLIST_SUCCESS",
+//产品分类列表
+PRODUCTCLASSIFY:"PRODUCTCLASSIFY",
+PRODUCTCLASSIFY_SUCCESS:"PRODUCTCLASSIFY_SUCCESS",
+//产品列表删除
+DELETEPRODUCTLIST:"DELETEPRODUCTLIST",
+DELETEPRODUCTLIST_SUCCESS:"DELETEPRODUCTLIST_SUCCESS"
 };
 
 export default createActions({
-//   [authTypes.AUTH_REQUEST]: ({ username, password,loginType,client,appClient }) => ({ username, password,loginType,client ,appClient}),
-//   [authTypes.AUTH_SUCCESS]: data => ({ data }),
-//   [authTypes.AUTH_FAILURE]: () => ({}),
-//   [authTypes.SIGN_OUT]: () => ({}),
-//   [authTypes.CHANGE_PASSWORD]: (oldPassword, newPassword) => ({ oldPassword, newPassword })
-[productTypes.PRODUCTLIST]: data=> ({data})
+[productTypes.PRODUCTLIST]: data=> ({data}),
+[productTypes.PRODUCTCLASSIFY]: data=> ({data}),
+[productTypes.DELETEPRODUCTLIST]: data=> ({data}),
 });

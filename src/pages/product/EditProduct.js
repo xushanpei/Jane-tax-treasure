@@ -31,8 +31,9 @@ class EditProduct extends Component {
     this.props.onCancel()//调用父组件给的方法
   };
 
+
   render() {
-    let { title, visible, onOk, onCancel } = this.props;
+    let { title, visible, onOk, onCancel,data,productclassify } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -44,7 +45,8 @@ class EditProduct extends Component {
           sm: { span: 16 },
         },
       };
-
+      console.log("传过来de shuju ",productclassify);
+    
     return (
         <Modal
         wrapClassName="divModal"
@@ -53,35 +55,38 @@ class EditProduct extends Component {
         onOk={this.onOk}
         onCancel={onCancel}
       >
+        <div style={{height:"400px",width:"100%",overflow:"auto"}}>
        <Form {...formItemLayout}>
           <FormItem label="产品名称">
-            {getFieldDecorator('productName', {
+            {getFieldDecorator('packageName', {initialValue:data.packageName,
               rules: [{required: true, message: '请输入产品名称'}],
             })(
               <Input placeholder="请输入产品名称"/>
             )}
           </FormItem>
           <FormItem label="产品分类">
-            {getFieldDecorator('productName2', {
+            {getFieldDecorator('companyTypeId', {initialValue:data.companyTypeId,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <Select placeholder="请选择产品分类" style={{width:"160px"}}>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
+                  {
+                    productclassify.map((item,key)=>{
+                    return <Option key={key} value={item.id}>{item.name}</Option>
+                    })
+                  }
               </Select>
             )}
           </FormItem>
           <FormItem label="销量">
-            {getFieldDecorator('productName3', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('sales', {initialValue:data.sales,
+              rules: [{required: true, message: '请输入销量'}],
             })(
               <Input placeholder="请输入销量"></Input>
             )}
           </FormItem>
           <FormItem label="状态">
-            {getFieldDecorator('productName4', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('packageState', {initialValue:data.packageState,
+              rules: [{required: true, message: '请选择状态'}],
             })(
                 <Select placeholder="请选择产品状态" style={{width:"160px"}}>
                 <Option value="1">上架</Option>
@@ -89,7 +94,82 @@ class EditProduct extends Component {
             </Select>
             )}
           </FormItem>
+         
+          <FormItem label="产品简介">
+            {getFieldDecorator('productName3', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+              <TextArea placeholder="请输入简介信息"></TextArea>
+            )}
+          </FormItem>
+          <FormItem label="产品价格">
+            {getFieldDecorator('productName4', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+                <Input placeholder="请输入产品价格"/>
+            )}
+          </FormItem>
+          <FormItem label="实际税率">
+            {getFieldDecorator('productName5', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+              <span>
+                   <Input placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            )},
+            {getFieldDecorator('productName100', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+              <span>
+                   <Input placeholder="请输入" style={{width:"120px"}}/>
+              </span>
+            )}
+          </FormItem>
+          <FormItem label="服务时长">
+            {getFieldDecorator('productName6', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+              <Input placeholder="请输入服务时长"/>
+            )}
+          </FormItem>
+          <FormItem label="赠送时长">
+            {getFieldDecorator('productName7', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+                <Input placeholder="请输入赠送时长"/>
+            )}
+          </FormItem>
+          <FormItem label="增值税返还">
+            {getFieldDecorator('productName8', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+                <Input placeholder="请输入增值税返还"/>
+            )}
+          </FormItem>
+          <FormItem label="纳税人类型">
+            {getFieldDecorator('productName9', {
+              rules: [{required: true, message: '请选择分类'}],
+            })(
+              <Select placeholder="请选择纳税人类型">
+                  <Option value="1">一般纳税人</Option>
+                  <Option value="2">小规模纳税人</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label="开票额度">
+            {getFieldDecorator('productName10', {
+              rules: [{required: true, message: '请输入开票额度'}],
+            })(
+              <Input placeholder="请输入开票额度"/>
+            )}
+          </FormItem>
+        
+         
+         
+         
+         
          </Form>
+         </div>
        </Modal>
     );
   }

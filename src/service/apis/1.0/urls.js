@@ -13,6 +13,8 @@ export const urls = {
   //编辑产品
   EDITPRODUCTLIST:"/simpleTax/packageWeb/updatePackageWeb",
   //删除产品
-  DELETEPRODUCTLIST:"/simpleTax/packageWeb/deletePackageWeb"
+  DELETEPRODUCTLIST:"/simpleTax/packageWeb/deletePackageWeb",
+  //产品分类列表
+  PRODUCTCLASSIFY:"/simpleTax/companyTypeWeb/companyTypeWebList",
 
 };

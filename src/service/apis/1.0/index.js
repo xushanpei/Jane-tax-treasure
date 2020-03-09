@@ -11,13 +11,19 @@ class Apis {
   // //编辑产品
   // EDITPRODUCTLIST:"/simpleTax/packageWeb/updatePackageWeb",
   // //删除产品
-  // DELETEPRODUCTLIST:"/simpleTax/packageWeb/deletePackageWeb"
+  // DELETEPRODUCTLIST:"/simpleTax/packageWeb/deletePackageWeb",
 
   /**
    * 产品模块 Api 
    */
   //产品列表   &companyTypeId=''&packageState=''&search=''
-  productlist = data=>ApiRequest.get(`${urls.PRODUCTLIST}?page=1&limit=10&companyTypeId=&packageState=&search=`)
+  productlist = data=>ApiRequest.get(`${urls.PRODUCTLIST}?page=${data.page}&limit=${data.limit}&companyTypeId=${data.companyTypeId}&packageState=${data.packageState}&search=${data.search}`);
+  //产品分类列表
+  productclassify = data=>ApiRequest.get(`${urls.PRODUCTCLASSIFY}?page=1&limit=100`);
+  //产品分类列表删除
+  deleteproductlist = data=> ApiRequest.put(`${urls.DELETEPRODUCTLIST}`,data);
+
+
   
 }
 
