@@ -32,7 +32,7 @@ class EditProductClassify extends Component {
   };
 
   render() {
-    let { title, visible, onOk, onCancel } = this.props;
+    let { title, visible, onOk, onCancel,data } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -45,6 +45,8 @@ class EditProductClassify extends Component {
         },
       };
 
+      console.log("会显示de shuju",data)
+
     return (
         <Modal
         wrapClassName="divModal"
@@ -55,21 +57,21 @@ class EditProductClassify extends Component {
       >
        <Form {...formItemLayout}>
        <FormItem label="分类名称">
-            {getFieldDecorator('productName', {
+            {getFieldDecorator('name', { initialValue:data.name,
               rules: [{required: true, message: '请输入分类名称'}],
             })(
               <Input placeholder="请输入分类名称"/>
             )}
           </FormItem>
           <FormItem label="分类排序">
-            {getFieldDecorator('productName2', {
+            {getFieldDecorator('sort', { initialValue:data.sort,
               rules: [{required: true, message: '请输入分类排序'}],
             })(
                 <Input placeholder="请输入分类排序"/>
             )}
           </FormItem>
           <FormItem label="分类简介">
-            {getFieldDecorator('productName3', {
+            {getFieldDecorator('description', { initialValue:data.description,
               rules: [{required: true, message: '请输入分类简介'}],
             })(
               <TextArea placeholder="请输入分类简介"></TextArea>

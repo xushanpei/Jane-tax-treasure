@@ -113,7 +113,7 @@ class CompanyListOne extends Component {
                                     <span>2020-02-16  15:26:26</span>
                                 </div>
                                 <div>
-                                    <span>付款</span><br />
+                                    <span>审核</span><br />
                                     <span>审核人 : 徐梦绮</span> <br />
                                     <span>已花费 24小时56分钟</span>
                                 </div>

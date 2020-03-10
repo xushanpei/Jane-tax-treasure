@@ -16,7 +16,7 @@ module.exports =  (app)=> {
     app.use(createProxyMiddleware('/api', {
         // target: `${config.host}:${config.port}`,
         target:"http://47.116.4.10:8870",
-        // target:"192.168.0.188:8870",
+        // target:"192.168.0.254:8870",
         changeOrigin: true,
         pathRewrite: {
                     '^/api': ''

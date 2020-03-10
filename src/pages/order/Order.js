@@ -4,11 +4,21 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import { connect } from "react-redux";
+import productAction from "../../redux/actions/productAction";
+import orderAction from "../../redux/actions/orderAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
+
+@connect(
+  ({ orderReducer, productReducer}) => ({ orderReducer ,productReducer}),
+  {
+    productclassify: productAction.productclassify,
+  }
+)
 class Order extends Component {
   constructor(props) {
     super(props);
@@ -296,6 +306,21 @@ class Order extends Component {
       },
       searchValue: date
     })
+  }
+
+  // /////////////////////////////////////////////////
+  componentWillMount(){
+    this.props.productclassify({
+      page:1,
+      limit:100
+    })
+  }
+
+  componentWillReceiveProps(nextProps){
+    //获取产品分类列表=>公司分类列表
+    if(nextProps.productReducer.getIn(["productclassify", "data", "rows"])){
+      console.log("公司分类列表",nextProps.productReducer.getIn(["productclassify", "data", "rows"]))
+    }
   }
 
 

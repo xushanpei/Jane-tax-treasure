@@ -16,7 +16,7 @@ class ApiRequest {
   constructor() {
     //创建axios实例
     this.instance = axios.create({
-      // baseURL: `${config.host}:${config.port}`
+      // baseURL: `http://192.168.0.254:8870`
       baseURL:"/api"
     });
   }
@@ -30,10 +30,11 @@ class ApiRequest {
   };
 
   authentication = data => {
-    console.log("判断token状态,是否过期",data);
+    // console.log("判断token状态,是否过期",data);
+    message.error("用户认证出错，正在跳转登录页面！");
     setTimeout(() => {
-          // localStorage.removeItem(`persist:${config.persist}`);
-          // window.location.href = "/login";
+          localStorage.removeItem(`persist:${config.persist}`);
+          window.location.href = "/login";
         }, 1500);
     // let errJson = JSON.parse(str);
     // console.log("判断token状态,是否过期",errJson);
@@ -72,7 +73,7 @@ class ApiRequest {
         .then(({ data }) => {
           // console.log("获取get接口状态",data.status)
           // 判断返回的状态 
-          if(data.status == 50103 ){
+          if(data.status == 50103 || data.status == 50102 || data.status == 50101){
             this.authentication(data);
             return;
           }
@@ -95,6 +96,11 @@ class ApiRequest {
       this.instance
         .delete(url, { params: { ...params } })
         .then(({ data }) => {
+          if(data.status == 50103 || data.status == 50102 || data.status == 50101){
+            this.authentication(data);
+            return;
+          }
+
           resolve(data);
         })
         .catch(error => {
@@ -110,6 +116,11 @@ class ApiRequest {
       this.instance
         .post(url, { ...params })
         .then(({ data }) => {
+          if(data.status == 50103 || data.status == 50102 || data.status == 50101){
+            this.authentication(data);
+            return;
+          }
+
           resolve(data);
         })
         .catch(error => {
@@ -128,6 +139,11 @@ class ApiRequest {
       this.instance
         .put(url, { ...params })
         .then(({ data }) => {
+          if(data.status == 50103 || data.status == 50102 || data.status == 50101){
+            this.authentication(data);
+            return;
+          }
+
           resolve(data);
         })
         .catch(error => {
@@ -143,6 +159,11 @@ class ApiRequest {
       this.instance
         .patch(url, { ...params })
         .then(({ data }) => {
+          if(data.status == 50103 || data.status == 50102 || data.status == 50101){
+            this.authentication(data);
+            return;
+          }
+
           resolve(data);
         })
         .catch(error => {

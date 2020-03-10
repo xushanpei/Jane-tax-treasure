@@ -65,6 +65,7 @@ class CompanyListTwos extends Component {
                 // "1、名称审核完成",
                 // "2、工商阶段完成",
                 // "3、银行开户完成"
+                // 4. 税务认证
                 {
                     label: '名称审核完成',
                     value: 0
@@ -76,6 +77,10 @@ class CompanyListTwos extends Component {
                 {
                     label: '银行开户完成',
                     value: 2
+                },
+                {
+                    label: '税务认证',
+                    value: 3
                 },
             ],
             checkedList: [],
@@ -205,7 +210,7 @@ class CompanyListTwos extends Component {
                                     <span>2020-02-16  15:26:26</span>
                                 </div>
                                 <div>
-                                    <span>付款</span><br />
+                                    <span>审核</span><br />
                                     <span>审核人 : 徐梦绮</span> <br />
                                     <span>已花费 24小时56分钟</span>
                                 </div>

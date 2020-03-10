@@ -17,7 +17,10 @@ const { Option } = Select
   {
     productlist: productAction.productlist,
     productclassify: productAction.productclassify,
-    deleteproductlist: productAction.deleteproductlist
+    deleteproductlist: productAction.deleteproductlist,
+    addproductlist:productAction.addproductlist,
+    editproductlist:productAction.editproductlist,
+    getdictlistbytype:productAction.getdictlistbytype
   }
 )
 class Product extends Component {
@@ -37,11 +40,12 @@ class Product extends Component {
       // 搜索字段
       search: {
         page: 1,
-        limit: 10,
+        limit: 5,
         companyTypeId: "",
         packageState: "",
         search: ""
       },
+      switchState:"",
       //返回字段
       total: "",
       //产品分类列表
@@ -79,10 +83,20 @@ class Product extends Component {
           key: 'packageState',
           render: (text, record) => {
             // console.log("123",record)
+            // if(record.packageState == 1){
+            //     this.setState({
+            //       switchState:true
+            //     })
+            // }else{
+            //   this.setState({
+            //     switchState:false
+            //   })
+            // }
+
             return (
               <span>
                 <span>{record.packageState == 1 ? "上架" : "下架"}</span> &nbsp;
-              <Switch checked={record.packageState == 1 ? true : false} onChange={this.switchOnChange} />
+              <Switch checked={record.packageState == 1 ? true : false}   onClick={this.switchOnChange.bind(this,record.packageState,record)}/>
               </span>
             )
           }
@@ -123,18 +137,38 @@ class Product extends Component {
     // 产品页面初始化获取产品列表
     this.props.productlist(this.state.search);
     //获取产品分类列表
-    this.props.productclassify();
+    this.props.productclassify({
+      page:1,
+      limit:100
+    });
+    //获取开票额度
+    this.props.getdictlistbytype();
   }
 
   searchList = () => {
     console.log(this.state.search)
     this.props.productlist(this.state.search);
   }
+  paginationChange = (current)=>{
+    console.log(current)
+    this.setState({
+      search: {
+        page: current,
+        limit: this.state.search.limit,
+        companyTypeId: this.state.search.companyTypeId,
+        packageState: this.state.search.packageState,
+        search: this.state.search.search
+      },
+    },()=>{
+      // 获取分页数据
+      this.props.productlist(this.state.search)
+    })
+  }
 
 
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.productReducer && nextProps.productReducer.getIn(["productlist"])) {
+    if (nextProps.productReducer && nextProps.productReducer.getIn(["productlist","data"])) {
       console.log("+++++++++++++", nextProps.productReducer.getIn(["productlist", "data"]))
       let data = nextProps.productReducer.getIn(["productlist", "data"]);
       if (data.rows && data.rows.length > 0) {
@@ -167,8 +201,33 @@ class Product extends Component {
 
 
   // switchOnChange
-  switchOnChange = (checked) => {
-    console.log(checked)
+  switchOnChange = (checked,value) => {
+    console.log(checked);
+    console.log(value)
+    let data = value;
+    if(checked == 1){
+      data.packageState = 2
+    }else{
+      data.packageState = 1
+    }
+    // 添加 state ,  
+    this.state.productclassify.map((item,key)=>{
+      if(item.id == data.companyTypeId){
+      data.companyTypeName = item.name
+      }
+    })
+    data.state = data.packageState;
+    // data.packageId = this.state.editList.packageId;
+    data.taxpayerTypeId=123;
+    data.taxpayerTypeName ="123";
+    this.setState({
+      editVisible: false,
+    },()=>{
+      this.props.editproductlist(data);
+      setTimeout(()=>{
+        this.props.productlist(this.state.search)
+      },300)
+    });
   }
 
   // 添加 modal 用的方法
@@ -179,9 +238,27 @@ class Product extends Component {
   };
 
   handleOk = e => {
-    console.log(e);
+    console.log("获取来的数据",e);
+    let data = e;
+    this.state.productclassify.map((item,key)=>{
+      if(item.id == e.companyTypeId){
+      data.companyTypeName = item.name
+      }
+    })
+    
     this.setState({
       visible: false,
+    },()=>{
+      this.props.addproductlist(data);
+      setTimeout(()=>{
+        this.props.productlist({
+          page: 1,
+          limit: 5,
+          companyTypeId: "",
+          packageState: "",
+          search: ""
+        });
+      },10)
     });
   };
 
@@ -199,14 +276,32 @@ class Product extends Component {
     }, () => {
       this.setState({
         editList: record
+      },()=>{
+        console.log(record)
       })
     });
   };
 
   editHandleOk = e => {
     console.log(e);
+    let data = e;
+    // 添加 state ,  
+    this.state.productclassify.map((item,key)=>{
+      if(item.id == e.companyTypeId){
+      data.companyTypeName = item.name
+      }
+    })
+    data.state = data.packageState;
+    data.packageId = this.state.editList.packageId;
+    data.taxpayerTypeId=123;
+    data.taxpayerTypeName ="123"
     this.setState({
-      visible: false,
+      editVisible: false,
+    },()=>{
+      this.props.editproductlist(data);
+      setTimeout(()=>{
+        this.props.productlist(this.state.search)
+      },300)
     });
   };
 
@@ -221,7 +316,7 @@ class Product extends Component {
   // 删除确认框
   showDeleteConfirm = (record) => {
     Modal.confirm({
-      title: '是否确认删除此分类?',
+      title: '是否确认删除此产品?',
       content: '删除后不可恢复',
       okText: '是',
       okType: 'danger',
@@ -231,7 +326,7 @@ class Product extends Component {
         this.props.deleteproductlist({ packageId: record.packageId });
         setTimeout(() => {
           this.props.productlist(this.state.search);
-        }, 10)
+        }, 300)
       },
       onCancel() {
         console.log('Cancel');
@@ -284,6 +379,7 @@ class Product extends Component {
 
 
 
+
   render() {
     let { routerList } = this.state;
 
@@ -302,14 +398,12 @@ class Product extends Component {
               optionFilterProp="children"
               onChange={this.onChange.bind(this, "产品分类")}
             >
-              {/* <Option value="jack">个人独资</Option>
-              <Option value="lucy">合伙企业</Option>
-              <Option value="tom">有限公司</Option>
-              <Option value="tom1">个体户</Option> */}
+             
               {
-                this.state.productclassify.map((item, key) => {
+                this.state.productclassify? (this.state.productclassify.map((item, key) => {
                   return <Option key={key} value={item.id}> {item.name} </Option>
-                })
+                })) : ""
+                
               }
             </Select>
 
@@ -338,9 +432,16 @@ class Product extends Component {
           {/* 123 */}
           <Table
             bordered
+            rowSelection={{
+              onChange: (selectedRowKeys, selectedRows) => {
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+              },
+            }}
             pagination={{
               total: this.state.total,
-              showTotal: (total) => `共 ${total} 条`
+              showTotal: (total) => `共 ${total} 条`,
+              onChange: (current) => this.paginationChange(current),
+              pageSize: this.state.search.limit,
             }}
             columns={this.state.columns}
             dataSource={this.state.data} />
@@ -352,6 +453,8 @@ class Product extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          productclassify={this.state.productclassify}
+          getdictlistbytype={this.props.productReducer.getIn(["getdictlistbytype","data"])}
         >
         </AddProductModal>
 
@@ -363,6 +466,7 @@ class Product extends Component {
           onCancel={this.editHandleCancel}
           data={this.state.editList}
           productclassify={this.state.productclassify}
+          getdictlistbytype={this.props.productReducer.getIn(["getdictlistbytype","data"])}
         >
 
         </EditProductModal>

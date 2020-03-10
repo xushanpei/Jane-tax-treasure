@@ -55,21 +55,21 @@ class AddProductClassify extends Component {
 
        <Form {...formItemLayout}>
           <FormItem label="分类名称">
-            {getFieldDecorator('productName', {
+            {getFieldDecorator('name', {
               rules: [{required: true, message: '请输入分类名称'}],
             })(
               <Input placeholder="请输入分类名称"/>
             )}
           </FormItem>
           <FormItem label="分类排序">
-            {getFieldDecorator('productName2', {
+            {getFieldDecorator('sort', {
               rules: [{required: true, message: '请输入分类排序'}],
             })(
                 <Input placeholder="请输入分类排序"/>
             )}
           </FormItem>
           <FormItem label="分类简介">
-            {getFieldDecorator('productName3', {
+            {getFieldDecorator('description', {
               rules: [{required: true, message: '请输入分类简介'}],
             })(
               <TextArea placeholder="请输入分类简介"></TextArea>

@@ -31,7 +31,7 @@ class AddProduct extends Component {
   };
 
   render() {
-    let { title, visible, onOk, onCancel } = this.props;
+    let { title, visible, onOk, onCancel, productclassify, getdictlistbytype } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -55,47 +55,49 @@ class AddProduct extends Component {
        <div style={{height:"400px",width:"100%",overflow:"auto"}}>
        <Form {...formItemLayout}>
           <FormItem label="产品名称">
-            {getFieldDecorator('productName', {
+            {getFieldDecorator('packageName', {
               rules: [{required: true, message: '请输入产品名称'}],
             })(
               <Input placeholder="请输入产品名称"/>
             )}
           </FormItem>
           <FormItem label="产品分类">
-            {getFieldDecorator('productName2', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('companyTypeId', {
+              rules: [{required: true, message: '请选择产品分类'}],
             })(
               <Select placeholder="请选择产品分类" style={{width:"160px"}}>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
+                  {
+                    productclassify.map((item,key)=>{
+                    return <Option key={key} value={item.id}>{item.name}</Option>
+                    })
+                  }
               </Select>
             )}
           </FormItem>
           <FormItem label="产品简介">
-            {getFieldDecorator('productName3', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('packageDescript', {
+              rules: [{required: true, message: '请输入简介信息'}],
             })(
               <TextArea placeholder="请输入简介信息"></TextArea>
             )}
           </FormItem>
           <FormItem label="产品价格">
-            {getFieldDecorator('productName4', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('packagePrice', {
+              rules: [{required: true, message: '请输入产品价格'}],
             })(
                 <Input placeholder="请输入产品价格"/>
             )}
           </FormItem>
           <FormItem label="实际税率">
-            {getFieldDecorator('productName5', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('taxRatePre', {
+              rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
                    <Input placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             )},
-            {getFieldDecorator('productName100', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('taxRateSuf', {
+              rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
                    <Input placeholder="请输入" style={{width:"120px"}}/>
@@ -103,45 +105,46 @@ class AddProduct extends Component {
             )}
           </FormItem>
           <FormItem label="服务时长">
-            {getFieldDecorator('productName6', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('serviceMonth', {
+              rules: [{required: true, message: '请输入服务时长'}],
             })(
               <Input placeholder="请输入服务时长"/>
             )}
           </FormItem>
           <FormItem label="赠送时长">
-            {getFieldDecorator('productName7', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('giveMonth', {
+              rules: [{required: true, message: '请输入赠送时长'}],
             })(
                 <Input placeholder="请输入赠送时长"/>
             )}
           </FormItem>
           <FormItem label="增值税返还">
-            {getFieldDecorator('productName8', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('vatReturn', {
+              rules: [{required: true, message: '请输入增值税返还'}],
             })(
                 <Input placeholder="请输入增值税返还"/>
             )}
           </FormItem>
           <FormItem label="纳税人类型">
-            {getFieldDecorator('productName9', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('taxpayerType', {
+              rules: [{required: true, message: '请选择纳税人类型'}],
             })(
               <Select placeholder="请选择纳税人类型">
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
+                  <Option value="1">一般纳税人</Option>
+                  <Option value="2">小规模纳税人</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="开票额度">
-            {getFieldDecorator('productName10', {
-              rules: [{required: true, message: '请选择分类'}],
+            {getFieldDecorator('quota', {
+              rules: [{required: true, message: '请选择开票额度'}],
             })(
-              <Select placeholder="请选择开票额度" style={{width:"160px"}}>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
+              <Select placeholder="请选择开票额度">
+                  {
+                    getdictlistbytype ? getdictlistbytype.map((item,key)=>{
+                          return <Option key={key} value={item.value}> {item.label} </Option>
+                    }) :""
+                  }
               </Select>
             )}
           </FormItem>

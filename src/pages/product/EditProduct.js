@@ -15,7 +15,8 @@ class EditProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      validateStatus:"",
+      help:""
     };
   }
 
@@ -30,10 +31,13 @@ class EditProduct extends Component {
     this.props.form.resetFields();//重置Form表单的内容
     this.props.onCancel()//调用父组件给的方法
   };
+  tax = (e)=>{
+    console.log(e.target.value)
+  }
 
 
   render() {
-    let { title, visible, onOk, onCancel,data,productclassify } = this.props;
+    let { title, visible, onOk, onCancel,data,productclassify ,getdictlistbytype} = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -96,58 +100,58 @@ class EditProduct extends Component {
           </FormItem>
          
           <FormItem label="产品简介">
-            {getFieldDecorator('productName3', {
+            {getFieldDecorator('packageDescript', {initialValue:data.packageDescript,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <TextArea placeholder="请输入简介信息"></TextArea>
             )}
           </FormItem>
           <FormItem label="产品价格">
-            {getFieldDecorator('productName4', {
+            {getFieldDecorator('packagePrice', {initialValue:data.packagePrice,
               rules: [{required: true, message: '请选择分类'}],
             })(
-                <Input placeholder="请输入产品价格"/>
+                <Input  placeholder="请输入产品价格"/>
             )}
           </FormItem>
-          <FormItem label="实际税率">
-            {getFieldDecorator('productName5', {
+          <FormItem label="实际税率"  help={this.state.help} validateStatus={this.state.validateStatus} >
+            {getFieldDecorator('taxRatePre', {initialValue:data.taxRatePre,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <span>
-                   <Input placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
+                   <Input value={data.taxRatePre} onChange={this.tax} placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             )},
-            {getFieldDecorator('productName100', {
+            {getFieldDecorator('taxRateSuf', {initialValue:data.taxRateSuf,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <span>
-                   <Input placeholder="请输入" style={{width:"120px"}}/>
+                   <Input value={data.taxRateSuf} onChange={this.tax} placeholder="请输入" style={{width:"120px"}}/>
               </span>
             )}
           </FormItem>
           <FormItem label="服务时长">
-            {getFieldDecorator('productName6', {
+            {getFieldDecorator('serviceMonth', {initialValue:data.serviceMonth,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <Input placeholder="请输入服务时长"/>
             )}
           </FormItem>
           <FormItem label="赠送时长">
-            {getFieldDecorator('productName7', {
+            {getFieldDecorator('giveMonth', {initialValue:data.giveMonth,
               rules: [{required: true, message: '请选择分类'}],
             })(
                 <Input placeholder="请输入赠送时长"/>
             )}
           </FormItem>
           <FormItem label="增值税返还">
-            {getFieldDecorator('productName8', {
+            {getFieldDecorator('vatReturn', {initialValue:data.vatReturn,
               rules: [{required: true, message: '请选择分类'}],
             })(
                 <Input placeholder="请输入增值税返还"/>
             )}
           </FormItem>
           <FormItem label="纳税人类型">
-            {getFieldDecorator('productName9', {
+            {getFieldDecorator('taxpayerType', {initialValue:data.taxpayerType,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <Select placeholder="请选择纳税人类型">
@@ -157,10 +161,17 @@ class EditProduct extends Component {
             )}
           </FormItem>
           <FormItem label="开票额度">
-            {getFieldDecorator('productName10', {
+            {getFieldDecorator('quota', {initialValue:data.quota,
               rules: [{required: true, message: '请输入开票额度'}],
             })(
-              <Input placeholder="请输入开票额度"/>
+              // <Input placeholder="请输入开票额度"/>getdictlistbytype
+              <Select placeholder="请选择开票额度">
+                  {
+                    getdictlistbytype ? getdictlistbytype.map((item,key)=>{
+                          return <Option key={key} value={item.value}> {item.label} </Option>
+                    }) :""
+                  }
+              </Select>
             )}
           </FormItem>
         
