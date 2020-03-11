@@ -34,8 +34,16 @@ class Apis {
   /**
    * 订单模块 Api
    */
-  
-  
+  //订单列表
+  orderlist = data => ApiRequest.get(`${urls.ORDERLIST}?page=${data.page}&limit=${data.limit}&status=${data.status}&companyTypeId=${data.companyTypeId}&payType=${data.payType}&startDate=${data.startDate}&endDate=${data.endDate}&search=${data.search}`);
+  //订单详情
+  orderdetail = data => ApiRequest.get(`${urls.ORDERDETAIL}?orderId=${data.orderId}`);
+  //订单记录
+  orderrecord = data => ApiRequest.get(`${urls.ORDERRECORD}?orderId=${data.orderId}&page=${data.page}&limit=${data.limit}`)
+  //确认收款
+  comfirmofflinepay = data => ApiRequest.post(`${urls.COMFIRMOFFLINEPAY}`,data);
+  //添加备注
+  addremark = data=> ApiRequest.put(`${urls.ADDREMARK}`,data)
 }
 
 export default new Apis();

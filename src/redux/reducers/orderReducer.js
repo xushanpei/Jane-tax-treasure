@@ -4,16 +4,40 @@ import moment from "moment";
 import { Map, fromJS, merge } from "immutable";
 
 const initState = fromJS({
-    orderlist:[]
+  orderlist:[]
 });
 
 const orderReducer = handleActions(
   {
-    [orderTypes.PRODUCTLIST_SUCCESS]: (state, action) => {
+    [orderTypes.ORDERLIST_SUCCESS]: (state, action) => {
       return state.merge({
-        productlist: action.data
+        orderlist: action.data
       });
-    }
+    },
+    //ORDERDETAIL
+    [orderTypes.ORDERDETAIL_SUCCESS]: (state, action) => {
+      return state.merge({
+        orderdetail: action.data
+      });
+    },
+    //ORDERRECORD_SUCCESS
+    [orderTypes.ORDERRECORD_SUCCESS]: (state, action) => {
+      return state.merge({
+        orderrecord: action.data
+      });
+    },
+    //COMFIRMOFFLINEPAY
+    [orderTypes.COMFIRMOFFLINEPAY_SUCCESS]: (state, action) => {
+      return state.merge({
+        comfirmofflinepay: action.data
+      });
+    },
+    //ADDREMARK
+    [orderTypes.ADDREMARK_SUCCESS]: (state, action) => {
+      return state.merge({
+        addremark: action.data
+      });
+    },
   },
   initState
 );

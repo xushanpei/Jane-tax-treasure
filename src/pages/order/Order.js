@@ -4,33 +4,48 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import productAction from "../../redux/actions/productAction";
 import orderAction from "../../redux/actions/orderAction";
+import AddremarkModal from "./Addremark"
 
 const { Option } = Select;
-const { RangePicker } = DatePicker
+const { RangePicker } = DatePicker;
+const { TextArea } = Input;
 
 
 @connect(
-  ({ orderReducer, productReducer}) => ({ orderReducer ,productReducer}),
+  ({ orderReducer, productReducer }) => ({ orderReducer, productReducer }),
   {
     productclassify: productAction.productclassify,
+    orderlist: orderAction.orderlist,
+    orderdetail: orderAction.orderdetail,
+    addremark: orderAction.addremark
   }
 )
 class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      total: "",
+      id:"",
+      visible:false,
+      remark:"",
       // 筛选属性
       select: {
-        orderState: 0,
-        orderType: 0,
-        payType: 0,
-        createTime: 0
+        page: 1,
+        limit: 5,
+        status: "",
+        companyTypeId: "",
+        payType: "",
+        startDate: "",
+        endDate: "",
+        search: ""
       },
-      searchValue: "",
+      //订单类型
+      orderList: [],
+      DateValue: "",
       routerList: [
         {
           name: "首页",
@@ -46,140 +61,74 @@ class Order extends Component {
           title: '',
           dataIndex: 'key',
           key: 'key',
-          render: text => text,
         },
         {
           title: '订单号',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'orderNo',
+          key: 'orderNo',
         },
         {
           title: '手机号',
-          dataIndex: 'type',
-          key: 'type',
+          dataIndex: 'phone',
+          key: 'phone',
         },
         {
           title: '产品名称',
-          key: 'number',
-          dataIndex: 'number',
-          //   render: tags => (
-          //     <span>
-          //       {tags.map(tag => {
-          //         let color = tag.length > 5 ? 'geekblue' : 'green';
-          //         if (tag === 'loser') {
-          //           color = 'volcano';
-          //         }
-          //         return (
-          //           <Tag color={color} key={tag}>
-          //             {tag.toUpperCase()}
-          //           </Tag>
-          //         );
-          //       })}
-          //     </span>
-          //   ),
+          key: 'packageName',
+          dataIndex: 'packageName',
         },
         {
           title: '实际支付',
-          key: 'state',
-          dataIndex: 'state',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'amount',
+          dataIndex: 'amount',
         },
         {
           title: '支付方式',
-          key: 'payType',
-          dataIndex: 'payType',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'payTypeName',
+          dataIndex: 'payTypeName',
         },
         {
           title: '订单状态',
-          key: 'orderState',
-          dataIndex: 'orderState',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'statusName',
+          dataIndex: 'statusName',
         },
         {
           title: '下单时间',
-          key: 'time',
-          render: (text, record) => (
-            <span>
-              <span>{record.time}</span>
-            </span>
-          ),
+          key: 'createTime',
+          dataIndex: "createTime"
         },
         {
           title: '操作',
           key: 'action',
-          render: (text, record) => (
-            <Dropdown overlay={
-              <Menu>
-                <Menu.Item key="0">
-                    <Link to="/orderDetail/0">
-                        订单详情
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="1">
-                  <a href="http://www.taobao.com/">订单修改</a>
-                </Menu.Item>
-                <Menu.Item key="3">订单备注</Menu.Item>
-                <Menu.Item key="4">订单记录</Menu.Item>
-              </Menu>
-            } trigger={['click']}>
-              <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                操作 <Icon type="down" />
-              </span>
-            </Dropdown>
-
-          ),
+          render: (text, record) => {
+            if(record.status != 3){
+                return <Dropdown overlay={
+                  <Menu>
+                    {
+                      record.status != 3 ? <Menu.Item key="0">
+                        <Link to={`/orderDetail/${record.orderId}`}>
+                          订单详情
+                      </Link>
+                      </Menu.Item> : ""
+                    }
+                  
+                    <Menu.Item key="1">
+                      订单修改
+                    </Menu.Item>
+                    <Menu.Item onClick={this.showModal.bind(this,record.orderId)} key="3">订单备注</Menu.Item>
+                    {/* <Menu.Item key="4">订单记录</Menu.Item> */}
+                  </Menu>
+                } trigger={['click']}>
+                  <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    操作 <Icon type="down" />
+                  </span>
+                </Dropdown>
+            }
+          }
         },
       ],
       data: [
-        {
-          key: '1',
-          name: '套餐一',
-          type: '个人独资',
-          number: 100,
-          state: 1,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '2',
-          name: '套餐二',
-          type: "个人独资",
-          number: 100,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '3',
-          name: '套餐三',
-          type: "个人独资",
-          number: 20,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
+
       ],
       visible: false,
       editVisible: false
@@ -187,17 +136,36 @@ class Order extends Component {
   }
 
   // 添加 modal 用的方法
-  showModal = () => {
-    this.setState({
-      visible: true,
+  showModal = (id) => {
+    this.props.orderdetail({
+      orderId: id
     });
+      this.setState({
+        visible: true,
+        id:id
+      });
   };
+  remarkChange = (e)=>{
+    console.log(e.target.value)
+    this.setState({
+      remark:e.target.value
+    })
+  }
 
   handleOk = e => {
-    console.log(e);
+    console.log("确定");
+    this.props.addremark({
+      orderId:this.state.id,
+      remark:e.remark
+    });
     this.setState({
       visible: false,
     });
+    // setTimeout(()=>{
+    //   this.setState({
+    //     remark:""
+    //   })
+    // },300)
   };
 
   handleCancel = e => {
@@ -250,11 +218,17 @@ class Order extends Component {
   setOrderState = (value) => {
     this.setState({
       select: {
-        orderState: value,
-        orderType: this.state.select.orderType,
+        page: this.state.select.page,
+        limit: this.state.select.limit,
+        status: value,
+        companyTypeId: this.state.select.companyTypeId,
         payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+        startDate: this.state.select.startDate,
+        endDate: this.state.select.endDate,
+        search: this.state.select.endDate
+      },
+    }, () => {
+      console.log(this.state.select.status)
     })
   }
 
@@ -262,22 +236,34 @@ class Order extends Component {
   setOrderType = (value) => {
     this.setState({
       select: {
-        orderState: this.state.select.orderState,
-        orderType: value,
+        page: this.state.select.page,
+        limit: this.state.select.limit,
+        status: this.state.select.status,
+        companyTypeId: value,
         payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+        startDate: this.state.select.startDate,
+        endDate: this.state.select.endDate,
+        search: this.state.select.endDate
+      },
+    }, () => {
+      console.log(this.state.select.companyTypeId)
     })
   }
   // 支付方式 
   setPayType = (value) => {
     this.setState({
       select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
+        page: this.state.select.page,
+        limit: this.state.select.limit,
+        status: this.state.select.status,
+        companyTypeId: this.state.select.companyTypeId,
         payType: value,
-        createTime: this.state.select.createTime
-      }
+        startDate: this.state.select.startDate,
+        endDate: this.state.select.endDate,
+        search: this.state.select.endDate
+      },
+    }, () => {
+      console.log(this.state.select.payType)
     })
   }
   //创建时间
@@ -285,12 +271,18 @@ class Order extends Component {
     if (value == "") {
       this.setState({
         select: {
-          orderState: this.state.select.orderState,
-          orderType: this.state.select.orderType,
-          payType: this.state.select.payType,
-          createTime: value
+          page: this.state.select.page,
+          limit: this.state.select.limit,
+          status: this.state.select.status,
+          companyTypeId: this.state.select.companyTypeId,
+          payType: value,
+          startDate: "",
+          endDate: "",
+          search: this.state.select.search
         },
-        searchValue: value
+        DateValue: ""
+      }, () => {
+        console.log(this.state.select)
       })
     }
 
@@ -299,27 +291,97 @@ class Order extends Component {
     console.log(date, dateString)
     this.setState({
       select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
+        page: this.state.select.page,
+        limit: this.state.select.limit,
+        status: this.state.select.status,
+        companyTypeId: this.state.select.companyTypeId,
         payType: this.state.select.payType,
-        createTime: date
+        startDate: dateString[0],
+        endDate: dateString[1],
+        search: this.state.select.search
       },
-      searchValue: date
+      DateValue: date
+    }, () => {
+      console.log(this.state.select)
     })
+  }
+  inputChange = (e) => {
+    console.log(e.target.value)
+    this.setState({
+      select: {
+        page: this.state.select.page,
+        limit: this.state.select.limit,
+        status: this.state.select.status,
+        companyTypeId: this.state.select.companyTypeId,
+        payType: this.state.select.payType,
+        startDate: this.state.select.startDate,
+        endDate: this.state.select.endDate,
+        search: e.target.value
+      },
+    })
+
+  }
+
+  paginationChange = (current) => {
+    console.log(current)
+    this.setState({
+      select: {
+        page: current,
+        limit: this.state.select.limit,
+        status: this.state.select.status,
+        companyTypeId: this.state.select.companyTypeId,
+        payType: this.state.select.payType,
+        startDate: this.state.select.startDate,
+        endDate: this.state.select.endDate,
+        search: this.state.select.search
+      },
+    }, () => {
+      // 获取分页数据
+      this.props.orderlist(this.state.select)
+    })
+  }
+  //搜索
+  searchList = () => {
+    this.props.orderlist(this.state.select)
   }
 
   // /////////////////////////////////////////////////
-  componentWillMount(){
+  componentWillMount() {
     this.props.productclassify({
-      page:1,
-      limit:100
+      page: 1,
+      limit: 100
     })
+    //获取订单列表
+    this.props.orderlist(this.state.select)
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     //获取产品分类列表=>公司分类列表
-    if(nextProps.productReducer.getIn(["productclassify", "data", "rows"])){
-      console.log("公司分类列表",nextProps.productReducer.getIn(["productclassify", "data", "rows"]))
+    if (nextProps.productReducer.getIn(["productclassify", "data", "rows"])) {
+      console.log("公司分类列表", nextProps.productReducer.getIn(["productclassify", "data", "rows"]));
+      this.setState({
+        orderList: nextProps.productReducer.getIn(["productclassify", "data", "rows"])
+      })
+    }
+    //获取订单列表
+    if (nextProps.orderReducer.getIn(["orderlist", "data"])) {
+      let data = nextProps.orderReducer.getIn(["orderlist", "data"]);
+      console.log("8888888888", data.total)
+      let orderList = data.rows;
+      console.log("8888888888", data.rows)
+      for (let i = 0; i < orderList.length; i++) {
+        orderList[i].key = i + 1;
+      }
+      this.setState({
+        total: data.total,
+        data: orderList
+      })
+    }
+    //
+    if(nextProps.orderReducer.getIn(["orderdetail","data"])){
+       this.setState({
+        remark:nextProps.orderReducer.getIn(["orderdetail","data","remark"])
+       })
     }
   }
 
@@ -328,8 +390,8 @@ class Order extends Component {
 
 
   render() {
-    let { routerList, searchValue } = this.state;
-    let { orderState, orderType, payType, createTime } = this.state.select
+    let { routerList, DateValue, orderList } = this.state;
+    let { status, orderType, payType, createTime, companyTypeId, startDate, endDate } = this.state.select
 
     return (
       <div className="product-container">
@@ -342,38 +404,47 @@ class Order extends Component {
           <div className="line">
             <div>订单状态 ：</div>
             <div>
-              <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>未支付</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>已支付</span>
-              <span onClick={this.setOrderState.bind(this, 3)} className={orderState == 3 ? "active-bg" : ""}>已取消</span>
+              <span onClick={this.setOrderState.bind(this, "")} className={status == "" ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={status == 1 ? "active-bg" : ""}>未支付</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={status == 2 ? "active-bg" : ""}>已支付</span>
+              <span onClick={this.setOrderState.bind(this, 3)} className={status == 3 ? "active-bg" : ""}>已取消</span>
+              <span onClick={this.setOrderState.bind(this, 4)} className={status == 4 ? "active-bg" : ""}>审核中</span>
             </div>
           </div>
           <div className="line">
             <div>订单类型 ：</div>
             <div>
-              <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
+              <span onClick={this.setOrderType.bind(this, "")} className={companyTypeId == "" ? "active-bg" : ""}>全部</span>
+              {
+                orderList ? orderList.map((item, key) => {
+                  return (
+                    <span key={key} onClick={this.setOrderType.bind(this, item.id)} className={companyTypeId == item.id ? "active-bg" : ""}>{item.name}</span>
+                  )
+                }) : ""
+              }
+              {/* <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
               <span onClick={this.setOrderType.bind(this, 2)} className={orderType == 2 ? "active-bg" : ""}>合伙企业</span>
               <span onClick={this.setOrderType.bind(this, 3)} className={orderType == 3 ? "active-bg" : ""}>有限公司</span>
-              <span onClick={this.setOrderType.bind(this, 4)} className={orderType == 4 ? "active-bg" : ""}>个体户</span>
+              <span onClick={this.setOrderType.bind(this, 4)} className={orderType == 4 ? "active-bg" : ""}>个体户</span> */}
             </div>
           </div>
           <div className="line">
             <div>支付方式 ：</div>
             <div>
-              <span onClick={this.setPayType.bind(this, 0)} className={payType == 0 ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setPayType.bind(this, "")} className={payType == "" ? "active-bg" : ""}>全部</span>
               <span onClick={this.setPayType.bind(this, 1)} className={payType == 1 ? "active-bg" : ""}>支付宝</span>
-              <span onClick={this.setPayType.bind(this, 2)} className={payType == 2 ? "active-bg" : ""}>微信支付</span>
-              <span onClick={this.setPayType.bind(this, 3)} className={payType == 3 ? "active-bg" : ""}>线下付款</span>
+              <span onClick={this.setPayType.bind(this, 2)} className={payType == 2 ? "active-bg" : ""}>线下支付</span>
+              <span onClick={this.setPayType.bind(this, 3)} className={payType == 3 ? "active-bg" : ""}>微信支付</span>
+              <span onClick={this.setPayType.bind(this, 4)} className={payType == 4 ? "active-bg" : ""}>余额支付</span>
             </div>
           </div>
           <div className="line">
             <div>创建时间 ：</div>
             <div>
-              <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setCreateTime.bind(this, "")} className={startDate == "" || endDate == "" ? "active-bg" : ""}>全部</span>
               <RangePicker
                 onChange={this.onChange}
-                value={searchValue}
+                value={DateValue}
                 size="small"
                 style={{ width: "259px", }}
               />
@@ -382,14 +453,14 @@ class Order extends Component {
           <div className="line">
             <div>搜索 ：</div>
             <div>
-              <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
+              <Input onChange={this.inputChange} style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
             </div>
           </div>
 
           <div className="line">
             <div></div>
             <div style={{ marginLeft: "62px" }}>
-              <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+              <Button onClick={this.searchList} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
               <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
             </div>
           </div>
@@ -398,11 +469,30 @@ class Order extends Component {
         {/* table 部分 */}
         <div className="table-content">
           {/* 123 */}
-          <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+          <Table bordered
+            rowSelection={{
+              onChange: (selectedRowKeys, selectedRows) => {
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+              },
+            }}
+            pagination={{
+              total: this.state.total,
+              showTotal: (total) => `共 ${total} 条`,
+              onChange: (current) => this.paginationChange(current),
+              pageSize: this.state.select.limit,
+            }}
+            columns={this.state.columns} dataSource={this.state.data} />
         </div>
 
-
-
+       {/* 备注修改 modal */}
+       <AddremarkModal
+          title="备注修改"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          data={this.state.remark}
+        >
+        </AddremarkModal>
       </div>
     );
   }

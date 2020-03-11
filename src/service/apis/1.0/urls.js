@@ -33,6 +33,14 @@ export const urls = {
   /**
    * 订单模块
    */
+  //订单列表
   ORDERLIST:"/simpleTax/orderWeb/orderList",
-
+  //订单详情
+  ORDERDETAIL:"/simpleTax/orderWeb/orderDetail",
+  //订单记录
+  ORDERRECORD:"/simpleTax/orderWeb/orderRecord",
+  //确认收款
+  COMFIRMOFFLINEPAY:"/simpleTax/comfirmOfflinePay",
+  //添加备注
+  ADDREMARK:"/simpleTax/orderWeb/addRemark"
 };
