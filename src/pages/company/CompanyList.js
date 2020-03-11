@@ -363,7 +363,7 @@ class CompanyList extends Component {
 
         </div>
         {/* table 部分 */}
-        <div className="table-content">
+        <div className="tables-content">
           {/* 123 */}
           <Table bordered columns={this.state.columns} dataSource={this.state.data} />
         </div>

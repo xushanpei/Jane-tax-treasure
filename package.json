@@ -36,6 +36,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "react-split-pane": "^0.1.87",
+    "react-zmage": "^0.8.5-beta.31",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",

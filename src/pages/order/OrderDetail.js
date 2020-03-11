@@ -254,6 +254,7 @@ class OrderDetail extends Component {
 
         data2:[
            {
+            key:1,
             packageName:data.packageName,
             companyTypeName:data.companyTypeName,
             serviceTime:data.serviceTime,
@@ -264,6 +265,7 @@ class OrderDetail extends Component {
         ],
         data3:[
           {
+            key:1,
             amount:data.amount,
             payTypeName:data.payTypeName,
             outOrderNo:data.outOrderNo,
@@ -273,6 +275,7 @@ class OrderDetail extends Component {
         ],
         data4:[
           {
+            key:1,
             amount:data.amount? data.amount : "/",
             payName:data.payName,
             payStatusName:data.payStatusName,

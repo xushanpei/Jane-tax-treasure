@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import productAction from "../../redux/actions/productAction";
 import orderAction from "../../redux/actions/orderAction";
-import AddremarkModal from "./Addremark"
+import AddremarkModal from "./Addremark";
+import UpdateOrderModal from "./UpdateOrder"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -32,6 +33,11 @@ class Order extends Component {
       id:"",
       visible:false,
       remark:"",
+
+      //订单修改
+      updateVisible:false,
+      //需要修改的订单详情
+      updateOrder:"",
       // 筛选属性
       select: {
         page: 1,
@@ -112,7 +118,7 @@ class Order extends Component {
                       </Menu.Item> : ""
                     }
                   
-                    <Menu.Item key="1">
+                    <Menu.Item key="1" onClick={this.updateShowModal.bind(this,record.orderId)}>
                       订单修改
                     </Menu.Item>
                     <Menu.Item onClick={this.showModal.bind(this,record.orderId)} key="3">订单备注</Menu.Item>
@@ -176,23 +182,29 @@ class Order extends Component {
   };
 
   // 编辑 modal 用的方法
-  editShowModal = () => {
+  // onOk={this.upDateHandleOk}
+  // onCancel={this.updateHandleCancel}
+  updateShowModal = (id) => {
+    console.log("需要修改的id",id);
+    this.props.orderdetail({
+      orderId: id
+    });
     this.setState({
-      editVisible: true,
+      updateVisible: true,
     });
   };
 
-  editHandleOk = e => {
+  upDateHandleOk = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      updateVisible: false,
     });
   };
 
-  editHandleCancel = e => {
+  updateHandleCancel = e => {
     console.log(e);
     this.setState({
-      editVisible: false,
+      updateVisible: false,
     });
   };
 
@@ -380,7 +392,9 @@ class Order extends Component {
     //
     if(nextProps.orderReducer.getIn(["orderdetail","data"])){
        this.setState({
-        remark:nextProps.orderReducer.getIn(["orderdetail","data","remark"])
+        remark:nextProps.orderReducer.getIn(["orderdetail","data","remark"]),
+        // 订单详情=> 获取订单价格 / 赠送时长
+        updateOrder:nextProps.orderReducer.getIn(["orderdetail","data"]),
        })
     }
   }
@@ -467,7 +481,7 @@ class Order extends Component {
 
         </div>
         {/* table 部分 */}
-        <div className="table-content">
+        <div className="table-content tables">
           {/* 123 */}
           <Table bordered
             rowSelection={{
@@ -493,6 +507,16 @@ class Order extends Component {
           data={this.state.remark}
         >
         </AddremarkModal>
+
+        {/* 修改订单 */}
+        <UpdateOrderModal
+          title="订单修改"
+          visible={this.state.updateVisible}
+          onOk={this.upDateHandleOk}
+          onCancel={this.updateHandleCancel}
+          data={this.state.updateOrder}
+        >
+        </UpdateOrderModal>
       </div>
     );
   }

@@ -237,7 +237,7 @@ class CorporateLibrary extends Component {
 
                 </div>
                 {/* table 部分 */}
-                <div className="table-content">
+                <div className="tables-contents">
                     {/* 123 */}
                     <Table bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>
