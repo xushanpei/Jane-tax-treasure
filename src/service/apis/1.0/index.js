@@ -51,7 +51,16 @@ class Apis {
   //公司列表
   companyweblist = data=> ApiRequest.get(`${urls.COMPANYWEBLIST}?page=${data.page}&limit=${data.limit}&companyStatus=${data.companyStatus}&companyTypeId=${data.companyTypeId}&establishBeginTime=${data.establishBeginTime}&establishEndTime=${data.establishEndTime}&search=${data.search}`);
   //公司详情
-  companydetailweb = data=> ApiRequest.get(`${urls.COMPANYDETAILWEB}?companyId=${data.companyId}`)
+  companydetailweb = data=> ApiRequest.get(`${urls.COMPANYDETAILWEB}?companyId=${data.companyId}`);
+
+
+  /**
+   * 发票
+   */
+  //发票列表-已开票
+  invoicepage = data=> ApiRequest.get(`${urls.INVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&companyType=${data.companyType}&date=${data.date}`) ;
+  //发票申请列表
+  applyinvoicepage = data=>ApiRequest.get(`${urls.APPLYINVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&billStatus=${data.billStatus}&companyType=${data.companyType}&date=${data.date}`)
 }
 
 export default new Apis();

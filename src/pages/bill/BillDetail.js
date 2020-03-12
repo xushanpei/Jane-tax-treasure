@@ -5,7 +5,10 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-import OpenBill from "./OpenBill"
+import OpenBill from "./OpenBill";
+import { connect } from "react-redux";
+import billAction from "../../redux/actions/billAction";
+
 
 const { Option } = Select;
 const { RangePicker } = DatePicker

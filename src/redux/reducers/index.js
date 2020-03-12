@@ -4,7 +4,8 @@ import layoutPageReducer from "./layoutPageReducer";
 import authReducer from "./authReducer";
 import productReducer from "./productReducer";
 import orderReducer from "./orderReducer";
-import companyReducer from "./companyReducer"
+import companyReducer from "./companyReducer";
+import billReducer from "./billReducer"
 
 export default history =>
   combineReducers({
@@ -13,5 +14,6 @@ export default history =>
     authReducer,
     productReducer,
     orderReducer,
-    companyReducer
+    companyReducer,
+    billReducer
   });

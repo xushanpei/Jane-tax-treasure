@@ -4,21 +4,39 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import billAction from "../../redux/actions/billAction";
+import productAction from "../../redux/actions/productAction";
 
 const { Option } = Select;
-const { RangePicker } = DatePicker
+const { RangePicker } = DatePicker   //applyinvoicepage
 
+
+@connect(
+    ({ billReducer, productReducer }) => ({ billReducer, productReducer }),
+    {
+        //获取公司类型
+        productclassify: productAction.productclassify,
+        invoicepage: billAction.invoicepage,
+        applyinvoicepage:billAction.applyinvoicepage
+    }
+)
 class ApplyBill extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //公司类型列表
+            companyTypeList: "",
+            total:"",
             // 筛选属性
             select: {
-                orderState: 0,
-                orderType: 0,
-                payType: 0,
-                createTime: 0
+                page:1,
+                limit:5,
+                invoiceType:"",
+                billStatus: "",
+                companyType: "",
+                date: ""
             },
             searchValue: "",
             routerList: [
@@ -33,45 +51,29 @@ class ApplyBill extends Component {
             ],
             columns: [
                 {
-                    title: 'id',
+                    title: '',
                     dataIndex: 'key',
                     key: 'key',
-                    render: text => text,
                 },
                 {
                     title: '申请公司',
-                    dataIndex: 'name',
-                    key: 'name',
+                    dataIndex: 'companyName',
+                    key: 'companyName',
                 },
                 {
                     title: '申请时间',
-                    dataIndex: 'type',
-                    key: 'type',
+                    dataIndex: 'submitTime',
+                    key: 'submitTime',
                 },
                 {
                     title: '公司类型',
-                    key: 'number',
-                    dataIndex: 'number',
-                    //   render: tags => (
-                    //     <span>
-                    //       {tags.map(tag => {
-                    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-                    //         if (tag === 'loser') {
-                    //           color = 'volcano';
-                    //         }
-                    //         return (
-                    //           <Tag color={color} key={tag}>
-                    //             {tag.toUpperCase()}
-                    //           </Tag>
-                    //         );
-                    //       })}
-                    //     </span>
-                    //   ),
+                    key: 'companyTypeName',
+                    dataIndex: 'companyTypeName',
                 },
                 {
                     title: '发票类型',
-                    key: 'state',
-                    dataIndex: 'state',
+                    key: 'invoiceTypeName',
+                    dataIndex: 'invoiceTypeName',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -81,8 +83,8 @@ class ApplyBill extends Component {
                 },
                 {
                     title: '发票金额',
-                    key: 'payType',
-                    dataIndex: 'payType',
+                    key: 'invoiceMoney',
+                    dataIndex: 'invoiceMoney',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -92,8 +94,8 @@ class ApplyBill extends Component {
                 },
                 {
                     title: '客户名称',
-                    key: 'orderState',
-                    dataIndex: 'orderState',
+                    key: 'customerName',
+                    dataIndex: 'customerName',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -103,48 +105,41 @@ class ApplyBill extends Component {
                 },
                 {
                     title: '纳税人识别号',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'txpayerNumber',
+                    dataIndex:"txpayerNumber"
                 },
                 {
                     title: '开户银行',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'openingBank',
+                    dataIndex:"openingBank"
                 },
                 {
                     title: '开票地址',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'address',
+                    dataIndex:"address"
                 },
                 {
                     title: '开票电话',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'officeTel',
+                    dataIndex:"officeTel"
                 },
                 {
                     title: '开票状态',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'billStatus',
+                    render: (text, record) => {
+                        if(record.billStatus == 1){
+                            return <span>审核中</span>
+                        }
+                        if(record.billStatus == 2){
+                            return <span>开票中</span>
+                        }
+                        if(record.billStatus == 3){
+                            return <span>已开票</span>
+                        }
+                        if(record.billStatus == 4){
+                            return <span>已驳回</span>
+                        }
+                    }
                 },
                 {
                     title: '操作',
@@ -170,41 +165,7 @@ class ApplyBill extends Component {
                     ),
                 },
             ],
-            data: [
-                {
-                    key: '1',
-                    name: '套餐一',
-                    type: '个人独资',
-                    number: 100,
-                    state: 1,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '2',
-                    name: '套餐二',
-                    type: "个人独资",
-                    number: 100,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '3',
-                    name: '套餐三',
-                    type: "个人独资",
-                    number: 20,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-            ],
+            data: [],
             visible: false,
             editVisible: false
         };
@@ -270,50 +231,31 @@ class ApplyBill extends Component {
         });
     }
 
-    // 订单状态
+
     setOrderState = (value) => {
         this.setState({
-            select: {
-                orderState: value,
-                orderType: this.state.select.orderType,
-                payType: this.state.select.payType,
-                createTime: this.state.select.createTime
-            }
+            select: Object.assign(this.state.select, { billStatus: value })
         })
     }
 
     // 订单类型
     setOrderType = (value) => {
         this.setState({
-            select: {
-                orderState: this.state.select.orderState,
-                orderType: value,
-                payType: this.state.select.payType,
-                createTime: this.state.select.createTime
-            }
+            select: Object.assign(this.state.select, { companyType:value })
         })
     }
     // 支付方式 
-    setPayType = (value) => {
+    setType = (value) => {
         this.setState({
-            select: {
-                orderState: this.state.select.orderState,
-                orderType: this.state.select.orderType,
-                payType: value,
-                createTime: this.state.select.createTime
-            }
+            select: Object.assign(this.state.select, { invoiceType: value })
+            // select: Object.assign(this.state.select, {  })
         })
     }
     //创建时间
     setCreateTime = (value) => {
         if (value == "") {
             this.setState({
-                select: {
-                    orderState: this.state.select.orderState,
-                    orderType: this.state.select.orderType,
-                    payType: this.state.select.payType,
-                    createTime: value
-                },
+                select: Object.assign(this.state.select, { date: value }),
                 searchValue: value
             })
         }
@@ -322,23 +264,54 @@ class ApplyBill extends Component {
     onChange = (date, dateString) => {
         console.log(date, dateString)
         this.setState({
-            select: {
-                orderState: this.state.select.orderState,
-                orderType: this.state.select.orderType,
-                payType: this.state.select.payType,
-                createTime: date
-            },
+            select: Object.assign(this.state.select, { date: dateString }),
             searchValue: date
         })
+    }
+    //搜索按钮
+    search = ()=>{
+        console.log(this.state.select)
+        this.props.applyinvoicepage(this.state.select)
+    }
+
+
+    componentWillMount() {
+        this.props.productclassify({
+            page: 1,
+            limit: 100
+        })
+        //获取发票申请列表
+         this.props.applyinvoicepage(this.state.select)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.productReducer.getIn(["productclassify", "data", "rows"])) {
+            console.log("公司类型", nextProps.productReducer.getIn(["productclassify", "data", "rows"]))
+            this.setState({
+                companyTypeList: nextProps.productReducer.getIn(["productclassify", "data", "rows"])
+            })
+        }
+        //发票列表
+        if(nextProps.billReducer.getIn(["applyinvoicepage"])){
+           console.log("发票申请++++列表", nextProps.billReducer.getIn(["applyinvoicepage"]))
+           let data =  nextProps.billReducer.getIn(["applyinvoicepage","data","rows"]);
+           let total = nextProps.billReducer.getIn(["applyinvoicepage","data","total"]);
+           for(let i=0; i<data.length; i++){
+               data[i].key = i+1;
+           }
+           this.setState({
+            data,
+            total
+           })
+        }
     }
 
 
 
 
-
     render() {
-        let { routerList, searchValue } = this.state;
-        let { orderState, orderType, payType, createTime } = this.state.select
+        let { routerList, searchValue, companyTypeList } = this.state;
+        let { billStatus, invoiceType, companyType, date } = this.state.select
 
         return (
             <div className="product-container">
@@ -351,35 +324,36 @@ class ApplyBill extends Component {
                     <div className="line">
                         <div>发票状态 ：</div>
                         <div>
-                            <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-                            <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>审核中</span>
-                            <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>开票中</span>
-                            <span onClick={this.setOrderState.bind(this, 3)} className={orderState == 3 ? "active-bg" : ""}>已开票</span>
-                            <span onClick={this.setOrderState.bind(this, 4)} className={orderState == 4 ? "active-bg" : ""}>已驳回</span>
+                            <span onClick={this.setOrderState.bind(this, "")} className={billStatus == 0 ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setOrderState.bind(this, 1)} className={billStatus == 1 ? "active-bg" : ""}>审核中</span>
+                            <span onClick={this.setOrderState.bind(this, 2)} className={billStatus == 2 ? "active-bg" : ""}>开票中</span>
+                            <span onClick={this.setOrderState.bind(this, 3)} className={billStatus == 3 ? "active-bg" : ""}>已开票</span>
+                            <span onClick={this.setOrderState.bind(this, 4)} className={billStatus == 4 ? "active-bg" : ""}>已驳回</span>
                         </div>
                     </div>
                     <div className="line">
                         <div>发票类型 ：</div>
                         <div>
-                            <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
-                            <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>增值税普通发票</span>
-                            <span onClick={this.setOrderType.bind(this, 2)} className={orderType == 2 ? "active-bg" : ""}>增值税专用发票</span>
+                            <span onClick={this.setType.bind(this, "")} className={invoiceType == "" ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setType.bind(this, 1)} className={invoiceType == 1 ? "active-bg" : ""}>增值税普通发票</span>
+                            <span onClick={this.setType.bind(this, 2)} className={invoiceType == 2 ? "active-bg" : ""}>增值税专用发票</span>
                         </div>
                     </div>
                     <div className="line">
                         <div>公司类型 ：</div>
                         <div>
-                            <span onClick={this.setPayType.bind(this, 0)} className={payType == 0 ? "active-bg" : ""}>全部</span>
-                            <span onClick={this.setPayType.bind(this, 1)} className={payType == 1 ? "active-bg" : ""}>个人独资</span>
-                            <span onClick={this.setPayType.bind(this, 2)} className={payType == 2 ? "active-bg" : ""}>合伙企业</span>
-                            <span onClick={this.setPayType.bind(this, 3)} className={payType == 3 ? "active-bg" : ""}>有限公司</span>
-                            <span onClick={this.setPayType.bind(this, 4)} className={payType == 4 ? "active-bg" : ""}>个体户</span>
+                            <span onClick={this.setOrderType.bind(this, "")} className={companyType == "" ? "active-bg" : ""}>全部</span>
+                            {
+                                companyTypeList ? companyTypeList.map((item, key) => {
+                                    return <span key={key} onClick={this.setOrderType.bind(this, item.id)} className={companyType == item.id ? "active-bg" : ""}>{item.name}</span>
+                                }) : ""
+                            }
                         </div>
                     </div>
                     <div className="line">
                         <div>申请时间 ：</div>
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setCreateTime.bind(this, "")} className={date == "" ? "active-bg" : ""}>全部</span>
                             <RangePicker
                                 onChange={this.onChange}
                                 value={searchValue}
@@ -388,17 +362,17 @@ class ApplyBill extends Component {
                             />
                         </div>
                     </div>
-                    <div className="line">
+                    {/* <div className="line">
                         <div>搜索 ：</div>
                         <div>
                             <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入公司名称"></Input>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="line">
                         <div></div>
                         <div style={{ marginLeft: "62px" }}>
-                            <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+                            <Button onClick={this.search} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
                             <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
                         </div>
                     </div>

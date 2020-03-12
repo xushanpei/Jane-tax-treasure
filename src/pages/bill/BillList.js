@@ -5,20 +5,33 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import {Link} from 'react-router-dom'
+import { connect } from "react-redux";
+import billAction from "../../redux/actions/billAction";
+import productAction from "../../redux/actions/productAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
+
+@connect(
+  ({ billReducer, productReducer }) => ({ billReducer, productReducer }),
+  {
+    //获取公司类型
+    productclassify: productAction.productclassify,
+    invoicepage:billAction.invoicepage
+  }
+)
 class BillList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // 筛选属性
       select: {
-        orderState: 0,
-        orderType: 0,
-        payType: 0,
-        createTime: 0
+        page:1,
+        limit:5,
+        invoiceType:"",
+        companyType:"",
+        date:""
       },
       searchValue: "",
       routerList: [
@@ -36,7 +49,6 @@ class BillList extends Component {
           title: '',
           dataIndex: 'key',
           key: 'key',
-          render: text => text,
         },
         {
           title: '申请公司',
@@ -103,7 +115,7 @@ class BillList extends Component {
         },
         {
           title: '发票代码',
-          key: 'time',
+          key: 'time1',
           render: (text, record) => (
             <span>
               <span>{record.time}</span>
@@ -112,7 +124,7 @@ class BillList extends Component {
         },
         {
             title: '发票号码',
-            key: 'time',
+            key: 'time2',
             render: (text, record) => (
               <span>
                 <span>{record.time}</span>
@@ -121,7 +133,7 @@ class BillList extends Component {
           },
           {
             title: '开户银行',
-            key: 'time',
+            key: 'time3',
             render: (text, record) => (
               <span>
                 <span>{record.time}</span>
@@ -130,7 +142,7 @@ class BillList extends Component {
           },
           {
             title: '开户账号',
-            key: 'time',
+            key: 'time4',
             render: (text, record) => (
               <span>
                 <span>{record.time}</span>
@@ -139,7 +151,7 @@ class BillList extends Component {
           },
           {
             title: '地址',
-            key: 'time',
+            key: 'time5',
             render: (text, record) => (
               <span>
                 <span>{record.time}</span>
@@ -148,7 +160,7 @@ class BillList extends Component {
           },
           {
             title: '电话',
-            key: 'time',
+            key: 'time6',
             render: (text, record) => (
               <span>
                 <span>{record.time}</span>
@@ -259,47 +271,24 @@ class BillList extends Component {
   // 订单状态
   setOrderState = (value) => {
     this.setState({
-      select: {
-        orderState: value,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+      select: Object.assign(this.state.select, { invoiceType:value })
     })
   }
 
   // 订单类型
   setOrderType = (value) => {
     this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: value,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+      select: Object.assign(this.state.select, { companyType: value })
+    },()=>{
+      console.log(this.state.select)
     })
   }
-  // 支付方式 
-  setPayType = (value) => {
-    this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: value,
-        createTime: this.state.select.createTime
-      }
-    })
-  }
-  //创建时间
+ 
+  //时间
   setCreateTime = (value) => {
     if (value == "") {
       this.setState({
-        select: {
-          orderState: this.state.select.orderState,
-          orderType: this.state.select.orderType,
-          payType: this.state.select.payType,
-          createTime: value
-        },
+        select: Object.assign(this.state.select,{ date: value }),
         searchValue: value
       })
     }
@@ -308,14 +297,31 @@ class BillList extends Component {
   onChange = (date, dateString) => {
     console.log(date, dateString)
     this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: date
-      },
+      select:Object.assign(this.state.select,{ date: dateString }),
       searchValue: date
     })
+  }
+
+  componentWillMount(){
+    this.props.productclassify({
+      page:1,
+      limit:100
+    })
+    //获取发票列表
+     this.props.invoicepage(this.state.select)
+  }
+
+  componentWillReceiveProps(nextProps){
+   if(nextProps.productReducer.getIn(["productclassify","data","rows"])){
+      console.log("公司类型", nextProps.productReducer.getIn(["productclassify","data","rows"]))
+      this.setState({
+        companyTypeList: nextProps.productReducer.getIn(["productclassify","data","rows"])
+      })
+   }
+   //发票列表
+   if(nextProps.billReducer.getIn(["invoicepage"])){
+      console.log("发票,列表", nextProps.billReducer.getIn(["invoicepage"]))
+   }
   }
 
 
@@ -323,8 +329,8 @@ class BillList extends Component {
 
 
   render() {
-    let { routerList, searchValue } = this.state;
-    let { orderState, orderType, payType, createTime } = this.state.select
+    let { routerList, searchValue , companyTypeList} = this.state;
+    let { invoiceType, companyType, date } = this.state.select
 
     return (
       <div className="product-container">
@@ -337,26 +343,27 @@ class BillList extends Component {
           <div className="line">
             <div>发票类型 ：</div>
             <div>
-              <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>增值税普通发票</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>增值税专用发票</span>
+              <span onClick={this.setOrderState.bind(this, "")} className={invoiceType == "" ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={invoiceType == 1 ? "active-bg" : ""}>增值税普通发票</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={invoiceType == 2 ? "active-bg" : ""}>增值税专用发票</span>
             </div>
           </div>
           <div className="line">
             <div>公司类型 ：</div>
             <div>
-              <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
-              <span onClick={this.setOrderType.bind(this, 2)} className={orderType == 2 ? "active-bg" : ""}>合伙企业</span>
-              <span onClick={this.setOrderType.bind(this, 3)} className={orderType == 3 ? "active-bg" : ""}>有限公司</span>
-              <span onClick={this.setOrderType.bind(this, 4)} className={orderType == 4 ? "active-bg" : ""}>个体户</span>
+              <span onClick={this.setOrderType.bind(this, "")} className={companyType == "" ? "active-bg" : ""}>全部</span>
+              {
+                companyTypeList ?  companyTypeList.map((item,key)=>{
+                return <span key={key} onClick={this.setOrderType.bind(this, item.id)} className={companyType == item.id ? "active-bg" : ""}>{item.name}</span>
+                }) : ""
+              }
             </div>
           </div>
 
           <div className="line">
             <div>申请时间 ：</div>
             <div>
-              <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setCreateTime.bind(this, "")} className={date == "" ? "active-bg" : ""}>全部</span>
               <RangePicker
                 onChange={this.onChange}
                 value={searchValue}
@@ -365,12 +372,12 @@ class BillList extends Component {
               />
             </div>
           </div>
-          <div className="line">
+          {/* <div className="line">
             <div>搜索 ：</div>
             <div>
               <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
             </div>
-          </div>
+          </div> */}
 
           <div className="line">
             <div></div>

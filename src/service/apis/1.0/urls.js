@@ -51,4 +51,12 @@ export const urls = {
   COMPANYWEBLIST:"/simpleTax/companyWeb/companyWebList",
   //公司详情
   COMPANYDETAILWEB:"/simpleTax/companyWeb/companyDetailWeb",
+
+  /**
+   * 发票
+   */
+  //发票列表-已开票
+  INVOICEPAGE:"/simpleTax/billWeb/invoicePage",
+  //发票申请列表
+  APPLYINVOICEPAGE:"/simpleTax/billWeb/applyInvoicePage"
 };
