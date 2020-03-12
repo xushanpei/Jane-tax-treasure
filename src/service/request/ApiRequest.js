@@ -148,7 +148,7 @@ class ApiRequest {
         })
         .catch(error => {
           let errStr = JSON.stringify(error);
-          this.authentication(errStr);
+          // this.authentication(errStr);
           reject(errStr);
         });
     });

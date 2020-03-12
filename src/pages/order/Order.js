@@ -22,7 +22,8 @@ const { TextArea } = Input;
     productclassify: productAction.productclassify,
     orderlist: orderAction.orderlist,
     orderdetail: orderAction.orderdetail,
-    addremark: orderAction.addremark
+    addremark: orderAction.addremark,
+    uptorder:orderAction.uptorder
   }
 )
 class Order extends Component {
@@ -38,6 +39,8 @@ class Order extends Component {
       updateVisible:false,
       //需要修改的订单详情
       updateOrder:"",
+      //需要修改的id
+      updateOrderId:"",
       // 筛选属性
       select: {
         page: 1,
@@ -118,9 +121,11 @@ class Order extends Component {
                       </Menu.Item> : ""
                     }
                   
-                    <Menu.Item key="1" onClick={this.updateShowModal.bind(this,record.orderId)}>
+                    {
+                      record.status == 1 ? <Menu.Item key="1" onClick={this.updateShowModal.bind(this,record.orderId)}>
                       订单修改
-                    </Menu.Item>
+                    </Menu.Item> : ""
+                    }
                     <Menu.Item onClick={this.showModal.bind(this,record.orderId)} key="3">订单备注</Menu.Item>
                     {/* <Menu.Item key="4">订单记录</Menu.Item> */}
                   </Menu>
@@ -191,11 +196,20 @@ class Order extends Component {
     });
     this.setState({
       updateVisible: true,
+      updateOrderId:id
     });
   };
 
   upDateHandleOk = e => {
-    console.log(e);
+    console.log("xxxxxxx",e);
+    let data = e;
+    data.orderId = this.state.updateOrderId;
+    // data.giveMonth = e.giveTime;
+    //触发修改的接口
+  this.props.uptorder(data);
+   setTimeout(()=>{
+    this.props.orderlist(this.state.select)
+   },300)
     this.setState({
       updateVisible: false,
     });

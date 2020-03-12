@@ -74,6 +74,21 @@ function* addremark(action) {
   }
 }
 
+function* uptorder(action) {
+  
+  try {
+   let data = yield call(Apis.uptorder,action.payload.data);
+    yield put({ type:orderTypes.UPTORDER_SUCCESS,data:data });
+    if(data.status == 200){
+      message.success(data.message)
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    
+  }
+}
+
 
 
 export default function* watchAuthRoot() {
@@ -82,9 +97,11 @@ export default function* watchAuthRoot() {
   yield takeLatest(orderTypes.ORDERRECORD, orderrecord);
   yield takeLatest(orderTypes.COMFIRMOFFLINEPAY, comfirmofflinepay);
   yield takeLatest(orderTypes.ADDREMARK, addremark);
+  yield takeLatest(orderTypes.UPTORDER, uptorder);
 }
 
 //ORDERDETAIL
 //ORDERRECORD_SUCCESS
 //COMFIRMOFFLINEPAY
 //ADDREMARK
+//UPTORDER

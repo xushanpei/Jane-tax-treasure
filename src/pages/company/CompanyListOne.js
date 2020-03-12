@@ -165,19 +165,34 @@ class CompanyListOne extends Component {
                                 <span>法人证件 : {baseInfo.submitFlag == 1 ? "已提交" : "未提交"}</span>
                             </div>
                             <div>
-                                <span>申请时间 : 123</span>
-                                <span>公司类型 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>增值税返还 : 一般纳税人</span>
-                                <span>赠送时间 : 2022-02-10</span>
-                                <span>公司行业 : 江苏省 南京市 江宁区</span>
-                                <span>法人手机 : 徐善培</span>
-                                <span>人脸验证 : 已提交</span>
+                                <span>申请时间 : {baseInfo.applyTime}</span>
+                                <span>公司类型 : {baseInfo.companyType}</span>
+                                <span>增值税返还 : {baseInfo.vatReturn}</span>
+                                <span>赠送时间 : {baseInfo.giveDay}</span>
+                                <span>公司行业 : {baseInfo.industryName}</span>
+                                <span>法人手机 : {baseInfo.companyLegalPhonecompanyLegalEmailcardZ}</span>
+                                <span>人脸验证 : {baseInfo.faceFlag == 1 ? "正确" : "失误"}</span>
                             </div>
                             <div>
-                                <span>审核状态 : 18861851261</span>
-                                <span>开票额度 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>注册资本 : 一般纳税人</span>
-                                <span>法人邮箱 : 2022-02-10</span>
+                                {/* <span>审核状态 : </span> */}
+                                {
+                                    baseInfo.companyStatus == 1 ? <span>审核状态 : 待设立</span> : ""
+                                }
+                                {
+                                    baseInfo.companyStatus == 2 ? <span>审核状态 : 审核中</span> : ""
+                                }
+                                {
+                                    baseInfo.companyStatus == "2-1" ? <span>审核状态 : 复审中</span> : ""
+                                }
+                                {
+                                    baseInfo.companyStatus == 3 ? <span>审核状态 : 设立中</span> : ""
+                                }
+                                {
+                                    baseInfo.companyStatus == 4 ? <span>审核状态 : 已设立</span> : ""
+                                }
+                                <span>开票额度 : {baseInfo.quota}</span>
+                                <span>注册资本 : {baseInfo.registeredCapital}</span>
+                                <span>法人邮箱 : {baseInfo.companyLegalEmailcardZ}</span>
                                 <span>  </span>
                                 <span> </span>
                                 <span> </span>

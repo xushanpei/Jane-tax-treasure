@@ -44,6 +44,8 @@ class Apis {
   comfirmofflinepay = data => ApiRequest.post(`${urls.COMFIRMOFFLINEPAY}`,data);
   //添加备注
   addremark = data=> ApiRequest.put(`${urls.ADDREMARK}`,data);
+  //订单修改
+  uptorder = data=> ApiRequest.put(`${urls.UPTORDER}`,data);
 
   /**
    * 公司 API

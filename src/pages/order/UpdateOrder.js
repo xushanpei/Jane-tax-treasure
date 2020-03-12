@@ -56,15 +56,15 @@ class UpdateOrder extends Component {
       >
        
        <Form {...formItemLayout}>
-          <FormItem label="订单价格">
-            {getFieldDecorator('name', {  initialValue:"1",
-              rules: [{required: true, message: '请输入订单价格'}],
+          <FormItem label="修改后的价格">
+            {getFieldDecorator('amount', {  initialValue:data.amount,
+              rules: [{required: true, message: '请输入修改后的价格'}],
             })(
                 <Input/>
             )}
           </FormItem>
           <FormItem label="赠送时长">
-            {getFieldDecorator('data', {  initialValue:2,
+            {getFieldDecorator('giveMonth', {  initialValue:data.giveTime,
               rules: [{required: true, message: '请输入赠送时长'}],
             })(
                 <Input/>

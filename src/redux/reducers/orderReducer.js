@@ -38,6 +38,12 @@ const orderReducer = handleActions(
         addremark: action.data
       });
     },
+    //UPTORDER
+    [orderTypes.UPTORDER_SUCCESS]: (state, action) => {
+      return state.merge({
+        uptorder: action.data
+      });
+    },
   },
   initState
 );
