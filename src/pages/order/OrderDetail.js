@@ -6,6 +6,7 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import { connect } from "react-redux";
 import orderAction from "../../redux/actions/orderAction";
+import Zmage from 'react-zmage'
 
 
 const { Option } = Select;
@@ -177,7 +178,8 @@ class OrderDetail extends Component {
           title: '付款凭证',
           key: 'voucher',
           render: (text, record) => (
-            <a href={record.voucher}>查看凭证</a>
+            // <a href={record.voucher}>查看凭证</a>
+            <a onClick={() => Zmage.browsing({ src:record.voucher })}>查看凭证</a>
           )
         }
       ],
