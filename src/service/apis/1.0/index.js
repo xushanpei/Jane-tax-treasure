@@ -52,6 +52,8 @@ class Apis {
   companyweblist = data=> ApiRequest.get(`${urls.COMPANYWEBLIST}?page=${data.page}&limit=${data.limit}&companyStatus=${data.companyStatus}&companyTypeId=${data.companyTypeId}&establishBeginTime=${data.establishBeginTime}&establishEndTime=${data.establishEndTime}&search=${data.search}`);
   //公司详情
   companydetailweb = data=> ApiRequest.get(`${urls.COMPANYDETAILWEB}?companyId=${data.companyId}`);
+  //公司操作-基本信息,对接人信息
+  getbasiccompany = data=> ApiRequest.get(`${urls.GETBASICCOMPANY}?companyId=${data.companyId}`);
 
 
   /**

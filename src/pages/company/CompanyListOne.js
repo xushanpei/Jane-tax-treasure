@@ -13,6 +13,8 @@ class CompanyListOne extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //基本信息/对接人信息
+            baseInfo: "",
             routerList: [
                 {
                     name: "首页",
@@ -63,9 +65,24 @@ class CompanyListOne extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.baseInfo) {
+            this.setState({
+                baseInfo: nextProps.baseInfo
+            }, () => {
+                console.log("接受到的基本信息对接人信息", nextProps.baseInfo);
+            })
+        }
+
+
+
+
+    }
+
+
 
     render() {
-        let { routerList } = this.state
+        let { routerList, baseInfo } = this.state
         return (
             <div>
                 <BreadeHeader routerList={routerList}></BreadeHeader>
@@ -78,7 +95,7 @@ class CompanyListOne extends Component {
                                 {/* 通过不通过按钮组 */}
                                 <span className="btn-diy">
                                     <Link to="/companyListTwo">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                        <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
                                     </Link>
 
                                     {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
@@ -139,31 +156,31 @@ class CompanyListOne extends Component {
                         <p>基本信息   <span className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
-                                <span>申请人 : 18861851261</span>
-                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>纳税人类型 : 一般纳税人</span>
-                                <span>简税宝服务期限 : 2022-02-10</span>
-                                <span>公司地区 : 江苏省 南京市 江宁区</span>
-                                <span>公司法人 : 徐善培</span>
-                                <span>法人证件 : 已提交</span>
+                                <span>申请人 : {baseInfo.applyPhone}</span>
+                                <span>公司名称 : {baseInfo.companyName}</span>
+                                <span>纳税人类型 : {baseInfo.taxpayerType == 1 ? "一般纳税人" : "小规模纳税人"}</span>
+                                <span>简税宝服务期限 : {baseInfo.serviceEndTime}</span>
+                                <span>公司地区 : {baseInfo.companyRegion}</span>
+                                <span>公司法人 : {baseInfo.companyLegalName}</span>
+                                <span>法人证件 : {baseInfo.submitFlag == 1 ? "已提交" : "未提交"}</span>
                             </div>
                             <div>
-                                <span>申请人 : 18861851261</span>
-                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>纳税人类型 : 一般纳税人</span>
-                                <span>简税宝服务期限 : 2022-02-10</span>
-                                <span>公司地区 : 江苏省 南京市 江宁区</span>
-                                <span>公司法人 : 徐善培</span>
-                                <span>法人证件 : 已提交</span>
+                                <span>申请时间 : 123</span>
+                                <span>公司类型 : 南京严氏文化传媒公司 (随机名称)</span>
+                                <span>增值税返还 : 一般纳税人</span>
+                                <span>赠送时间 : 2022-02-10</span>
+                                <span>公司行业 : 江苏省 南京市 江宁区</span>
+                                <span>法人手机 : 徐善培</span>
+                                <span>人脸验证 : 已提交</span>
                             </div>
                             <div>
-                                <span>申请人 : 18861851261</span>
-                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>纳税人类型 : 一般纳税人</span>
-                                <span>简税宝服务期限 : 2022-02-10</span>
-                                <span>公司地区 : 江苏省 南京市 江宁区</span>
-                                <span>公司法人 : 徐善培</span>
-                                <span>法人证件 : 已提交</span>
+                                <span>审核状态 : 18861851261</span>
+                                <span>开票额度 : 南京严氏文化传媒公司 (随机名称)</span>
+                                <span>注册资本 : 一般纳税人</span>
+                                <span>法人邮箱 : 2022-02-10</span>
+                                <span>  </span>
+                                <span> </span>
+                                <span> </span>
                             </div>
                         </div>
 

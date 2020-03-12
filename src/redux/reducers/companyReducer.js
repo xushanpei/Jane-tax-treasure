@@ -19,9 +19,15 @@ const companyReducer = handleActions(
             companydetailweb: action.data
         });
       },
+      [companyTypes.GETBASICCOMPANY_SUCCESS]: (state, action) => {
+        return state.merge({
+            getbasiccompany: action.data
+        });
+      },
   
   },
   initState
 );
 
 export default companyReducer;
+

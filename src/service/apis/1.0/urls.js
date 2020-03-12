@@ -51,6 +51,8 @@ export const urls = {
   COMPANYWEBLIST:"/simpleTax/companyWeb/companyWebList",
   //公司详情
   COMPANYDETAILWEB:"/simpleTax/companyWeb/companyDetailWeb",
+  //公司操作-基本信息,对接人信息
+  GETBASICCOMPANY:"/simpleTax/companyWeb/getBasicCompany",
 
   /**
    * 发票

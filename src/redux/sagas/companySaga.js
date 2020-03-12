@@ -33,13 +33,28 @@ function* companyweblist(action) {
     }
   }
 
+  function* getbasiccompany(action) {
+    try {
+     let data = yield call(Apis.getbasiccompany,action.payload.data);
+  
+      yield put({ type:companyTypes.GETBASICCOMPANY_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
   yield takeLatest(companyTypes.COMPANYDETAILWEB, companydetailweb);
-
+  yield takeLatest(companyTypes.GETBASICCOMPANY, getbasiccompany);
 }
+
+
 
 
 

@@ -22,10 +22,11 @@ const { RangePicker } = DatePicker
 @connect(
     ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
     {
-        companyweblist: companyAction.companyweblist,
-        companydetailweb: companyAction.companydetailweb,
-        //获取公司类型
-        productclassify: productAction.productclassify,
+        // companyweblist: companyAction.companyweblist,
+        // companydetailweb: companyAction.companydetailweb,
+        // //获取公司类型
+        // productclassify: productAction.productclassify,
+        getbasiccompany:companyAction.getbasiccompany
     }
 )
 class CompanyDetail extends Component {
@@ -33,7 +34,9 @@ class CompanyDetail extends Component {
         super(props);
         this.state = {
             detailId: "",
-            companyStatus: ""
+            companyStatus: "",
+            //id 的基本信息对接人信息
+            getbasiccompany:""
         };
     }
 
@@ -52,14 +55,27 @@ class CompanyDetail extends Component {
                 })
             }
         }
-
+    //获取公司操作基本信息,对接人信息
+    this.props.getbasiccompany({
+        companyId: this.props.match.params.data
+    })
 
 
     }
 
+    componentWillReceiveProps(nextProps){
+       
+        if(nextProps.companyReducer.getIn(["getbasiccompany","data"])){
+            
+            this.setState({
+                getbasiccompany:nextProps.companyReducer.getIn(["getbasiccompany","data"])
+            }) 
+        }
+    }
+
 
     render() {
-        let { companyStatus } = this.state
+        let { companyStatus , getbasiccompany} = this.state
         console.log(companyStatus)
         return (
             <div className="companyState">
@@ -68,19 +84,19 @@ class CompanyDetail extends Component {
                 companyStatus :   1:待设立 2:审核中 2-1:复审核中 3:设立中 4:已设立’
           */}
                 {
-                    companyStatus == "1" ? <CompanyListOne></CompanyListOne> : ""
+                    companyStatus == "1" ? <CompanyListOne baseInfo = {getbasiccompany}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2" ? <CompanyListOne></CompanyListOne> : ""
+                    companyStatus == "2" ? <CompanyListOne baseInfo = {getbasiccompany}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2-1" ? <CompanyListOneRepeat></CompanyListOneRepeat> : ""
+                    companyStatus == "2-1" ? <CompanyListOneRepeat baseInfo = {getbasiccompany}></CompanyListOneRepeat> : ""
                 }
                 {
-                    companyStatus == "3" ? <CompanyListTwo></CompanyListTwo> : ""
+                    companyStatus == "3" ? <CompanyListTwo baseInfo = {getbasiccompany}></CompanyListTwo> : ""
                 }
                 {
-                    companyStatus == "4" ? <CompanyListThree></CompanyListThree> : ""
+                    companyStatus == "4" ? <CompanyListThree baseInfo = {getbasiccompany}></CompanyListThree> : ""
                 }
 
                 {/* <CompanyListTwo></CompanyListTwo>
