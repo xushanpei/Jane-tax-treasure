@@ -17,6 +17,8 @@ const Order = loadable(()=> import("../pages/order/Order"), { fallback :<Loading
 const OrderDetail = loadable(()=> import("../pages/order/OrderDetail"), { fallback: <Loading/> });
 //公司列表
 const CompanyList = loadable(()=> import("../pages/company/CompanyList"), {fallback : <Loading/>});
+//公司详情
+const CompanyDetail = loadable(()=> import("../pages/company/CompanyDetail"), {fallback : <Loading/>});
 //公司操作审核中 
 const CompanyListOne = loadable(()=> import ("../pages/company/CompanyListOne"), {fallback: <Loading/>});
 //公司操作设立中
@@ -163,6 +165,12 @@ const routes = [
     path:"/customerService",
     exact:true,
     component:CustomerService
+  },{
+    key:"15",
+    name:"公司详情",
+    path:"/companyDetail/:data",
+    exact:true,
+    component:CompanyDetail
   }
 
 ];

@@ -188,8 +188,6 @@ class OrderDetail extends Component {
       data2: [],
       data3: [],
       data4: [],
-     
-
       // 订单记录
       dataList: [],
       columnsList: [

@@ -3,7 +3,8 @@ import { connectRouter, LOCATION_CHANGE } from "connected-react-router/immutable
 import layoutPageReducer from "./layoutPageReducer";
 import authReducer from "./authReducer";
 import productReducer from "./productReducer";
-import orderReducer from "./orderReducer"
+import orderReducer from "./orderReducer";
+import companyReducer from "./companyReducer"
 
 export default history =>
   combineReducers({
@@ -11,5 +12,6 @@ export default history =>
     layoutPageReducer,
     authReducer,
     productReducer,
-    orderReducer
+    orderReducer,
+    companyReducer
   });

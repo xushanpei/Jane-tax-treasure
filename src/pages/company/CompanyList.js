@@ -5,20 +5,38 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom'
+import { connect } from "react-redux";
+import companyAction from "../../redux/actions/companyAction";
+import productAction from "../../redux/actions/productAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
+
+@connect(
+  ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
+  {
+    companyweblist: companyAction.companyweblist,
+    companydetailweb: companyAction.companydetailweb,
+    //获取公司类型
+    productclassify: productAction.productclassify,
+  }
+)
 class CompanyList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //公司类型
+      productclassify: [],
       // 筛选属性
       select: {
-        orderState: 0,
-        orderType: 0,
-        payType: 0,
-        createTime: 0
+        page: 1,
+        limit: 5,
+        companyStatus: "",
+        companyTypeId: "",
+        establishBeginTime: "",
+        establishEndTime: "",
+        search: ""
       },
       searchValue: "",
       routerList: [
@@ -36,79 +54,60 @@ class CompanyList extends Component {
           title: '',
           dataIndex: 'key',
           key: 'key',
-          render: text => text,
         },
         {
           title: '公司名称',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'companyName',
+          key: 'companyName',
         },
         {
           title: '公司类型',
-          dataIndex: 'type',
-          key: 'type',
+          dataIndex: 'companyTypeName',
+          key: 'companyTypeName',
         },
         {
           title: '公司地区',
-          key: 'number',
-          dataIndex: 'number',
-          //   render: tags => (
-          //     <span>
-          //       {tags.map(tag => {
-          //         let color = tag.length > 5 ? 'geekblue' : 'green';
-          //         if (tag === 'loser') {
-          //           color = 'volcano';
-          //         }
-          //         return (
-          //           <Tag color={color} key={tag}>
-          //             {tag.toUpperCase()}
-          //           </Tag>
-          //         );
-          //       })}
-          //     </span>
-          //   ),
+          key: 'companyRegion',
+          dataIndex: 'companyRegion',
         },
         {
           title: '公司行业',
-          key: 'state',
-          dataIndex: 'state',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'industryName',
+          dataIndex: 'industryName',
         },
         {
           title: '公司法人',
-          key: 'payType',
-          dataIndex: 'payType',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'legalName',
+          dataIndex: 'legalName',
         },
         {
           title: '设立状态',
-          key: 'orderState',
-          dataIndex: 'orderState',
-          // render: (text, record) => (
-          //   <span>
-          //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-          //     <Switch  defaultChecked  />
-          //   </span>
-          // ),
+          key: 'companyStatus',
+          // dataIndex: 'companyStatus',
+          render: (text, record) => {
+            console.log(record.companyStatus)
+            if (record.companyStatus == 1) {
+              return <span>待设立</span>
+            }
+            if (record.companyStatus == 2) {
+              return <span>审核中</span>
+            }
+            if (record.companyStatus == "2-1") {
+              return <span>复审核</span>
+            }
+            if (record.companyStatus == 3) {
+              return <span>设立中</span>
+            }
+            if (record.companyStatus == 4) {
+              return <span>已设立</span>
+            }
+
+          },
         },
         {
           title: '设立时间',
-          key: 'time',
-          render: (text, record) => (
-            <span>
-              <span>{record.time}</span>
-            </span>
-          ),
+          key: 'submitEstablishTime',
+          dataIndex: "submitEstablishTime",
         },
         {
           title: '操作',
@@ -117,7 +116,7 @@ class CompanyList extends Component {
             <Dropdown overlay={
               <Menu>
                 <Menu.Item key="0">
-                  <Link to="/companyListOne">
+                  <Link to={`/companyDetail/${record.companyId}`}>
                     公司操作
                     </Link>
                 </Menu.Item>
@@ -236,50 +235,32 @@ class CompanyList extends Component {
     });
   }
 
-  // 订单状态
+  // 公司状态
   setOrderState = (value) => {
     this.setState({
-      select: {
-        orderState: value,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+      select: Object.assign(this.state.select, { companyStatus: value })
+    }, () => {
+      console.log("修改后的值", this.state.select)
     })
   }
 
   // 订单类型
   setOrderType = (value) => {
     this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: value,
-        payType: this.state.select.payType,
-        createTime: this.state.select.createTime
-      }
+      select: Object.assign(this.state.select, { companyTypeId: value })
+    }, () => {
+      console.log(this.state.select)
     })
   }
-  // 支付方式 
-  setPayType = (value) => {
-    this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: value,
-        createTime: this.state.select.createTime
-      }
-    })
-  }
+
   //创建时间
   setCreateTime = (value) => {
     if (value == "") {
       this.setState({
-        select: {
-          orderState: this.state.select.orderState,
-          orderType: this.state.select.orderType,
-          payType: this.state.select.payType,
-          createTime: value
-        },
+        select: Object.assign(this.state.select, {
+          establishBeginTime: value,
+          establishEndTime: value
+        }),
         searchValue: value
       })
     }
@@ -288,23 +269,71 @@ class CompanyList extends Component {
   onChange = (date, dateString) => {
     console.log(date, dateString)
     this.setState({
-      select: {
-        orderState: this.state.select.orderState,
-        orderType: this.state.select.orderType,
-        payType: this.state.select.payType,
-        createTime: date
-      },
+      select: Object.assign(this.state.select, {
+        establishBeginTime: dateString[0],
+        establishEndTime: dateString[1]
+      }),
       searchValue: date
     })
+  }
+  searChange = (e) => {
+    this.setState({
+      select: Object.assign(this.state.select, {
+        search: e.target.value
+      }),
+    })
+  }
+  // 搜所按钮
+  searchClick = () => {
+    this.props.companyweblist(this.state.select)
+  }
+
+  paginationChange = (current)=>{
+    console.log(current)
+    this.setState({
+      select: Object.assign(this.state.select,{page:current})
+    },()=>{
+      // 获取分页数据
+      this.props.companyweblist(this.state.select)
+    })
+  }
+
+  componentWillMount() {
+    //获取公司类型
+    this.props.productclassify({
+      page: 1,
+      limit: 100
+    })
+    //  获取公司列表
+    this.props.companyweblist(this.state.select)
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.productReducer.getIn(["productclassify"])) {
+      console.log("公司类型", nextProps.productReducer.getIn(["productclassify", "data", "rows"]))
+      this.setState({
+        productclassify: nextProps.productReducer.getIn(["productclassify", "data", "rows"])
+      })
+    }
+    //公司列表
+    if (nextProps.companyReducer.getIn(["companyweblist"])) {
+      console.log("公司列表", nextProps.companyReducer.getIn(["companyweblist", "data", "rows"]))
+      let data = nextProps.companyReducer.getIn(["companyweblist", "data", "rows"]);
+      let total = nextProps.companyReducer.getIn(["companyweblist", "data", "total"]);
+      for (let i = 0; i < data.length; i++) {
+        data[i].key = i + 1;
+      }
+      this.setState({
+        data,
+        total
+      })
+    }
   }
 
 
 
-
-
   render() {
-    let { routerList, searchValue } = this.state;
-    let { orderState, orderType, payType, createTime } = this.state.select
+    let { routerList, searchValue, productclassify } = this.state;
+    let { companyStatus, companyTypeId, establishBeginTime, establishEndTime } = this.state.select
 
     return (
       <div className="product-container">
@@ -317,27 +346,28 @@ class CompanyList extends Component {
           <div className="line">
             <div>公司状态 ：</div>
             <div>
-              <span onClick={this.setOrderState.bind(this, 0)} className={orderState == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={orderState == 1 ? "active-bg" : ""}>待设立</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={orderState == 2 ? "active-bg" : ""}>审核中</span>
-              <span onClick={this.setOrderState.bind(this, 3)} className={orderState == 3 ? "active-bg" : ""}>设立中</span>
-              <span onClick={this.setOrderState.bind(this, 4)} className={orderState == 4 ? "active-bg" : ""}>已设立</span>
+              <span onClick={this.setOrderState.bind(this, "")} className={companyStatus == "" ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={companyStatus == 1 ? "active-bg" : ""}>待设立</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={companyStatus == 2 ? "active-bg" : ""}>审核中</span>
+              <span onClick={this.setOrderState.bind(this, 3)} className={companyStatus == 3 ? "active-bg" : ""}>设立中</span>
+              <span onClick={this.setOrderState.bind(this, 4)} className={companyStatus == 4 ? "active-bg" : ""}>已设立</span>
             </div>
           </div>
           <div className="line">
             <div>公司类型 ：</div>
             <div>
-              <span onClick={this.setOrderType.bind(this, 0)} className={orderType == 0 ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderType.bind(this, 1)} className={orderType == 1 ? "active-bg" : ""}>个人独资</span>
-              <span onClick={this.setOrderType.bind(this, 2)} className={orderType == 2 ? "active-bg" : ""}>合伙企业</span>
-              <span onClick={this.setOrderType.bind(this, 3)} className={orderType == 3 ? "active-bg" : ""}>有限公司</span>
-              <span onClick={this.setOrderType.bind(this, 4)} className={orderType == 4 ? "active-bg" : ""}>个体户</span>
+              <span onClick={this.setOrderType.bind(this, "")} className={companyTypeId == "" ? "active-bg" : ""}>全部</span>
+              {
+                productclassify ? productclassify.map((item, key) => {
+                  return <span key={key} onClick={this.setOrderType.bind(this, item.id)} className={companyTypeId == item.id ? "active-bg" : ""}>{item.name}</span>
+                }) : ""
+              }
             </div>
           </div>
           <div className="line">
             <div>设立时间 ：</div>
             <div>
-              <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setCreateTime.bind(this, "")} className={establishBeginTime == "" || establishEndTime == "" ? "active-bg" : ""}>全部</span>
               <RangePicker
                 onChange={this.onChange}
                 value={searchValue}
@@ -356,7 +386,7 @@ class CompanyList extends Component {
           <div className="line">
             <div></div>
             <div style={{ marginLeft: "62px" }}>
-              <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+              <Button onClick={this.searchClick} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
               <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
             </div>
           </div>
@@ -365,7 +395,19 @@ class CompanyList extends Component {
         {/* table 部分 */}
         <div className="tables-content">
           {/* 123 */}
-          <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+          <Table bordered 
+          rowSelection={{
+            onChange: (selectedRowKeys, selectedRows) => {
+              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            },
+          }}
+          pagination={{
+            total: this.state.total,
+            showTotal: (total) => `共 ${total} 条`,
+            onChange: (current) => this.paginationChange(current),
+            pageSize: this.state.select.limit,
+          }}
+          columns={this.state.columns} dataSource={this.state.data} />
         </div>
 
 

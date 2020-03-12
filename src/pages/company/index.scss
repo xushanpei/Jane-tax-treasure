@@ -288,3 +288,23 @@
         min-height:calc(100vh - 500px) !important;
     height: auto !important;
 }
+
+.tipButton{
+    float: right;
+}
+// 资料补全信息
+.addInfo{
+    background: #FFF;
+    width: 100%;
+    height: 200px;
+    margin-top:20px;
+    & > p{
+       border-bottom:1px solid #E5E5E5;
+       line-height: 42px;
+       font-size: 19px;
+       padding-left:20px;
+    }
+    .addInfo-content{
+        padding: 20px;
+    }
+}

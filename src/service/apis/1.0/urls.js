@@ -42,5 +42,13 @@ export const urls = {
   //确认收款
   COMFIRMOFFLINEPAY:"/simpleTax/comfirmOfflinePay",
   //添加备注
-  ADDREMARK:"/simpleTax/orderWeb/addRemark"
+  ADDREMARK:"/simpleTax/orderWeb/addRemark",
+
+   /**
+   * 公司模块
+   */
+  //公司列表
+  COMPANYWEBLIST:"/simpleTax/companyWeb/companyWebList",
+  //公司详情
+  COMPANYDETAILWEB:"/simpleTax/companyWeb/companyDetailWeb",
 };

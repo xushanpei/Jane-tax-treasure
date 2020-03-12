@@ -118,6 +118,11 @@ class CompanyListOne extends Component {
                                     <span>已花费 24小时56分钟</span>
                                 </div>
                                 <div>
+                                    <span>复审核</span><br />
+                                    <span>审核人 : 徐梦绮</span> <br />
+                                    <span>已花费 24小时56分钟</span>
+                                </div>
+                                <div>
                                     <span>设立</span><br />
                                     <span>经办人 : 徐善培</span>
                                 </div>
@@ -126,7 +131,7 @@ class CompanyListOne extends Component {
                                     <span>经办人 : 徐善培</span>
                                 </div>
                             </div>
-                            <p style={{ width: "58%" }} className="progress-line"></p>
+                            <p style={{ width: "32%" }} className="progress-line"></p>
                         </div>
                     </div>
                     {/* 基本信息 */}

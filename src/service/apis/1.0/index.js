@@ -43,7 +43,15 @@ class Apis {
   //确认收款
   comfirmofflinepay = data => ApiRequest.post(`${urls.COMFIRMOFFLINEPAY}`,data);
   //添加备注
-  addremark = data=> ApiRequest.put(`${urls.ADDREMARK}`,data)
+  addremark = data=> ApiRequest.put(`${urls.ADDREMARK}`,data);
+
+  /**
+   * 公司 API
+   */
+  //公司列表
+  companyweblist = data=> ApiRequest.get(`${urls.COMPANYWEBLIST}?page=${data.page}&limit=${data.limit}&companyStatus=${data.companyStatus}&companyTypeId=${data.companyTypeId}&establishBeginTime=${data.establishBeginTime}&establishEndTime=${data.establishEndTime}&search=${data.search}`);
+  //公司详情
+  companydetailweb = data=> ApiRequest.get(`${urls.COMPANYDETAILWEB}?companyId=${data.companyId}`)
 }
 
 export default new Apis();

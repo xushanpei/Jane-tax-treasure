@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Checkbox, Form } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown,Radio, Icon, Checkbox } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
@@ -9,12 +9,17 @@ import { Link } from 'react-router-dom'
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
-const FormItem = Form.Item;
 
-class CompanyListTwos extends Component {
+class CompanyListOneRepeat extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            value:1,
+            options:[
+                { label: '选项1', value: 'Apple' },
+                { label: '选项2', value: 'Pear' },
+                { label: '选项3', value: 'Orange' },
+              ],
             routerList: [
                 {
                     name: "首页",
@@ -61,110 +66,22 @@ class CompanyListTwos extends Component {
                     type: "XXXXX",
                 },
             ],
-            plainOptions: [
-                // "1、名称审核完成",
-                // "2、工商阶段完成",
-                // "3、银行开户完成"
-                // 4. 税务认证
-                {
-                    label: '名称审核完成',
-                    value: 0
-                },
-                {
-                    label: '工商阶段完成',
-                    value: 1
-                },
-                {
-                    label: '银行开户完成',
-                    value: 2
-                },
-                {
-                    label: '税务认证',
-                    value: 3
-                },
-            ],
-            checkedList: [],
-            piclistOptions: [
-                {
-                    label: '法人身份证',
-                    value: 0
-                },
-                {
-                    label: '法人一寸白底照',
-                    value: 1
-                },
-            ],
-            piclist: [],
-            visible: false
+
         }
     }
 
 
-    onChange = checkedList => {
+
+    onChange = e => {
+        console.log('radio checked', e.target.value);
         this.setState({
-            checkedList,
+          value: e.target.value,
         });
-    };
-    onChangepiclist = piclist => {
-        this.setState({
-            piclist
-        })
-    }
-
-    //增加上传设立资料
-    showModal = () => {
-        console.log("增加")
-    }
-
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-
-    handleOk = e => {
-        this.props.form.validateFields((err, values) => {
-            if (err) return;//检查Form表单填写的数据是否满足rules的要求
-            console.log(values)
-            let data = this.state.piclistOptions;
-            data.push(values);
-            this.setState({
-                visible: false,
-                piclistOptions:data
-            },()=>{
-                this.props.form.resetFields()
-            });
-        })
-    };
-
-    handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
-
-    // 
-    componentWillMount(){
-        window.addEventListener("popstate", function(e) { 
-            console.log("浏览器返回", e)
-            }, false);
-    }
+      };
 
 
     render() {
         let { routerList } = this.state
-        const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 6 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 16 },
-            },
-        };
         return (
             <div>
                 <BreadeHeader routerList={routerList}></BreadeHeader>
@@ -176,14 +93,13 @@ class CompanyListTwos extends Component {
                             <span>
                                 {/* 通过不通过按钮组 */}
                                 <span className="btn-diy">
-                                <Link to="/companyListThree">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    <Link to="/companyListTwo">
+                                        <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
                                     </Link>
+
+                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
                                 </span>
-                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button>
-                                <span className="btn-diy">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
-                                </span>
+                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>不通过</Button>
                             </span>
                         </div>
                         <div className="title-detail">
@@ -195,15 +111,11 @@ class CompanyListTwos extends Component {
                                 <span>审核人 : 徐梦绮</span>
                                 <span>审核时间 : 2020-02-30 18:48:00</span>
                             </div>
-                            <div>
-                                <span>经办人 : 徐梦绮</span>
-                                <span>办理时间 : 2020-02-30 18:48:00</span>
-                            </div>
                         </div>
                         {/* 状态 */}
                         <div className="state">
                             <p>状态</p>
-                            <p>设立中</p>
+                            <p>待复审</p>
                         </div>
                     </div>
                     {/* 设立流程 */}
@@ -228,61 +140,36 @@ class CompanyListTwos extends Component {
                                 </div>
                                 <div>
                                     <span>设立</span><br />
-                                    <span>经办人 : 徐善培</span><br />
-                                    <span>已花费 24小时56分钟</span>
+                                    <span>经办人 : 徐善培</span>
                                 </div>
                                 <div>
                                     <span>已设立</span><br />
                                     <span>经办人 : 徐善培</span>
                                 </div>
                             </div>
-                            <p style={{ width: "78%" }} className="progress-line"></p>
+                            <p style={{ width: "52%" }} className="progress-line"></p>
                         </div>
                     </div>
-                    {/* 设立流程 ++  */}
-                    {/* 设立流程 */}
-                    <div className="process">
-                        <p>设立流程 <span className="updateData">一键下载设立资料</span></p>
-                        {/* 设立中新增设立流程 */}
-                        <div className="addProgress">
-                            <CheckboxGroup
-                                options={this.state.plainOptions}
-                                value={this.state.checkedList}
-                                onChange={this.onChange}
-                            />
-                            <p className="borderp"></p>
-                            <p style={{ marginTop: "15px" }}>请选择需要用户上传的设立资料</p>
+                    {/* 资料补全信息 */}
+                    <div className="addInfo">
+                        <p>资料补全信息</p>
+                        <div className="addInfo-content">
+                        <span>是否加刻公章:</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Radio.Group onChange={this.onChange} value={this.state.value}>
+                            <Radio value={1}>是</Radio>
+                            <Radio value={2}>否</Radio>
+                        </Radio.Group> <br/>
 
-                            <CheckboxGroup style={{ marginTop: "15px" }}
-                                options={this.state.piclistOptions}
-                                value={this.state.piclist}
-                                onChange={this.onChangepiclist}
-                            /> &nbsp;&nbsp;
-                            <span onClick={this.showModal} className="add"><Icon type="plus-circle" /> 增加上传项</span>
-                            {/* 添加一键通知按钮 */}
-                            <Button className="tipButton"  style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>一键通知用户</Button>
-                            {/* 查看上传资料 */}
-                            <div className="lookList">
-                                <p>查看上传资料</p>
-                                <div className="lookList-content">
-                                    <div>
-                                        <img src={require("../../assets/image/sfz.png")} alt="" />
-                                        <p>资料名称</p>
-                                    </div>
-                                    <div>
-                                        <img src={require("../../assets/image/sfz.png")} alt="" />
-                                        <p>资料名称</p>
-                                    </div>
-                                    <div>
-                                        <img src={require("../../assets/image/sfz.png")} alt="" />
-                                        <p>资料名称</p>
-                                    </div>
-                                    <div>
-                                        <img src={require("../../assets/image/sfz.png")} alt="" />
-                                        <p>资料名称</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div style={{marginTop:"10px"}}>
+                        <span>经营范围:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Checkbox.Group options={this.state.options} defaultValue={['Apple']}  />
+                        </div>
+                        <div style={{marginTop:"10px"}}>
+                            <span>法人学历: 本科</span>
+                        </div>
+                        <div style={{marginTop:"10px"}}>
+                            <span>政治面貌: 党员</span>
+                        </div>
                         </div>
                     </div>
 
@@ -361,49 +248,11 @@ class CompanyListTwos extends Component {
                         </div>
                     </div>
 
-                    {/* 通知记录 */}
-                    <div className="process">
-                        <p>通知记录</p>
-                        <div className="todo_table">
-                            <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
-                        </div>
-                    </div>
-
                 </div>
-
-                {/* 增加用户上传资料modal */}
-                <Modal
-                    title="增加上传项"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                >
-                    <Form {...formItemLayout}>
-                        <FormItem label="上传名称">
-                            {getFieldDecorator('label', {
-                                rules: [{ required: true, message: '请输入上传名称' }],
-                            })(
-                                <Input placeholder="请输入上传名称" />
-                            )}
-                        </FormItem>
-                        <FormItem label="上传分类">
-                            {getFieldDecorator('value', {
-                                rules: [{ required: true, message: '请选择上传分类' }],
-                            })(
-                                <Select placeholder="请选择上传分类" style={{ width: "160px" }}>
-                                    <Option value="1">图片</Option>
-                                    <Option value="2">视频</Option>
-                                    <Option value="3">文件</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                    </Form>
-                </Modal>
 
             </div>
         );
     }
 }
-const CompanyListTwo = Form.create()(CompanyListTwos);
 
-export default CompanyListTwo;
+export default CompanyListOneRepeat;
