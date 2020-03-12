@@ -31,7 +31,7 @@ class ApiRequest {
 
   authentication = data => {
     // console.log("判断token状态,是否过期",data);
-    message.error("用户认证出错，正在跳转登录页面！");
+    message.error(data.message);
     setTimeout(() => {
           localStorage.removeItem(`persist:${config.persist}`);
           window.location.href = "/login";
@@ -60,7 +60,7 @@ class ApiRequest {
         })
         .catch(error => {
           let errStr = JSON.stringify(error);
-          this.authentication(errStr);
+          // this.authentication(errStr);
           reject(errStr);
         });
     });
@@ -105,7 +105,7 @@ class ApiRequest {
         })
         .catch(error => {
           let errStr = JSON.stringify(error);
-          this.authentication(errStr);
+          // this.authentication(errStr);
           reject(errStr);
         });
     });
@@ -128,7 +128,7 @@ class ApiRequest {
           if (url.includes("login")) {
             reject(errStr);
           } else {
-            this.authentication(errStr);
+            // this.authentication(errStr);
           }
         });
     });
@@ -168,7 +168,7 @@ class ApiRequest {
         })
         .catch(error => {
           let errStr = JSON.stringify(error);
-          this.authentication(errStr);
+          // this.authentication(errStr);
           reject(errStr);
         });
     });
