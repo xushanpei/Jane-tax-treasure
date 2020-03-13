@@ -26,7 +26,14 @@ const { RangePicker } = DatePicker
         // companydetailweb: companyAction.companydetailweb,
         // //获取公司类型
         // productclassify: productAction.productclassify,
-        getbasiccompany:companyAction.getbasiccompany
+        //基本信息,对接人信息
+        getbasiccompany:companyAction.getbasiccompany,
+        //操作记录
+        getcompanyoperaterecord:companyAction.getcompanyoperaterecord,
+        //头部返回信息
+        companyoperatedetail:companyAction.companyoperatedetail,
+        //补全资料信息
+        getcompletedata:companyAction.getcompletedata
     }
 )
 class CompanyDetail extends Component {
@@ -36,7 +43,14 @@ class CompanyDetail extends Component {
             detailId: "",
             companyStatus: "",
             //id 的基本信息对接人信息
-            getbasiccompany:""
+            getbasiccompany:"",
+            //操作记录
+            getcompanyoperaterecord:"",
+            //头部返回信息
+            headerData:"",
+            //资料补全信息
+            getcompletedata:"",
+
         };
     }
 
@@ -59,7 +73,18 @@ class CompanyDetail extends Component {
     this.props.getbasiccompany({
         companyId: this.props.match.params.data
     })
-
+    //操作记录
+    this.props.getcompanyoperaterecord({
+        companyId: this.props.match.params.data
+    })
+    //头部返回信息
+    this.props.companyoperatedetail({
+        companyId: this.props.match.params.data
+    })
+     //补全资料信息
+     this.props.getcompletedata({
+        companyId: this.props.match.params.data
+     })
 
     }
 
@@ -71,11 +96,65 @@ class CompanyDetail extends Component {
                 getbasiccompany:nextProps.companyReducer.getIn(["getbasiccompany","data"])
             }) 
         }
+        if(nextProps.companyReducer.getIn(["getcompanyoperaterecord"])){
+            //未传props
+            console.log("操作记录",nextProps.companyReducer.getIn(["getcompanyoperaterecord"]));
+            this.setState({
+                getcompanyoperaterecord: nextProps.companyReducer.getIn(["getcompanyoperaterecord","data"])
+            })
+        }
+        //头部返回信息监听
+        if(nextProps.companyReducer.getIn(["companyoperatedetail","data"])){
+           console.log("头部返回信息",nextProps.companyReducer.getIn(["companyoperatedetail","data"]));
+           this.setState({
+               headerData: nextProps.companyReducer.getIn(["companyoperatedetail","data"])
+           })
+        }
+        //补全资料信息
+        if(nextProps.companyReducer.getIn(["getcompletedata"])){
+            console.log("补全资料信息",nextProps.companyReducer.getIn(["getcompletedata"]));
+            this.setState({
+                getcompletedata: nextProps.companyReducer.getIn(["getcompletedata","data"])
+            })
+        }
     }
 
 
+
+
+
+
+    // 修改状态的方法
+    //状态一旦修改,数据需要重新获取
+
+    changeState = (state)=>{
+      this.setState({
+        companyStatus :state
+      },()=>{
+           //获取公司操作基本信息,对接人信息
+    this.props.getbasiccompany({
+        companyId: this.props.match.params.data
+    })
+    //操作记录
+    this.props.getcompanyoperaterecord({
+        companyId: this.props.match.params.data
+    })
+    //头部返回信息
+    this.props.companyoperatedetail({
+        companyId: this.props.match.params.data
+    })
+      })
+    }
+
+
+
+
+
+
+
+
     render() {
-        let { companyStatus , getbasiccompany} = this.state
+        let { companyStatus , getbasiccompany,getcompanyoperaterecord,headerData,getcompletedata} = this.state
         console.log(companyStatus)
         return (
             <div className="companyState">
@@ -84,23 +163,21 @@ class CompanyDetail extends Component {
                 companyStatus :   1:待设立 2:审核中 2-1:复审核中 3:设立中 4:已设立’
           */}
                 {
-                    companyStatus == "1" ? <CompanyListOne baseInfo = {getbasiccompany}></CompanyListOne> : ""
+                    // companyStatus == "1" ? <CompanyListOne headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2" ? <CompanyListOne baseInfo = {getbasiccompany}></CompanyListOne> : ""
+                    companyStatus == "2" ? <CompanyListOne changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2-1" ? <CompanyListOneRepeat baseInfo = {getbasiccompany}></CompanyListOneRepeat> : ""
+                    companyStatus == "2-1" ? <CompanyListOneRepeat getcompletedata={getcompletedata} changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOneRepeat> : ""
                 }
                 {
-                    companyStatus == "3" ? <CompanyListTwo baseInfo = {getbasiccompany}></CompanyListTwo> : ""
+                    companyStatus == "3" ? <CompanyListTwo changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListTwo> : ""
                 }
                 {
-                    companyStatus == "4" ? <CompanyListThree baseInfo = {getbasiccompany}></CompanyListThree> : ""
+                    companyStatus == "4" ? <CompanyListThree changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListThree> : ""
                 }
 
-                {/* <CompanyListTwo></CompanyListTwo>
-          <CompanyListThree></CompanyListThree> */}
             </div>
         );
     }

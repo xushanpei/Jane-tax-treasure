@@ -112,27 +112,29 @@ class CompanyList extends Component {
         {
           title: '操作',
           key: 'action',
-          render: (text, record) => (
-            <Dropdown overlay={
-              <Menu>
-                <Menu.Item key="0">
-                  <Link to={`/companyDetail/${record.companyId}`}>
-                    公司操作
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="1">
-                  <Link to="/companyListThree">
-                    公司详情
-                    </Link>
-                </Menu.Item>
-              </Menu>
-            } trigger={['click']}>
-              <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                操作 <Icon type="down" />
-              </span>
-            </Dropdown>
-
-          ),
+          render: (text, record) => {
+            if( record.companyStatus !=1 ){
+              return   <Dropdown overlay={
+                <Menu>
+                  {/* record.companyStatus */}
+                  <Menu.Item key="0">
+                    <Link to={`/companyDetail/${record.companyId}`}>
+                      公司操作
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="1">
+                    <Link to="/companyListThree">
+                      公司详情
+                      </Link>
+                  </Menu.Item>
+                </Menu>
+              } trigger={['click']}>
+                <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  操作 <Icon type="down" />
+                </span>
+              </Dropdown>
+            }
+          },
         },
       ],
       data: [

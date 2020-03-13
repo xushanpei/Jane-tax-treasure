@@ -55,6 +55,27 @@ export const urls = {
   COMPANYDETAILWEB:"/simpleTax/companyWeb/companyDetailWeb",
   //公司操作-基本信息,对接人信息
   GETBASICCOMPANY:"/simpleTax/companyWeb/getBasicCompany",
+  //公司操作-操作记录
+  GETCOMPANYOPERATERECORD:"/simpleTax/companyWeb/getCompanyOperateRecord",
+  //公司操作头部返回信息
+  COMPANYOPERATEDETAIL:'/simpleTax/companyWeb/companyOperateDetail',
+  //审核通过
+  COMPANYOPERATEPASS:"/simpleTax/companyWeb/companyOperatePass",
+  //审核不通过
+  COMPANYOPERATENOPASS:"/simpleTax/companyWeb/companyOperateNoPass",
+  ////复审-资料补全信息
+  GETCOMPLETEDATA:"/simpleTax/companyWeb/getCompleteData",
+  // //复审 --通过
+  COMPANYREVIEWOPERATEPASS:"/simpleTax/companyWeb/companyReviewOperatePass",
+  //复审--不通过
+  COMPANYREVIEWOPERATENOPASS:"/simpleTax/companyWeb/companyReviewOperateNoPass",
+  
+  //设立
+  COMPANYOPERATEESTABLISH:"/simpleTax/companyWeb/companyOperateEstablish",
+  //驳回
+  COMPANYOPERATEREJECT:"/simpleTax/companyWeb/companyOperateReject",
+  //锁定
+  COMPANYOPERATEBILLLOCK:"/simpleTax/companyWeb/companyOperateBillLock",
 
   /**
    * 发票

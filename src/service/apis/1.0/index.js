@@ -56,6 +56,20 @@ class Apis {
   companydetailweb = data=> ApiRequest.get(`${urls.COMPANYDETAILWEB}?companyId=${data.companyId}`);
   //公司操作-基本信息,对接人信息
   getbasiccompany = data=> ApiRequest.get(`${urls.GETBASICCOMPANY}?companyId=${data.companyId}`);
+  //公司操作-操作记录
+  getcompanyoperaterecord = data=> ApiRequest.get(`${urls.GETCOMPANYOPERATERECORD}?companyId=${data.companyId}`);
+  //公司操作头部返回信息
+  companyoperatedetail = data=> ApiRequest.get(`${urls.COMPANYOPERATEDETAIL}?companyId=${data.companyId}`);
+  //审核通过
+  companyoperatepass = data=> ApiRequest.put(`${urls.COMPANYOPERATEPASS}`,data);
+  //审核不通过
+  companyoperatenopass = data=> ApiRequest.put(`${urls.COMPANYOPERATENOPASS}`,data);
+  //复审-资料补全信息
+  getcompletedata = data=>ApiRequest.get(`${urls.GETCOMPLETEDATA}?companyId=${data.companyId}`);
+  //复审 --通过
+  companyreviewoperatepass = data=>ApiRequest.put(`${urls.COMPANYREVIEWOPERATEPASS}`,data);
+  //复审--不通过
+  companyreviewoperatenopass = data=> ApiRequest.put(`${urls.COMPANYREVIEWOPERATENOPASS}`,data);
 
 
   /**
