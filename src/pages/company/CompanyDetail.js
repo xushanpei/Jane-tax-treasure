@@ -12,7 +12,8 @@ import productAction from "../../redux/actions/productAction";
 import CompanyListOne from "./CompanyListOne";
 import CompanyListOneRepeat from "./CompanyListOneRepeat"
 import CompanyListTwo from "./CompanyListTwo";
-import CompanyListThree from "./CompanyListThree"
+import CompanyListThree from "./CompanyListThree";
+import PeopleRevise from "./PeopleRevise"
 
 
 const { Option } = Select;
@@ -27,13 +28,15 @@ const { RangePicker } = DatePicker
         // //获取公司类型
         // productclassify: productAction.productclassify,
         //基本信息,对接人信息
-        getbasiccompany:companyAction.getbasiccompany,
+        getbasiccompany: companyAction.getbasiccompany,
         //操作记录
-        getcompanyoperaterecord:companyAction.getcompanyoperaterecord,
+        getcompanyoperaterecord: companyAction.getcompanyoperaterecord,
         //头部返回信息
-        companyoperatedetail:companyAction.companyoperatedetail,
+        companyoperatedetail: companyAction.companyoperatedetail,
         //补全资料信息
-        getcompletedata:companyAction.getcompletedata
+        getcompletedata: companyAction.getcompletedata,
+        //修改对接人信息
+        updatedock: companyAction.updatedock,
     }
 )
 class CompanyDetail extends Component {
@@ -43,14 +46,15 @@ class CompanyDetail extends Component {
             detailId: "",
             companyStatus: "",
             //id 的基本信息对接人信息
-            getbasiccompany:"",
+            getbasiccompany: "",
             //操作记录
-            getcompanyoperaterecord:"",
+            getcompanyoperaterecord: "",
             //头部返回信息
-            headerData:"",
+            headerData: "",
             //资料补全信息
-            getcompletedata:"",
-
+            getcompletedata: "",
+            peopleReviseVisible:false,
+            
         };
     }
 
@@ -69,52 +73,52 @@ class CompanyDetail extends Component {
                 })
             }
         }
-    //获取公司操作基本信息,对接人信息
-    this.props.getbasiccompany({
-        companyId: this.props.match.params.data
-    })
-    //操作记录
-    this.props.getcompanyoperaterecord({
-        companyId: this.props.match.params.data
-    })
-    //头部返回信息
-    this.props.companyoperatedetail({
-        companyId: this.props.match.params.data
-    })
-     //补全资料信息
-     this.props.getcompletedata({
-        companyId: this.props.match.params.data
-     })
+        //获取公司操作基本信息,对接人信息
+        this.props.getbasiccompany({
+            companyId: this.props.match.params.data
+        })
+        //操作记录
+        this.props.getcompanyoperaterecord({
+            companyId: this.props.match.params.data
+        })
+        //头部返回信息
+        this.props.companyoperatedetail({
+            companyId: this.props.match.params.data
+        })
+        //补全资料信息
+        this.props.getcompletedata({
+            companyId: this.props.match.params.data
+        })
 
     }
 
-    componentWillReceiveProps(nextProps){
-       
-        if(nextProps.companyReducer.getIn(["getbasiccompany","data"])){
-            
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.companyReducer.getIn(["getbasiccompany", "data"])) {
+
             this.setState({
-                getbasiccompany:nextProps.companyReducer.getIn(["getbasiccompany","data"])
-            }) 
+                getbasiccompany: nextProps.companyReducer.getIn(["getbasiccompany", "data"])
+            })
         }
-        if(nextProps.companyReducer.getIn(["getcompanyoperaterecord"])){
+        if (nextProps.companyReducer.getIn(["getcompanyoperaterecord"])) {
             //未传props
-            console.log("操作记录",nextProps.companyReducer.getIn(["getcompanyoperaterecord"]));
+            console.log("操作记录", nextProps.companyReducer.getIn(["getcompanyoperaterecord"]));
             this.setState({
-                getcompanyoperaterecord: nextProps.companyReducer.getIn(["getcompanyoperaterecord","data"])
+                getcompanyoperaterecord: nextProps.companyReducer.getIn(["getcompanyoperaterecord", "data"])
             })
         }
         //头部返回信息监听
-        if(nextProps.companyReducer.getIn(["companyoperatedetail","data"])){
-           console.log("头部返回信息",nextProps.companyReducer.getIn(["companyoperatedetail","data"]));
-           this.setState({
-               headerData: nextProps.companyReducer.getIn(["companyoperatedetail","data"])
-           })
+        if (nextProps.companyReducer.getIn(["companyoperatedetail", "data"])) {
+            console.log("头部返回信息", nextProps.companyReducer.getIn(["companyoperatedetail", "data"]));
+            this.setState({
+                headerData: nextProps.companyReducer.getIn(["companyoperatedetail", "data"])
+            })
         }
         //补全资料信息
-        if(nextProps.companyReducer.getIn(["getcompletedata"])){
-            console.log("补全资料信息",nextProps.companyReducer.getIn(["getcompletedata"]));
+        if (nextProps.companyReducer.getIn(["getcompletedata"])) {
+            console.log("补全资料信息", nextProps.companyReducer.getIn(["getcompletedata"]));
             this.setState({
-                getcompletedata: nextProps.companyReducer.getIn(["getcompletedata","data"])
+                getcompletedata: nextProps.companyReducer.getIn(["getcompletedata", "data"])
             })
         }
     }
@@ -127,25 +131,61 @@ class CompanyDetail extends Component {
     // 修改状态的方法
     //状态一旦修改,数据需要重新获取
 
-    changeState = (state)=>{
-      this.setState({
-        companyStatus :state
-      },()=>{
-           //获取公司操作基本信息,对接人信息
-    this.props.getbasiccompany({
-        companyId: this.props.match.params.data
-    })
-    //操作记录
-    this.props.getcompanyoperaterecord({
-        companyId: this.props.match.params.data
-    })
-    //头部返回信息
-    this.props.companyoperatedetail({
-        companyId: this.props.match.params.data
-    })
-      })
+    changeState = (state) => {
+        this.setState({
+            companyStatus: state
+        }, () => {
+            //获取公司操作基本信息,对接人信息
+            this.props.getbasiccompany({
+                companyId: this.props.match.params.data
+            })
+            //操作记录
+            this.props.getcompanyoperaterecord({
+                companyId: this.props.match.params.data
+            })
+            //头部返回信息
+            this.props.companyoperatedetail({
+                companyId: this.props.match.params.data
+            })
+        })
     }
 
+
+    //修改对接人信息
+    updatedock = () => {
+        this.setState({
+            peopleReviseVisible: true
+        })
+    }
+
+  //对接人信息修改
+    peopleReviseHandleOk = e => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
+            console.log("对接人信息",e)
+            this.setState({
+                peopleReviseVisible: false
+            }, () => {
+                //对接人信息修改
+                this.props.updatedock(
+                    Object.assign({ id: this.state.getbasiccompany.companyId }, e)
+                )
+                //对接人信息修改后更新
+                setTimeout(()=>{
+                    this.props.getbasiccompany({
+                        companyId: this.props.match.params.data
+                    })
+                },300)
+            })
+        // })
+    };
+
+    peopleReviseHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            peopleReviseVisible: false
+        });
+    };
 
 
 
@@ -154,7 +194,7 @@ class CompanyDetail extends Component {
 
 
     render() {
-        let { companyStatus , getbasiccompany,getcompanyoperaterecord,headerData,getcompletedata} = this.state
+        let { companyStatus, getbasiccompany, getcompanyoperaterecord, headerData, getcompletedata } = this.state
         console.log(companyStatus)
         return (
             <div className="companyState">
@@ -166,18 +206,26 @@ class CompanyDetail extends Component {
                     // companyStatus == "1" ? <CompanyListOne headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2" ? <CompanyListOne changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOne> : ""
+                    companyStatus == "2" ? <CompanyListOne updatedock = {this.updatedock} changeState={this.changeState} headerData={headerData} baseInfo={getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOne> : ""
                 }
                 {
-                    companyStatus == "2-1" ? <CompanyListOneRepeat getcompletedata={getcompletedata} changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOneRepeat> : ""
+                    companyStatus == "2-1" ? <CompanyListOneRepeat updatedock = {this.updatedock}  getcompletedata={getcompletedata} changeState={this.changeState} headerData={headerData} baseInfo={getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListOneRepeat> : ""
                 }
                 {
-                    companyStatus == "3" ? <CompanyListTwo changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListTwo> : ""
+                    companyStatus == "3" ? <CompanyListTwo updatedock = {this.updatedock} changeState={this.changeState} headerData={headerData} baseInfo={getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListTwo> : ""
                 }
                 {
-                    companyStatus == "4" ? <CompanyListThree changeState={this.changeState} headerData={headerData} baseInfo = {getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListThree> : ""
+                    companyStatus == "4" ? <CompanyListThree updatedock = {this.updatedock} changeState={this.changeState} headerData={headerData} baseInfo={getbasiccompany} getcompanyoperaterecord={getcompanyoperaterecord}></CompanyListThree> : ""
                 }
 
+                <PeopleRevise
+                    title="修改对接人信息"
+                    visible={this.state.peopleReviseVisible}
+                    onOk={this.peopleReviseHandleOk}
+                    onCancel={this.peopleReviseHandleCancel}
+                    baseInfo = {this.state.getbasiccompany}
+                >
+                </PeopleRevise>
             </div>
         );
     }

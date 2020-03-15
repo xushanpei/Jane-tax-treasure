@@ -119,3 +119,26 @@
     min-height:calc(100vh - 540px) !important;
     height: auto !important;
 }
+.payModal{
+    p{
+        padding: 5px 0;
+        font-size: 16px;
+        & > span:first-child{
+            width: 95px;
+            display: inline-block;
+            text-align: right;
+            margin-right: 10px;
+        }
+    }
+    .daole{
+        font-weight: 600;
+    }
+    .pic{
+        position: relative;
+        top:-52px;
+    }
+    img{
+        width: 200px;
+        height: 130px;
+    }
+}

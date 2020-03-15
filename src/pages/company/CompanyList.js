@@ -123,9 +123,10 @@ class CompanyList extends Component {
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="1">
-                    <Link to="/companyListThree">
+                    {/* <Link to="/companyListThree">
                       公司详情
-                      </Link>
+                      </Link> */}
+                      添加信息
                   </Menu.Item>
                 </Menu>
               } trigger={['click']}>

@@ -71,6 +71,17 @@ class Apis {
   //复审--不通过
   companyreviewoperatenopass = data=> ApiRequest.put(`${urls.COMPANYREVIEWOPERATENOPASS}`,data);
 
+  //  //设立
+  companyoperateestablish = data=> ApiRequest.put(`${urls.COMPANYOPERATEESTABLISH}`,data);
+  //  //驳回
+  companyoperatereject = data=> ApiRequest.put(`${urls.COMPANYOPERATEREJECT}`,data);
+  //  //锁定
+  companyoperatebilllock = data=> ApiRequest.put(`${urls.COMPANYOPERATEBILLLOCK}`,data);
+  //发消息给客户
+  sendnotice = data=> ApiRequest.post(`${urls.SENDNOTICE}`,data);
+  //修改对接人信息
+  updatedock =data=> ApiRequest.put(`${urls.UPDATEDOCK}`,data);
+
 
   /**
    * 发票

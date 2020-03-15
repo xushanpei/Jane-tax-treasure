@@ -298,19 +298,10 @@ class OrderDetail extends Component {
 
   //确认收款
   okPay = ()=>{
-    // 确认收款操作
-    this.props.comfirmofflinepay({
-      orderId: this.props.match.params.id
-    });
+    // 
     this.setState({
-      name:"已支付"
-    },()=>{
-      setTimeout(()=>{
-        this.props.orderdetail({
-          orderId: this.props.match.params.id
-        });
-      },300)
-    })
+      visible: true,
+    });
 
   }
 
@@ -325,6 +316,20 @@ class OrderDetail extends Component {
     console.log(e);
     this.setState({
       visible: false,
+    },()=>{
+      // 确认收款操作
+    this.props.comfirmofflinepay({
+      orderId: this.props.match.params.id
+    });
+    this.setState({
+      name:"已支付"
+    },()=>{
+      setTimeout(()=>{
+        this.props.orderdetail({
+          orderId: this.props.match.params.id
+        });
+      },300)
+    })
     });
   };
 
@@ -477,9 +482,32 @@ class OrderDetail extends Component {
           }
 
         </div>
-
-
-
+        <Modal 
+        wrapClassName="payModal"
+          title="确认收款信息"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+    {
+      this.state.data4[0] ? <>
+      <p><span>支付金额:</span> <span className="daole">￥{this.state.data4[0].amount}</span> </p>
+        <p><span>付款时间:</span> <span>{this.state.data4[0].payTime}</span></p>
+        <p><span>付款方名称:</span> <span>{this.state.data4[0].payName}</span></p>
+          <p><span className="pic">支付凭证: </span>
+            <img src={this.state.data4[0].voucher ? this.state.data4[0].voucher : require("../../assets/image/sfz.png")} alt=""/>
+          </p>
+      </> :""
+    }
+          
+        </Modal>
+        
+        {/* key:1,
+            amount:data.amount? data.amount : "/",
+            payName:data.payName,
+            payStatusName:data.payStatusName,
+            payTime:data.payTime ? data.payName : "/",
+            voucher:data.voucher */}
       </div>
     );
   }

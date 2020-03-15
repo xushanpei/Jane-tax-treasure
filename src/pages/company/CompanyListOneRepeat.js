@@ -120,8 +120,9 @@ class CompanyListOneRepeat extends Component {
         if(nextProps.companyReducer.getIn(["companyreviewoperatepass"])){
             console.log(nextProps.companyReducer.getIn(["companyreviewoperatepass"]))
             let data = nextProps.companyReducer.getIn(["companyreviewoperatepass"]);
+            console.log("复审+++++++",data)
             if(data.status == 201){
-                message.warning(data.message)
+                // message.warning(data.message)
             }else{
                 this.props.changeState(3)
             }
@@ -341,7 +342,7 @@ class CompanyListOneRepeat extends Component {
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">
-                        <p>对接人信息   <span className="updateData">修改</span> </p>
+                        <p>对接人信息   <span className="updateData" onClick={this.props.updatedock}>修改</span> </p>
                         <div className="base-content person-content">
                             <div>
                             <span>对接人姓名 : {baseInfo.dockName}</span>

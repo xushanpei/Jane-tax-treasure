@@ -1,23 +1,47 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Checkbox, Form } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Checkbox, Form, message } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom'
+import { connect } from "react-redux";
+import companyAction from "../../redux/actions/companyAction";
+import Bohui from "./Bohui"
+import SendMsg from "./SendMsg"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 
+// //设立
+// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
+// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
+// //驳回
+// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
+// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
+// //锁定
+// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
+// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
+@connect(
+    ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
+    {
+        //设立通过-----
+        companyoperateestablish: companyAction.companyoperateestablish,
+        //驳回
+        companyoperatereject: companyAction.companyoperatereject,
+        //
+        sendnotice:companyAction.sendnotice
+    }
+)
 class CompanyListTwos extends Component {
     constructor(props) {
         super(props);
         this.state = {
             //基本信息/对接人信息
             baseInfo: "",
-            headerData:"",
+            headerData: "",
 
 
             routerList: [
@@ -50,7 +74,7 @@ class CompanyListTwos extends Component {
                 }
             ],
             data: [
-                
+
             ],
             plainOptions: [
                 // "1、名称审核完成",
@@ -86,7 +110,8 @@ class CompanyListTwos extends Component {
                 },
             ],
             piclist: [],
-            visible: false
+            visible: false,
+            bohuiVisible: false
         }
     }
 
@@ -104,10 +129,6 @@ class CompanyListTwos extends Component {
 
     //增加上传设立资料
     showModal = () => {
-        console.log("增加")
-    }
-
-    showModal = () => {
         this.setState({
             visible: true,
         });
@@ -121,8 +142,8 @@ class CompanyListTwos extends Component {
             data.push(values);
             this.setState({
                 visible: false,
-                piclistOptions:data
-            },()=>{
+                piclistOptions: data
+            }, () => {
                 this.props.form.resetFields()
             });
         })
@@ -132,6 +153,30 @@ class CompanyListTwos extends Component {
         console.log(e);
         this.setState({
             visible: false,
+        });
+    };
+
+
+    // 下面是驳回的弹框方法
+    bohuiHandleOk = e => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
+            // console.log(values)
+            this.setState({
+                bohuiVisible: false
+            }, () => {
+                //触发驳回的方法
+                this.props.companyoperatereject(
+                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
+                )
+            })
+        // })
+    };
+
+    bohuiHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            bohuiVisible: false
         });
     };
 
@@ -146,17 +191,17 @@ class CompanyListTwos extends Component {
             })
         }
 
-        if(nextProps.getcompanyoperaterecord){
-            console.log("接收到的操作记录",nextProps.getcompanyoperaterecord)
+        if (nextProps.getcompanyoperaterecord) {
+            console.log("接收到的操作记录", nextProps.getcompanyoperaterecord)
             let data = nextProps.getcompanyoperaterecord;
-            for(let i=0; i<data.length; i++){
-               data[i].key = i+1;
+            for (let i = 0; i < data.length; i++) {
+                data[i].key = i + 1;
             }
             this.setState({
                 data
             })
-         }
-         if (nextProps.headerData) {
+        }
+        if (nextProps.headerData) {
             console.log("接收到的头部操作信息", nextProps.headerData)
             this.setState({
                 headerData: nextProps.headerData
@@ -164,14 +209,64 @@ class CompanyListTwos extends Component {
 
         }
 
-
-
-
+        //通过
+        if (nextProps.companyReducer.getIn(["companyoperateestablish"])) {
+            console.log(nextProps.companyReducer.getIn(["companyoperateestablish"]))
+            let data = nextProps.companyReducer.getIn(["companyoperateestablish"]);
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", data.status)
+            if (data.status !== 200) {
+                message.warning(data.message)
+            } else {
+                message.success(data.message)
+                this.props.changeState(4)
+            }
+        }
     }
+    // 通过
+    pass = () => {
+        this.props.companyoperateestablish({
+            companyId: this.state.baseInfo.companyId
+        })
+    }
+    // 驳回 -- 接口需要修改
+    nopass = () => {
+        this.setState({
+            bohuiVisible: true
+        })
+    }
+
+     // 发消息给客户 sendnotice
+     sendnotice = ()=>{
+        this.setState({
+            sendMsgVisible : true
+        })
+    }
+
+    sendMsgHandleOk = e => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
+        //     console.log(values)
+            this.setState({
+                sendMsgVisible: false
+            }, () => {
+                //触发驳回的方法
+                this.props.sendnotice(
+                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
+                )
+            })
+        // })
+    };
+
+    sendMsgHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            sendMsgVisible: false
+        });
+    };
 
 
     render() {
-        let { routerList, baseInfo,headerData } = this.state
+        let { routerList, baseInfo, headerData } = this.state
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -190,22 +285,22 @@ class CompanyListTwos extends Component {
                     {/* name-title */}
                     <div className="name-content">
                         <div className="title">
-                        <span>{headerData.companyName}</span>
+                            <span>{headerData.companyName}</span>
                             <span>
                                 {/* 通过不通过按钮组 */}
                                 <span className="btn-diy">
-                                <Link to="/companyListThree">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
-                                    </Link>
+                                    {/* <Link to="/companyListThree"> */}
+                                    <Button onClick={this.pass} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    {/* </Link> */}
                                 </span>
-                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button>
+                                <Button onClick={this.nopass} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button>
                                 <span className="btn-diy">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
+                                    <Button onClick={this.sendnotice} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
                                 </span>
                             </span>
                         </div>
                         <div className="title-detail">
-                        <div>
+                            <div>
                                 <span>申请人 : {headerData.applyName}</span>
                                 <span>申请时间 : {headerData.applyTime}</span>
                             </div>
@@ -229,7 +324,7 @@ class CompanyListTwos extends Component {
                         <p>设立流程</p>
                         <div className="pro-con">
                             <div className="progress">
-                       
+
                                 <div>
                                     <span>申请</span><br />
                                     <span>申请人 : {headerData.applyName}</span><br />
@@ -280,7 +375,7 @@ class CompanyListTwos extends Component {
                             /> &nbsp;&nbsp;
                             <span onClick={this.showModal} className="add"><Icon type="plus-circle" /> 增加上传项</span>
                             {/* 添加一键通知按钮 */}
-                            <Button className="tipButton"  style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>一键通知用户</Button>
+                            <Button className="tipButton" style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>一键通知用户</Button>
                             {/* 查看上传资料 */}
                             <div className="lookList">
                                 <p>查看上传资料</p>
@@ -369,18 +464,18 @@ class CompanyListTwos extends Component {
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">
-                        <p>对接人信息   <span className="updateData">修改</span> </p>
+                        <p>对接人信息   <span className="updateData" onClick={this.props.updatedock}>修改</span> </p>
                         <div className="base-content person-content">
                             <div>
-                            <span>对接人姓名 : {baseInfo.dockName}</span>
-                            <span>对接人邮箱 : {baseInfo.dockEmail}</span>
+                                <span>对接人姓名 : {baseInfo.dockName}</span>
+                                <span>对接人邮箱 : {baseInfo.dockEmail}</span>
                             </div>
                             <div>
-                            <span>对接人身份证号 : {baseInfo.dockNum}</span>
-                            <span>邮寄地址 : {baseInfo.address}</span>
+                                <span>对接人身份证号 : {baseInfo.dockNum}</span>
+                                <span>邮寄地址 : {baseInfo.address}</span>
                             </div>
                             <div>
-                            <span>对接人手机 : {baseInfo.dockPhone}</span>
+                                <span>对接人手机 : {baseInfo.dockPhone}</span>
                             </div>
                         </div>
 
@@ -433,7 +528,21 @@ class CompanyListTwos extends Component {
                         </FormItem>
                     </Form>
                 </Modal>
+                <Bohui
+                    title="驳回理由"
+                    visible={this.state.bohuiVisible}
+                    onOk={this.bohuiHandleOk}
+                    onCancel={this.bohuiHandleCancel}
 
+                >
+                </Bohui>
+                <SendMsg
+                    title="发送消息"
+                    visible={this.state.sendMsgVisible}
+                    onOk={this.sendMsgHandleOk}
+                    onCancel={this.sendMsgHandleCancel}
+                >
+                </SendMsg>
             </div>
         );
     }

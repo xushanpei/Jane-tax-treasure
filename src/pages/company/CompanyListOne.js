@@ -270,7 +270,7 @@ class CompanyListOne extends Component {
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">
-                        <p>对接人信息   <span className="updateData">修改</span> </p>
+                        <p>对接人信息   <span className="updateData" onClick={this.props.updatedock}>修改</span> </p>
                         <div className="base-content person-content">
                             <div>
                                 <span>对接人姓名 : {baseInfo.dockName}</span>

@@ -59,6 +59,33 @@ const companyReducer = handleActions(
           companyreviewoperatenopass: action.data
         });
       },
+
+      [companyTypes.COMPANYOPERATEESTABLISH_SUCCESS]: (state, action) => {
+        return state.merge({
+          companyoperateestablish: action.data
+        });
+      },
+      [companyTypes.COMPANYOPERATEREJECT_SUCCESS]: (state, action) => {
+        return state.merge({
+          companyoperatereject: action.data
+        });
+      },
+      [companyTypes.COMPANYOPERATEBILLLOCK_SUCCESS]: (state, action) => {
+        return state.merge({
+          companyoperatebilllock: action.data
+        });
+      },
+      //SENDNOTICE
+      [companyTypes.SENDNOTICE_SUCCESS]: (state, action) => {
+        return state.merge({
+          sendnotice: action.data
+        });
+      },
+      [companyTypes.UPDATEDOCK_SUCCESS]: (state, action) => {
+        return state.merge({
+          updatedock: action.data
+        });
+      },
   
   },
   initState
@@ -78,4 +105,16 @@ export default companyReducer;
 // GETCOMPLETEDATA_SUCCESS:"GETCOMPLETEDATA_SUCCESS"
 //COMPANYREVIEWOPERATEPASS
 //COMPANYREVIEWOPERATENOPASS
+
+// //设立
+// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
+// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
+// //驳回
+// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
+// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
+// //锁定
+// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
+// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
+
+//UPDATEDOCK
 

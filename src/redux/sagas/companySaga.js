@@ -119,7 +119,13 @@ function* companyweblist(action) {
      let data = yield call(Apis.companyreviewoperatepass,action.payload.data);
   
       yield put({ type:companyTypes.COMPANYREVIEWOPERATEPASS_SUCCESS,data:data });
+      console.log("999999999999999999",data)
       // message.success(data.message)
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
   
     } catch (error) {
       console.log(error)
@@ -143,6 +149,80 @@ function* companyweblist(action) {
     }
   }
 
+  function* companyoperateestablish(action) {
+    try {
+     let data = yield call(Apis.companyoperateestablish,action.payload.data);
+  
+      yield put({ type:companyTypes.COMPANYOPERATEESTABLISH_SUCCESS,data:data });
+      // message.success(data.message)
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* companyoperatereject(action) {
+    try {
+     let data = yield call(Apis.companyoperatereject,action.payload.data);
+  
+      yield put({ type:companyTypes.COMPANYOPERATEREJECT_SUCCESS,data:data });
+      // message.success(data.message)
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* companyoperatebilllock(action) {
+    try {
+     let data = yield call(Apis.companyoperatebilllock,action.payload.data);
+  
+      yield put({ type:companyTypes.COMPANYOPERATEBILLLOCK_SUCCESS,data:data });
+      message.success(data.message)
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* sendnotice(action) {
+    try {
+     let data = yield call(Apis.sendnotice,action.payload.data);
+  
+      yield put({ type:companyTypes.SENDNOTICE_SUCCESS,data:data });
+      message.success(data.message)
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* updatedock(action) {
+    try {
+     let data = yield call(Apis.updatedock,action.payload.data);
+  
+      yield put({ type:companyTypes.UPDATEDOCK_SUCCESS,data:data });
+      message.success(data.message)
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -156,6 +236,12 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.GETCOMPLETEDATA, getcompletedata);
   yield takeLatest(companyTypes.COMPANYREVIEWOPERATEPASS, companyreviewoperatepass);
   yield takeLatest(companyTypes.COMPANYREVIEWOPERATENOPASS, companyreviewoperatenopass);
+
+  yield takeLatest(companyTypes.COMPANYOPERATEESTABLISH, companyoperateestablish);
+  yield takeLatest(companyTypes.COMPANYOPERATEREJECT, companyoperatereject);
+  yield takeLatest(companyTypes.COMPANYOPERATEBILLLOCK, companyoperatebilllock);
+  yield takeLatest(companyTypes.SENDNOTICE, sendnotice);
+  yield takeLatest(companyTypes.UPDATEDOCK, updatedock);
 }
 //公司操作记录
 // GETCOMPANYOPERATERECORD:"GETCOMPANYOPERATERECORD",
@@ -167,6 +253,20 @@ export default function* watchAuthRoot() {
 // getcompletedata
 //COMPANYREVIEWOPERATEPASS
 //COMPANYREVIEWOPERATENOPASS
+
+// //设立
+// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
+// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
+// //驳回
+// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
+// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
+// //锁定
+// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
+// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
+
+//SENDNOTICE_SUCCESS
+
+//UPDATEDOCK
 
 
 

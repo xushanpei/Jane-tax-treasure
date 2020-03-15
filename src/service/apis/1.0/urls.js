@@ -76,6 +76,10 @@ export const urls = {
   COMPANYOPERATEREJECT:"/simpleTax/companyWeb/companyOperateReject",
   //锁定
   COMPANYOPERATEBILLLOCK:"/simpleTax/companyWeb/companyOperateBillLock",
+  //发消息给客户
+  SENDNOTICE:"/simpleTax/messageWeb/sendNotice",
+  //修改对接人信息
+  UPDATEDOCK:"/simpleTax/companyWeb/updateDock",
 
   /**
    * 发票

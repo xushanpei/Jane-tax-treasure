@@ -5,10 +5,22 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom'
+import { connect } from "react-redux";
+import companyAction from "../../redux/actions/companyAction";
+import SendMsg from "./SendMsg"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
+
+@connect(
+    ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
+    {
+        //锁定-----
+        companyoperatebilllock: companyAction.companyoperatebilllock,
+        sendnotice:companyAction.sendnotice
+    }
+)
 class CompanyListThree extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +63,8 @@ class CompanyListThree extends Component {
             data: [
 
             ],
+            //
+            sendMsgVisible:false
 
         }
     }
@@ -80,13 +94,51 @@ class CompanyListThree extends Component {
             this.setState({
                 headerData: nextProps.headerData
             })
-
         }
+        //锁定
+        if (nextProps.companyReducer.getIn(["companyoperatebilllock"])) {
+            console.log("锁定的数据", nextProps.companyReducer.getIn(["companyoperatebilllock"]));
+        }
+    }
 
-
-
+    //锁定
+    companyoperatebilllock = () => {
+        console.log("锁定");
+        this.props.companyoperatebilllock({
+            companyId: this.state.baseInfo.companyId,
+        })
 
     }
+
+    // 发消息给客户 sendnotice
+    sendnotice = ()=>{
+        this.setState({
+            sendMsgVisible : true
+        })
+    }
+
+    sendMsgHandleOk = e => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
+        //     console.log(values)
+            this.setState({
+                sendMsgVisible: false
+            }, () => {
+                //触发驳回的方法
+                this.props.sendnotice(
+                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
+                )
+            })
+        // })
+    };
+
+    sendMsgHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            sendMsgVisible: false
+        });
+    };
+
 
 
     render() {
@@ -101,9 +153,9 @@ class CompanyListThree extends Component {
                             <span>{headerData.companyName}</span>
                             <span>
                                 {/* 通过不通过按钮组 */}
-                                <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
+                                <Button onClick={this.companyoperatebilllock} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
                                 <span className="btn-diy">
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
+                                    <Button onClick={this.sendnotice} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
                                 </span>
                             </span>
                         </div>
@@ -240,23 +292,6 @@ class CompanyListThree extends Component {
                     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     {/* 基本信息 */}
                     <div className="process base">
                         <p>基本信息   <span className="updateData">修改</span> </p>
@@ -307,7 +342,7 @@ class CompanyListThree extends Component {
                     </div>
                     {/* 对接人信息 */}
                     <div className="process base person">
-                        <p>对接人信息   <span className="updateData">修改</span> </p>
+                        <p>对接人信息   <span className="updateData" onClick={this.props.updatedock}>修改</span> </p>
                         <div className="base-content person-content">
                             <div>
                                 <span>对接人姓名 : {baseInfo.dockName}</span>
@@ -332,9 +367,14 @@ class CompanyListThree extends Component {
                             <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
                         </div>
                     </div>
-
                 </div>
-
+                <SendMsg
+                    title="发送消息"
+                    visible={this.state.sendMsgVisible}
+                    onOk={this.sendMsgHandleOk}
+                    onCancel={this.sendMsgHandleCancel}
+                >
+                </SendMsg>
             </div>
         );
     }
