@@ -5,15 +5,25 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-import data from "./city"
+import data from "./city";
+import { connect } from "react-redux";
+import companyAction from "../../redux/actions/companyAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
+//getregionbypid
 
+@connect(
+    ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
+    {
+         getregionbypid: companyAction.getregionbypid,
+    }
+)
 class CorporateLibrary extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            options:[],
             // 筛选属性
             select: {
                 createTime: 0
@@ -179,7 +189,69 @@ class CorporateLibrary extends Component {
         })
     }
 
+    handleSelectedPosition = (value,selectedOptions)=>{
+        console.log(value,selectedOptions)
+        this.props.getregionbypid({
+            pId:value[value.length-1]
+        });
+    //    setTimeout(()=>{
+    //        this.set
+    //    },300)
 
+
+        this.loadData(selectedOptions)
+
+    }
+    loadData = selectedOptions => {
+      console.log("123123",selectedOptions)
+
+        const targetOption = selectedOptions[selectedOptions.length - 1];
+        targetOption.loading = true;
+    
+        // load options lazily
+        setTimeout(() => {
+          targetOption.loading = false;
+          targetOption.children = [
+            {
+              label: `${targetOption.label} Dynamic 1`,
+              value: 'dynamic1',
+            },
+            {
+              label: `${targetOption.label} Dynamic 2`,
+              value: 'dynamic2',
+            },
+          ];
+          this.setState({
+            options: [...this.state.options],
+          });
+        }, 1000);
+      };
+    
+
+
+      componentWillMount(){
+        //   获取省
+          this.props.getregionbypid({
+              pId:""
+          });
+      }
+      componentWillReceiveProps(nextProp){
+        if(nextProp.companyReducer.getIn(["getregionbypid"])){
+            console.log("省",nextProp.companyReducer.getIn(["getregionbypid","data"]))
+            let options =[];
+            let data = nextProp.companyReducer.getIn(["getregionbypid","data"]);
+            for(let i=0; i<data.length; i++){
+                options.push({
+                    label:data[i].name,
+                    value:data[i].id
+                })
+            }
+            this.setState({
+                options
+            })
+
+        }
+      }
 
 
 
@@ -198,13 +270,26 @@ class CorporateLibrary extends Component {
                     <div className="line">
                         <div>法人地区 ：</div>
                         {/* <div> */}
-                        <Cascader
+                        {/* <Cascader
                             size="small"
                             style={{ width: "260px" }}
-                            options={data}
-                            // onChange={this.handleSelectedPosition.bind(this)}
+                            options={this.state.options}
+                            onChange={this.handleSelectedPosition.bind(this)}
+                            loadData={this.loadData}
+                            changeOnSelect
                             placeholder="请选法人地区"
-                        />
+                        /> */}
+                        <span>
+                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
+                        <Option value="jack">Jack</Option>
+                        </Select>
+                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
+                        <Option value="jack">Jack</Option>
+                        </Select>
+                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
+                        <Option value="jack">Jack</Option>
+                        </Select>
+                        </span>
 
                         {/* </div> */}
                     </div>

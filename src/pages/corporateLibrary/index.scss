@@ -172,3 +172,6 @@
         min-height:calc(100vh - 455px) !important;
     height: auto !important;
 }
+.ant-select-sm .ant-select-selection__clear, .ant-select-sm .ant-select-arrow{
+    right: 0 !important;
+}

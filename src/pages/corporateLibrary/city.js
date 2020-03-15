@@ -1,7 +1,7 @@
 const data = [{
     value: "北京市",
     label: "北京市",
-"children": [{
+children: [{
     value: "北京市",
     label: "北京市",
     "children": [{

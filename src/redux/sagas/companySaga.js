@@ -223,6 +223,19 @@ function* companyweblist(action) {
     }
   }
 
+  function* getregionbypid(action) {
+    try {
+     let data = yield call(Apis.getregionbypid,action.payload.data);
+  
+      yield put({ type:companyTypes.GETREGIONBYPID_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -242,6 +255,7 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYOPERATEBILLLOCK, companyoperatebilllock);
   yield takeLatest(companyTypes.SENDNOTICE, sendnotice);
   yield takeLatest(companyTypes.UPDATEDOCK, updatedock);
+  yield takeLatest(companyTypes.GETREGIONBYPID, getregionbypid);
 }
 //公司操作记录
 // GETCOMPANYOPERATERECORD:"GETCOMPANYOPERATERECORD",
@@ -267,6 +281,8 @@ export default function* watchAuthRoot() {
 //SENDNOTICE_SUCCESS
 
 //UPDATEDOCK
+
+//GETREGIONBYPID
 
 
 

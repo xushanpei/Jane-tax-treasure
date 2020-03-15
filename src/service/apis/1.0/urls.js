@@ -82,6 +82,12 @@ export const urls = {
   UPDATEDOCK:"/simpleTax/companyWeb/updateDock",
 
   /**
+   * 法人库
+   */
+  //获取省市区
+  GETREGIONBYPID:"/simpleTax/sAreaWeb/getRegionByPid",
+
+  /**
    * 发票
    */
   //发票列表-已开票

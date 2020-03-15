@@ -82,6 +82,12 @@ class Apis {
   //修改对接人信息
   updatedock =data=> ApiRequest.put(`${urls.UPDATEDOCK}`,data);
 
+  /**
+   * 法人库
+   */
+  //省市区
+  getregionbypid = data => ApiRequest.get(`${urls.GETREGIONBYPID}?pId=${data.pId}`);
+
 
   /**
    * 发票

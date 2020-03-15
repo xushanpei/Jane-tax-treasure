@@ -86,6 +86,12 @@ const companyReducer = handleActions(
           updatedock: action.data
         });
       },
+
+      [companyTypes.GETREGIONBYPID_SUCCESS]: (state, action) => {
+        return state.merge({
+          getregionbypid: action.data
+        });
+      },
   
   },
   initState
@@ -117,4 +123,6 @@ export default companyReducer;
 // COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
 
 //UPDATEDOCK
+
+//GETREGIONBYPID
 

@@ -45,7 +45,15 @@ SENDNOTICE:"SENDNOTICE",
 SENDNOTICE_SUCCESS:"SENDNOTICE_SUCCESS",
 //修改对接人信息
 UPDATEDOCK:"UPDATEDOCK",
-UPDATEDOCK_SUCCESS:"UPDATEDOCK_SUCCESS"
+UPDATEDOCK_SUCCESS:"UPDATEDOCK_SUCCESS",
+
+//省市区
+GETREGIONBYPID:"GETREGIONBYPID",
+GETREGIONBYPID_SUCCESS:"GETREGIONBYPID_SUCCESS"
+
+
+
+
 };
 
 export default createActions({
@@ -64,5 +72,6 @@ export default createActions({
 [companyTypes.COMPANYOPERATEBILLLOCK]: data=> ({data}),
 [companyTypes.SENDNOTICE]: data=> ({data}),
 [companyTypes.UPDATEDOCK]: data=> ({data}),
+[companyTypes.GETREGIONBYPID]: data=> ({data}),
 });
 
