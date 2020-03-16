@@ -236,6 +236,83 @@ function* companyweblist(action) {
     }
   }
 
+  function* sgetregionbypid(action) {
+    try {
+     let data = yield call(Apis.getregionbypid,action.payload.data);
+  
+      yield put({ type:companyTypes.SGETREGIONBYPID_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* qgetregionbypid(action) {
+    try {
+     let data = yield call(Apis.getregionbypid,action.payload.data);
+  
+      yield put({ type:companyTypes.QGETREGIONBYPID_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* legallist(action) {
+    try {
+     let data = yield call(Apis.legallist,action.payload.data);
+  
+      yield put({ type:companyTypes.LEGALLIST_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* legaldetail(action) {
+    try {
+     let data = yield call(Apis.legaldetail,action.payload.data);
+  
+      yield put({ type:companyTypes.LEGALDETAIL_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* getcompanybylegalid(action) {
+    try {
+     let data = yield call(Apis.getcompanybylegalid,action.payload.data);
+  
+      yield put({ type:companyTypes.GETCOMPANYBYLEGALID_SUCCESS,data:data });
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* locklegal(action) {
+    try {
+     let data = yield call(Apis.locklegal,action.payload.data);
+      yield put({ type:companyTypes.LOCKLEGAL_SUCCESS,data:data });
+      message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -256,34 +333,19 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.SENDNOTICE, sendnotice);
   yield takeLatest(companyTypes.UPDATEDOCK, updatedock);
   yield takeLatest(companyTypes.GETREGIONBYPID, getregionbypid);
+  yield takeLatest(companyTypes.SGETREGIONBYPID, sgetregionbypid);
+  yield takeLatest(companyTypes.QGETREGIONBYPID, qgetregionbypid);
+  yield takeLatest(companyTypes.LEGALLIST, legallist);
+  yield takeLatest(companyTypes.LEGALDETAIL, legaldetail);
+  yield takeLatest(companyTypes.GETCOMPANYBYLEGALID, getcompanybylegalid);
+  yield takeLatest(companyTypes.LOCKLEGAL, locklegal);
 }
-//公司操作记录
-// GETCOMPANYOPERATERECORD:"GETCOMPANYOPERATERECORD",
-// GETCOMPANYOPERATERECORD_SUCCESS:"GETCOMPANYOPERATERECORD_SUCCESS",
-//COMPANYOPERATEDETAIL
-//COMPANYOPERATEPASS
-//COMPANYOPERATENOPASS
 
-// getcompletedata
-//COMPANYREVIEWOPERATEPASS
-//COMPANYREVIEWOPERATENOPASS
 
-// //设立
-// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
-// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
-// //驳回
-// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
-// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
-// //锁定
-// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
-// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
 
-//SENDNOTICE_SUCCESS
-
-//UPDATEDOCK
-
-//GETREGIONBYPID
-
+//LEGALDETAIL
+//GETCOMPANYBYLEGALID
+//LOCKLEGAL
 
 
 

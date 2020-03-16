@@ -155,7 +155,7 @@ const routes = [
   {
     key:"13",
     name:"发票详情",
-    path:"/billDetail",
+    path:"/billDetail/:id",
     exact:true,
     component:BillDetail
   },

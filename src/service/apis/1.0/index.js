@@ -87,7 +87,14 @@ class Apis {
    */
   //省市区
   getregionbypid = data => ApiRequest.get(`${urls.GETREGIONBYPID}?pId=${data.pId}`);
-
+  //法人库列表
+  legallist = data => ApiRequest.get(`${urls.LEGALLIST}?page=${data.page}&limit=${data.limit}&search=${data.search}&startDate=${data.startDate}&endDate=${data.endDate}`)
+  //法人详情
+  legaldetail = data => ApiRequest.get(`${urls.LEGALDETAIL}?legalId=${data.legalId}`);
+  //法人详情下的公司列表
+  getcompanybylegalid = data => ApiRequest.get(`${urls.GETCOMPANYBYLEGALID}?legalId=${data.legalId}&page=${data.page}&limit=${data.limit}`);
+  //锁定法人
+  locklegal  = data =>ApiRequest.put(`${urls.LOCKLEGAL}`,data);
 
   /**
    * 发票
@@ -95,7 +102,12 @@ class Apis {
   //发票列表-已开票
   invoicepage = data=> ApiRequest.get(`${urls.INVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&companyType=${data.companyType}&date=${data.date}`) ;
   //发票申请列表
-  applyinvoicepage = data=>ApiRequest.get(`${urls.APPLYINVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&billStatus=${data.billStatus}&companyType=${data.companyType}&date=${data.date}`)
+  applyinvoicepage = data=>ApiRequest.get(`${urls.APPLYINVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&billStatus=${data.billStatus}&companyType=${data.companyType}&date=${data.date}`);
+  //发票详情
+  billinfo = data => ApiRequest.get(`${urls.BILLINFO}?billId=${data.billId}`);
+  //发票审核通过
+  auditpass = data => ApiRequest.post(`${urls.AUDITPASS}`,data);
+
 }
 
 export default new Apis();

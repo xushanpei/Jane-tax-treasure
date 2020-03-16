@@ -31,7 +31,7 @@ class OpenBills extends Component {
     };
 
     render() {
-        let { title, visible, onOk, onCancel } = this.props;
+        let { title, visible, onOk, onCancel,data } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {

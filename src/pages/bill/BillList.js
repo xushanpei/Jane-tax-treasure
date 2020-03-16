@@ -321,6 +321,13 @@ class BillList extends Component {
    //发票列表
    if(nextProps.billReducer.getIn(["invoicepage"])){
       console.log("发票,列表", nextProps.billReducer.getIn(["invoicepage"]))
+      let data = nextProps.billReducer.getIn(["invoicepage","data","rows"])
+      for(let i=0; i< data.length; i++){
+         data[i].key = i+1;
+      }
+      this.setState({
+        data
+      })
    }
   }
 

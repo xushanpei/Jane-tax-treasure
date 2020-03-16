@@ -33,6 +33,32 @@ function* invoicepage(action) {
     }
   }
 
+  function* billinfo(action) {
+    try {
+     let data = yield call(Apis.billinfo,action.payload.data);
+  
+      yield put({ type:billTypes.BILLINFO_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* auditpass(action) {
+    try {
+     let data = yield call(Apis.auditpass,action.payload.data);
+  
+      yield put({ type:billTypes.AUDITPASS_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 
 
@@ -40,11 +66,16 @@ function* invoicepage(action) {
 export default function* watchAuthRoot() {
   yield takeLatest(billTypes.INVOICEPAGE, invoicepage);
   yield takeLatest(billTypes.APPLYINVOICEPAGE, applyinvoicepage);
+  yield takeLatest(billTypes.BILLINFO, billinfo);
+  yield takeLatest(billTypes.AUDITPASS, auditpass);
 }
 
 
 // INVOICEPAGE:"INVOICEPAGE",
     // INVOICEPAGE_SUCCESS:"INVOICEPAGE_SUCCESS",
     //APPLYINVOICEPAGE
+//BILLINFO
 
+// BILLINFO
+//AUDITPASS
 

@@ -16,19 +16,38 @@ const { RangePicker } = DatePicker
 @connect(
     ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
     {
-         getregionbypid: companyAction.getregionbypid,
+        //省
+        getregionbypid: companyAction.getregionbypid,
+        //市
+        sgetregionbypid: companyAction.sgetregionbypid,
+        //区
+        qgetregionbypid: companyAction.qgetregionbypid,
+        //法人库列表
+        legallist:companyAction.legallist,
+        locklegal:companyAction.locklegal
+
     }
 )
 class CorporateLibrary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            options:[],
+            options: [],
+            soptions: [],
+            qoptions: [],
+            status: 1,
             // 筛选属性
-            select: {
-                createTime: 0
-            },
+            createTime: "",
             searchValue: "",
+            //开始时间
+            startDate:"",
+            //结束时间
+            endDate:"",
+            //搜所关键字
+            search:"",
+            page:1,
+            limit:20,
+            total:"",
             routerList: [
                 {
                     name: "首页",
@@ -44,22 +63,21 @@ class CorporateLibrary extends Component {
                     title: '',
                     dataIndex: 'key',
                     key: 'key',
-                    render: text => text,
                 },
                 {
                     title: '法人姓名',
-                    dataIndex: 'name',
-                    key: 'name',
+                    dataIndex: 'legalName',
+                    key: 'legalName',
                 },
                 {
                     title: '法人手机号',
-                    dataIndex: 'type',
-                    key: 'type',
+                    dataIndex: 'legalPhone',
+                    key: 'legalPhone',
                 },
                 {
                     title: '用户手机',
-                    key: 'number',
-                    dataIndex: 'number',
+                    key: 'phone',
+                    dataIndex: 'phone',
                     //   render: tags => (
                     //     <span>
                     //       {tags.map(tag => {
@@ -78,8 +96,8 @@ class CorporateLibrary extends Component {
                 },
                 {
                     title: '公司数量',
-                    key: 'state',
-                    dataIndex: 'state',
+                    key: 'count',
+                    dataIndex: 'count',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -89,12 +107,8 @@ class CorporateLibrary extends Component {
                 },
                 {
                     title: '最近设立时间',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'submitEstablishTime',
+                    dataIndex:"submitEstablishTime"
                 },
                 {
                     title: '操作',
@@ -103,12 +117,12 @@ class CorporateLibrary extends Component {
                         <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key="0">
-                                    <Link to="/corporateLibraryDetail/0">
+                                    <Link to={`/corporateLibraryDetail/${record.legalId}`}>
                                         法人详情
                                     </Link>
                                 </Menu.Item>
-                                <Menu.Item key="1">
-                                    <a href="http://www.taobao.com/">锁定法人</a>
+                                <Menu.Item key="1" onClick={this.locklegal.bind(this,record.legalId)}>
+                                    <a >锁定法人</a>
                                 </Menu.Item>
                             </Menu>
                         } trigger={['click']}>
@@ -120,41 +134,7 @@ class CorporateLibrary extends Component {
                     ),
                 },
             ],
-            data: [
-                {
-                    key: '1',
-                    name: '套餐一',
-                    type: '个人独资',
-                    number: 100,
-                    state: 1,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '2',
-                    name: '套餐二',
-                    type: "个人独资",
-                    number: 100,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '3',
-                    name: '套餐三',
-                    type: "个人独资",
-                    number: 20,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-            ],
+            data: [],
             visible: false,
             editVisible: false
         };
@@ -165,99 +145,218 @@ class CorporateLibrary extends Component {
     setCreateTime = (value) => {
         if (value == "") {
             this.setState({
-                select: {
-                    orderState: this.state.select.orderState,
-                    orderType: this.state.select.orderType,
-                    payType: this.state.select.payType,
-                    createTime: value
-                },
+                    createTime: value,
                 searchValue: value
+            }, () => {
+                console.log(this.state.createTime)
             })
         }
 
     }
     onChange = (date, dateString) => {
-        console.log(date, dateString)
         this.setState({
-            select: {
-                orderState: this.state.select.orderState,
-                orderType: this.state.select.orderType,
-                payType: this.state.select.payType,
-                createTime: date
-            },
+            createTime: date,
             searchValue: date
+        }, () => {
+            console.log(this.state.createTime)
         })
     }
+//    搜的关键词
+searchChange = (e)=>{
+    console.log(e.target.value)
+    this.setState({
+        search:e.target.value
+    })
+}
 
-    handleSelectedPosition = (value,selectedOptions)=>{
-        console.log(value,selectedOptions)
+ // 搜所按钮
+ searchClick = () => {
+    this.props.legallist({
+        page:this.state.page,
+        limit:this.state.limit,
+        search:this.state.search,
+        startDate:this.state.startDate,
+        endDate:this.state.endDate
+    })
+  }
+
+  paginationChange = (current)=>{
+    console.log(current)
+    this.setState({
+      page: current
+    },()=>{
+      // 获取分页数据
+      this.props.legallist({
+        page:this.state.page,
+        limit:this.state.limit,
+        search:this.state.search,
+        startDate:this.state.startDate,
+        endDate:this.state.endDate
+    })
+    })
+  }
+
+
+    handleSelectedPosition = (value, selectedOptions) => {
+        console.log(value, selectedOptions)
         this.props.getregionbypid({
-            pId:value[value.length-1]
+            pId: value[value.length - 1]
         });
-    //    setTimeout(()=>{
-    //        this.set
-    //    },300)
+        //    setTimeout(()=>{
+        //        this.set
+        //    },300)
 
 
         this.loadData(selectedOptions)
 
     }
     loadData = selectedOptions => {
-      console.log("123123",selectedOptions)
+        console.log("123123", selectedOptions)
 
         const targetOption = selectedOptions[selectedOptions.length - 1];
         targetOption.loading = true;
-    
+
         // load options lazily
         setTimeout(() => {
-          targetOption.loading = false;
-          targetOption.children = [
-            {
-              label: `${targetOption.label} Dynamic 1`,
-              value: 'dynamic1',
-            },
-            {
-              label: `${targetOption.label} Dynamic 2`,
-              value: 'dynamic2',
-            },
-          ];
-          this.setState({
-            options: [...this.state.options],
-          });
-        }, 1000);
-      };
-    
-
-
-      componentWillMount(){
-        //   获取省
-          this.props.getregionbypid({
-              pId:""
-          });
-      }
-      componentWillReceiveProps(nextProp){
-        if(nextProp.companyReducer.getIn(["getregionbypid"])){
-            console.log("省",nextProp.companyReducer.getIn(["getregionbypid","data"]))
-            let options =[];
-            let data = nextProp.companyReducer.getIn(["getregionbypid","data"]);
-            for(let i=0; i<data.length; i++){
-                options.push({
-                    label:data[i].name,
-                    value:data[i].id
-                })
-            }
+            targetOption.loading = false;
+            targetOption.children = [
+                {
+                    label: `${targetOption.label} Dynamic 1`,
+                    value: 'dynamic1',
+                },
+                {
+                    label: `${targetOption.label} Dynamic 2`,
+                    value: 'dynamic2',
+                },
+            ];
             this.setState({
-                options
-            })
+                options: [...this.state.options],
+            });
+        }, 1000);
+    };
 
+
+
+    componentWillMount() {
+        //   获取省
+        // this.props.getregionbypid({
+        //     pId: ""
+        // });
+        //获取法人库列表
+        this.props.legallist({
+            page:this.state.page,
+            limit:this.state.limit,
+            search:this.state.search,
+            startDate:this.state.startDate,
+            endDate:this.state.endDate
+        })
+    }
+    componentWillReceiveProps(nextProp) {
+        // 法人库列表
+        if(nextProp.companyReducer.getIn(["legallist"])){
+             console.log("法人库列表", nextProp.companyReducer.getIn(["legallist"]))
+             let data = nextProp.companyReducer.getIn(["legallist","data","rows"]);
+             let total = nextProp.companyReducer.getIn(["legallist","data","total"]);
+                for(let i=0; i<data.length; i++){
+                    data[i].key = i+1;
+                }
+             this.setState({
+                 data,
+                 total,
+             })
         }
-      }
 
 
+
+
+
+
+        // if (nextProp.companyReducer.getIn(["getregionbypid"])) {
+        //     console.log("省", nextProp.companyReducer.getIn(["getregionbypid", "data"]))
+        //     let options = [];
+        //     let data = nextProp.companyReducer.getIn(["getregionbypid", "data"]);
+        //     for (let i = 0; i < data.length; i++) {
+        //         options.push({
+        //             label: data[i].name,
+        //             value: data[i].id
+        //         })
+        //     }
+        //     this.setState({
+        //         options,
+        //         // status:1
+        //     })
+
+        // }
+        // //获取市
+        // if (nextProp.companyReducer.getIn(["sgetregionbypid"])) {
+        //     console.log("省", nextProp.companyReducer.getIn(["sgetregionbypid", "data"]))
+        //     let soptions = [];
+        //     let data = nextProp.companyReducer.getIn(["sgetregionbypid", "data"]);
+        //     for (let i = 0; i < data.length; i++) {
+        //         soptions.push({
+        //             label: data[i].name,
+        //             value: data[i].id
+        //         })
+        //     }
+        //     this.setState({
+        //         soptions,
+        //         // status:2
+        //     })
+
+        // }
+        // //区
+        // if (nextProp.companyReducer.getIn(["qgetregionbypid"])) {
+        //     console.log("省", nextProp.companyReducer.getIn(["qgetregionbypid", "data"]))
+        //     let qoptions = [];
+        //     let data = nextProp.companyReducer.getIn(["qgetregionbypid", "data"]);
+        //     for (let i = 0; i < data.length; i++) {
+        //         qoptions.push({
+        //             label: data[i].name,
+        //             value: data[i].id
+        //         })
+        //     }
+        //     this.setState({
+        //         qoptions,
+        //         // status:3
+        //     })
+
+        // }
+
+    }
+    // //sChange
+    // sChange = (value) => {
+    //     console.log(value)
+    //     this.props.sgetregionbypid({
+    //         pId: value
+    //     })
+    //     this.setState({
+    //         status: 2
+    //     })
+
+    // }
+    // siChange = (value) => {
+    //     console.log(value)
+    //     this.props.qgetregionbypid({
+    //         pId: value
+    //     })
+    //     this.setState({
+    //         status: 3
+    //     })
+    // }
+    // qChange = (value) => {
+    //     console.log(value)
+    // }
+
+//锁定法人操作
+locklegal = (legalId)=>{
+    this.props.locklegal({
+      legalId: legalId
+    })
+  }
 
     render() {
-        let { routerList, searchValue } = this.state;
-        let { orderState, orderType, payType, createTime } = this.state.select
+        let { routerList, searchValue ,createTime} = this.state;
+        // let { orderState, orderType, payType, createTime } = this.state.select
 
         return (
             <div className="product-container">
@@ -267,7 +366,7 @@ class CorporateLibrary extends Component {
                 {/* 内容部分 */}
                 <div className="search-content">
                     {/* 筛选 */}
-                    <div className="line">
+                    <div style={{ display: "none" }} className="line">
                         <div>法人地区 ：</div>
                         {/* <div> */}
                         {/* <Cascader
@@ -280,23 +379,41 @@ class CorporateLibrary extends Component {
                             placeholder="请选法人地区"
                         /> */}
                         <span>
-                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
-                        <Option value="jack">Jack</Option>
-                        </Select>
-                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
-                        <Option value="jack">Jack</Option>
-                        </Select>
-                        <Select size="small" style={{width:"120px",marginRight:"15px"}}>
-                        <Option value="jack">Jack</Option>
-                        </Select>
+                            <Select size="small" onChange={this.sChange} placeholder={"请选择"} style={{ width: "120px", marginRight: "15px" }}>
+                                {/* <Option value="jack">Jack</Option> */}
+                                {
+                                    this.state.options ? this.state.options.map((item, key) => {
+                                        return <Option key={key} value={item.value}>{item.label}</Option>
+                                    }) : ""
+                                }
+                            </Select>
+                            {
+                                this.state.status == 2 || this.state.status == 3 ? <Select onChange={this.siChange} placeholder={"请选择"} size="small" style={{ width: "120px", marginRight: "15px" }}>
+                                    {
+                                        this.state.soptions ? this.state.soptions.map((item, key) => {
+                                            return <Option key={key} value={item.value}>{item.label}</Option>
+                                        }) : ""
+                                    }
+                                </Select> : ""
+                            }
+                            {
+                                this.state.status == 3 ? <Select onChange={this.qChange} placeholder={"请选择"} size="small" style={{ width: "120px", marginRight: "15px" }}>
+                                    {
+                                        this.state.qoptions ? this.state.qoptions.map((item, key) => {
+                                            return <Option key={key} value={item.value}>{item.label}</Option>
+                                        }) : ""
+                                    }
+                                </Select> : ""
+                            }
                         </span>
 
                         {/* </div> */}
                     </div>
+
                     <div className="line">
                         <div>设立时间 ：</div>
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setCreateTime.bind(this, "")} className={createTime == "" ? "active-bg" : ""}>全部</span>
                             <RangePicker
                                 onChange={this.onChange}
                                 value={searchValue}
@@ -308,14 +425,14 @@ class CorporateLibrary extends Component {
                     <div className="line">
                         <div>搜索 ：</div>
                         <div>
-                            <Input style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
+                            <Input onChange={this.searchChange} style={{ width: "260px", marginLeft: "28px" }} size="small" placeholder="请输入手机号和订单号"></Input>
                         </div>
                     </div>
 
                     <div className="line">
                         <div></div>
                         <div style={{ marginLeft: "62px" }}>
-                            <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+                            <Button onClick={this.searchClick} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
                             <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
                         </div>
                     </div>
@@ -324,7 +441,19 @@ class CorporateLibrary extends Component {
                 {/* table 部分 */}
                 <div className="tables-contents">
                     {/* 123 */}
-                    <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+                    <Table 
+                    rowSelection={{
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                        },
+                      }}
+                      pagination={{
+                        total: this.state.total,
+                        showTotal: (total) => `共 ${total} 条`,
+                        onChange: (current) => this.paginationChange(current),
+                        pageSize: this.state.limit,
+                      }}
+                    bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>
 
 

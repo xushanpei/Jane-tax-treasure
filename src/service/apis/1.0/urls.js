@@ -86,6 +86,14 @@ export const urls = {
    */
   //获取省市区
   GETREGIONBYPID:"/simpleTax/sAreaWeb/getRegionByPid",
+  //法人库列表
+  LEGALLIST :"/simpleTax/legalWeb/legalList",
+  //法人详情
+  LEGALDETAIL:"/simpleTax/legalWeb/legalDetail",
+  //法人详情下的公司;列表
+  GETCOMPANYBYLEGALID:"/simpleTax/companyWeb/getCompanyByLegalId",
+  //锁定法人
+  LOCKLEGAL:"/simpleTax/legalWeb/lockLegal",
 
   /**
    * 发票
@@ -93,5 +101,9 @@ export const urls = {
   //发票列表-已开票
   INVOICEPAGE:"/simpleTax/billWeb/invoicePage",
   //发票申请列表
-  APPLYINVOICEPAGE:"/simpleTax/billWeb/applyInvoicePage"
+  APPLYINVOICEPAGE:"/simpleTax/billWeb/applyInvoicePage",
+  //发票详情
+  BILLINFO:"/simpleTax/billWeb/billInfo",
+  //发票审核通过
+  AUDITPASS:"/simpleTax/billWeb/auditPass",
 };

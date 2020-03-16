@@ -145,7 +145,7 @@ class ApplyBill extends Component {
                     title: '操作',
                     key: 'action',
                     render: (text, record) => (
-                        <Link to="/billDetail">
+                        <Link to={`/billDetail/${record.billId}`}>
                             查看详情
                         </Link>
                         // <Dropdown overlay={
@@ -284,6 +284,16 @@ class ApplyBill extends Component {
          this.props.applyinvoicepage(this.state.select)
     }
 
+    paginationChange = (current)=>{
+        console.log(current)
+        this.setState({
+         select: Object.assign(this.state.select, { page: current} )
+        },()=>{
+          // 获取分页数据
+          this.props.applyinvoicepage(this.state.select)
+        })
+      }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.productReducer.getIn(["productclassify", "data", "rows"])) {
             console.log("公司类型", nextProps.productReducer.getIn(["productclassify", "data", "rows"]))
@@ -381,7 +391,19 @@ class ApplyBill extends Component {
                 {/* table 部分 */}
                 <div className="table-content">
                     {/* 123 */}
-                    <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+                    <Table 
+                    rowSelection={{
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                        },
+                      }}
+                      pagination={{
+                        total: this.state.total,
+                        showTotal: (total) => `共 ${total} 条`,
+                        onChange: (current) => this.paginationChange(current),
+                        pageSize: this.state.select.limit,
+                      }}
+                    bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>
 
 

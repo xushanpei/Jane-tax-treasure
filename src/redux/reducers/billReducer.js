@@ -20,9 +20,24 @@ const billReducer = handleActions(
             applyinvoicepage: action.data
         });
       },
+
+      [billTypes.BILLINFO_SUCCESS]: (state, action) => {
+        return state.merge({
+          billinfo: action.data
+        });
+      },
+
+      [billTypes.AUDITPASS_SUCCESS]: (state, action) => {
+        return state.merge({
+          auditpass: action.data
+        });
+      },
   },
   initState
 );
 
 export default billReducer;
+
+//BILLINFO
+//AUDITPASS
 

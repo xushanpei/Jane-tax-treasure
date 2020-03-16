@@ -92,6 +92,40 @@ const companyReducer = handleActions(
           getregionbypid: action.data
         });
       },
+
+      [companyTypes.SGETREGIONBYPID_SUCCESS]: (state, action) => {
+        return state.merge({
+          sgetregionbypid: action.data
+        });
+      },
+
+
+      [companyTypes.QGETREGIONBYPID_SUCCESS]: (state, action) => {
+        return state.merge({
+          qgetregionbypid: action.data
+        });
+      },
+      [companyTypes.LEGALLIST_SUCCESS]: (state, action) => {
+        return state.merge({
+          legallist: action.data
+        });
+      },
+      [companyTypes.LEGALDETAIL_SUCCESS]: (state, action) => {
+        return state.merge({
+          legaldetail: action.data
+        });
+      },
+
+      [companyTypes.GETCOMPANYBYLEGALID_SUCCESS]: (state, action) => {
+        return state.merge({
+          getcompanybylegalid: action.data
+        });
+      },
+      [companyTypes.LOCKLEGAL_SUCCESS]: (state, action) => {
+        return state.merge({
+          locklegal: action.data
+        });
+      },
   
   },
   initState
@@ -99,30 +133,7 @@ const companyReducer = handleActions(
 
 export default companyReducer;
 
-//公司操作记录
-// GETCOMPANYOPERATERECORD:"GETCOMPANYOPERATERECORD",
-// GETCOMPANYOPERATERECORD_SUCCESS:"GETCOMPANYOPERATERECORD_SUCCESS",
-
-//COMPANYOPERATEDETAIL
-//COMPANYOPERATEPASS
-//COMPANYOPERATENOPASS
-
-// GETCOMPLETEDATA:"GETCOMPLETEDATA",
-// GETCOMPLETEDATA_SUCCESS:"GETCOMPLETEDATA_SUCCESS"
-//COMPANYREVIEWOPERATEPASS
-//COMPANYREVIEWOPERATENOPASS
-
-// //设立
-// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
-// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
-// //驳回
-// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
-// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
-// //锁定
-// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
-// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
-
-//UPDATEDOCK
-
-//GETREGIONBYPID
+//LEGALDETAIL
+//GETCOMPANYBYLEGALID
+//LOCKLEGAL
 
