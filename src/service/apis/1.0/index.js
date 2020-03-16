@@ -100,9 +100,9 @@ class Apis {
    * 发票
    */
   //发票列表-已开票
-  invoicepage = data=> ApiRequest.get(`${urls.INVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&companyType=${data.companyType}&date=${data.date}`) ;
+  invoicepage = data=> ApiRequest.get(`${urls.INVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&companyType=${data.companyType}&startDate=${data.startDate}&endDate=${data.endDate}`) ;
   //发票申请列表
-  applyinvoicepage = data=>ApiRequest.get(`${urls.APPLYINVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&billStatus=${data.billStatus}&companyType=${data.companyType}&date=${data.date}`);
+  applyinvoicepage = data=>ApiRequest.get(`${urls.APPLYINVOICEPAGE}?page=${data.page}&limit=${data.limit}&invoiceType=${data.invoiceType}&billStatus=${data.billStatus}&companyType=${data.companyType}&startDate=${data.startDate}&endDate=${data.endDate}`);
   //发票详情
   billinfo = data => ApiRequest.get(`${urls.BILLINFO}?billId=${data.billId}`);
   //发票审核通过

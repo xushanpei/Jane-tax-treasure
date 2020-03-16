@@ -6,6 +6,7 @@ import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
 import OpenBill from "./OpenBill";
+import Pass from "./Pass"
 import { connect } from "react-redux";
 import billAction from "../../redux/actions/billAction";
 
@@ -28,6 +29,7 @@ class BillDetail extends Component {
         super(props);
         this.state = {
             visible: false,
+            passVisible:false,
             billId: "",
             billinfo: "",
             routerList: [
@@ -75,7 +77,6 @@ class BillDetail extends Component {
             visible: true,
         });
     };
-
     handleOk = e => {
         console.log(e);
         this.setState({
@@ -87,6 +88,39 @@ class BillDetail extends Component {
         console.log(e);
         this.setState({
             visible: false,
+        });
+    };
+
+
+    showPassModal = () => {
+        this.setState({
+            passVisible: true,
+        });
+    }
+    passHandleOk = e => {
+        console.log("通过+++",e);
+    //    触发通过接口
+     this.props.auditpass(
+         Object.assign(e,{billId:this.props.match.params.id})
+     )
+     //重新获取状态
+       setTimeout(()=>{
+        this.props.billinfo({
+            billId: this.state.billId
+        })
+       },300)
+
+
+
+        this.setState({
+            passVisible: false,
+        });
+    };
+
+    passHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            passVisible: false,
         });
     };
 
@@ -169,7 +203,7 @@ class BillDetail extends Component {
                                }
                                {
                                     baseInfo && baseInfo.billStatus == 1 ? <span className="btn-diy">
-                                    <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                    <Button onClick={this.showPassModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
                                     {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
                                 </span> :""
                                }
@@ -263,7 +297,7 @@ class BillDetail extends Component {
                         </div>
                     </div> */}
                     {/* 基本信息 */}
-                    <div className="process base" style={{ minHeight: "100px" }}>
+                    <div className="process base" id="myProgress">
                         <p>基本信息   <span className="updateData"></span> </p>
                         <div className="base-content base-contents">
                             <div>
@@ -302,7 +336,7 @@ class BillDetail extends Component {
                         </div>
                     </div>
                     {/* 合同信息 */}
-                    <div className="process base person persons" >
+                    <div className="process base person persons" id="htInfomatio">
                         <p>合同信息   <span className="updateData"></span> </p>
                         <div className="base-content person-content">
                             <div>
@@ -363,6 +397,15 @@ class BillDetail extends Component {
                     data={this.state.customerInfo}
                 >
                 </OpenBill>
+
+                <Pass
+                    title="审核通过"
+                    visible={this.state.passVisible}
+                    onOk={this.passHandleOk}
+                    onCancel={this.passHandleCancel}
+                    // data={this.state.customerInfo}
+                >
+                </Pass>
 
             </div>
         );

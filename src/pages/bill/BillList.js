@@ -28,10 +28,12 @@ class BillList extends Component {
       // 筛选属性
       select: {
         page:1,
-        limit:5,
+        limit:20,
         invoiceType:"",
         companyType:"",
-        date:""
+        startDate:"",
+        endDate:""
+        // &startDate=${data.startDate}&endDate=${data.endDate}
       },
       searchValue: "",
       routerList: [
@@ -52,18 +54,18 @@ class BillList extends Component {
         },
         {
           title: '申请公司',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'companyName',
+          key: 'companyName',
         },
         {
           title: '开票时间',
-          dataIndex: 'type',
-          key: 'type',
+          dataIndex: 'billingTime',
+          key: 'billingTime',
         },
         {
           title: '公司类型',
-          key: 'number',
-          dataIndex: 'number',
+          key: 'companyTypeName',
+          dataIndex: 'companyTypeName',
           //   render: tags => (
           //     <span>
           //       {tags.map(tag => {
@@ -82,8 +84,8 @@ class BillList extends Component {
         },
         {
           title: '发票类型',
-          key: 'state',
-          dataIndex: 'state',
+          key: 'invoiceTypeName',
+          dataIndex: 'invoiceTypeName',
           // render: (text, record) => (
           //   <span>
           //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -93,8 +95,8 @@ class BillList extends Component {
         },
         {
           title: '发票金额',
-          key: 'payType',
-          dataIndex: 'payType',
+          key: 'invoiceMoney',
+          dataIndex: 'invoiceMoney',
           // render: (text, record) => (
           //   <span>
           //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -104,8 +106,8 @@ class BillList extends Component {
         },
         {
           title: '客户名称',
-          key: 'orderState',
-          dataIndex: 'orderState',
+          key: 'customerName',
+          dataIndex: 'customerName',
           // render: (text, record) => (
           //   <span>
           //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -115,93 +117,37 @@ class BillList extends Component {
         },
         {
           title: '发票代码',
-          key: 'time1',
-          render: (text, record) => (
-            <span>
-              <span>{record.time}</span>
-            </span>
-          ),
+          key: 'invoiceCode',
+          dataIndex:"invoiceCode"
         },
         {
             title: '发票号码',
-            key: 'time2',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
+            key: 'invoiceNumber',
+            dataIndex:"invoiceNumber"
           },
           {
             title: '开户银行',
-            key: 'time3',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
+            key: 'openingBank',
+            dataIndex:"openingBank"
           },
           {
             title: '开户账号',
-            key: 'time4',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
+            key: 'bankAccount',
+            dataIndex:"bankAccount"
           },
           {
             title: '地址',
-            key: 'time5',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
+            key: 'address',
+            dataIndex:"address"
           },
           {
             title: '电话',
-            key: 'time6',
-            render: (text, record) => (
-              <span>
-                <span>{record.time}</span>
-              </span>
-            ),
+            key: 'officeTel',
+            dataIndex:"officeTel"
           }
       ],
       data: [
-        {
-          key: '1',
-          name: '套餐一',
-          type: '个人独资',
-          number: 100,
-          state: 1,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '2',
-          name: '套餐二',
-          type: "个人独资",
-          number: 100,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
-        {
-          key: '3',
-          name: '套餐三',
-          type: "个人独资",
-          number: 20,
-          state: 0,
-          payType: "支付宝",
-          orderState: "已支付",
-          time: "2019.01.20",
-          action: "操作"
-        },
+       
       ],
       visible: false,
       editVisible: false
@@ -288,7 +234,7 @@ class BillList extends Component {
   setCreateTime = (value) => {
     if (value == "") {
       this.setState({
-        select: Object.assign(this.state.select,{ date: value }),
+        select: Object.assign(this.state.select,{ startDate: value ,endDate: value}),
         searchValue: value
       })
     }
@@ -297,9 +243,24 @@ class BillList extends Component {
   onChange = (date, dateString) => {
     console.log(date, dateString)
     this.setState({
-      select:Object.assign(this.state.select,{ date: dateString }),
+      select:Object.assign(this.state.select,{ startDate: dateString[0] ,endDate: dateString[1]}),
       searchValue: date
     })
+  }
+
+  paginationChange = (current)=>{
+    console.log(current)
+    this.setState({
+     select: Object.assign(this.state.select, { page: current} )
+    },()=>{
+      // 获取分页数据
+      //获取发票列表
+     this.props.invoicepage(this.state.select)
+    })
+  }
+  //搜索
+  searchs = ()=>{
+    this.props.invoicepage(this.state.select)
   }
 
   componentWillMount(){
@@ -326,7 +287,8 @@ class BillList extends Component {
          data[i].key = i+1;
       }
       this.setState({
-        data
+        data,
+        total:nextProps.billReducer.getIn(["invoicepage","data","total"])
       })
    }
   }
@@ -337,7 +299,7 @@ class BillList extends Component {
 
   render() {
     let { routerList, searchValue , companyTypeList} = this.state;
-    let { invoiceType, companyType, date } = this.state.select
+    let { invoiceType, companyType, startDate,endDate } = this.state.select
 
     return (
       <div className="product-container">
@@ -370,7 +332,7 @@ class BillList extends Component {
           <div className="line">
             <div>申请时间 ：</div>
             <div>
-              <span onClick={this.setCreateTime.bind(this, "")} className={date == "" ? "active-bg" : ""}>全部</span>
+              <span onClick={this.setCreateTime.bind(this, "")} className={startDate == "" ? "active-bg" : ""}>全部</span>
               <RangePicker
                 onChange={this.onChange}
                 value={searchValue}
@@ -389,7 +351,7 @@ class BillList extends Component {
           <div className="line">
             <div></div>
             <div style={{ marginLeft: "62px" }}>
-              <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+              <Button onClick={this.searchs} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
               <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
             </div>
           </div>
@@ -398,7 +360,19 @@ class BillList extends Component {
         {/* table 部分 */}
         <div className="table-content">
           {/* 123 */}
-          <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+          <Table 
+          rowSelection={{
+            onChange: (selectedRowKeys, selectedRows) => {
+              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            },
+          }}
+          pagination={{
+            total: this.state.total,
+            showTotal: (total) => `共 ${total} 条`,
+            onChange: (current) => this.paginationChange(current),
+            pageSize: this.state.select.limit,
+          }}
+          bordered columns={this.state.columns} dataSource={this.state.data} />
         </div>
 
 

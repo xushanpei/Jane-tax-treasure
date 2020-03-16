@@ -277,7 +277,7 @@
                 flex-direction: column;
                 justify-content: start;
                 // height:270px;
-                height: 100px;
+                height: 100px !important;
                 padding: 20px;
                 span:last-child{
                     margin-top: 10px;
@@ -411,7 +411,7 @@
             &>span:last-child{
                 display: inline-block;
                 position: relative;
-                top: -20px;
+                top: -20px !important;
             }
            
         }
@@ -463,6 +463,14 @@
     & >div>span:last-child{
         
     }
+}
+
+#myProgress{
+    min-height: 100px !important;
+    // height: 200px !important;
+}
+#htInfomatio{
+    height: 240px !important;
 }
 
 

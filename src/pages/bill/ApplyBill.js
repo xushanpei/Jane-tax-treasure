@@ -36,7 +36,8 @@ class ApplyBill extends Component {
                 invoiceType:"",
                 billStatus: "",
                 companyType: "",
-                date: ""
+                startDate: "",
+                endDate:""
             },
             searchValue: "",
             routerList: [
@@ -255,7 +256,7 @@ class ApplyBill extends Component {
     setCreateTime = (value) => {
         if (value == "") {
             this.setState({
-                select: Object.assign(this.state.select, { date: value }),
+                select: Object.assign(this.state.select, { startDate: value ,endDate: value}),
                 searchValue: value
             })
         }
@@ -264,7 +265,7 @@ class ApplyBill extends Component {
     onChange = (date, dateString) => {
         console.log(date, dateString)
         this.setState({
-            select: Object.assign(this.state.select, { date: dateString }),
+            select: Object.assign(this.state.select, { startDate: dateString[0] ,endDate: dateString[1]}),
             searchValue: date
         })
     }
@@ -321,7 +322,7 @@ class ApplyBill extends Component {
 
     render() {
         let { routerList, searchValue, companyTypeList } = this.state;
-        let { billStatus, invoiceType, companyType, date } = this.state.select
+        let { billStatus, invoiceType, companyType, startDate ,endDate } = this.state.select
 
         return (
             <div className="product-container">
@@ -363,7 +364,7 @@ class ApplyBill extends Component {
                     <div className="line">
                         <div>申请时间 ：</div>
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={date == "" ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setCreateTime.bind(this, "")} className={startDate  == "" ? "active-bg" : ""}>全部</span>
                             <RangePicker
                                 onChange={this.onChange}
                                 value={searchValue}
