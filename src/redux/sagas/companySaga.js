@@ -314,6 +314,53 @@ function* companyweblist(action) {
   }
 
 
+
+  function* nameexamine(action) {
+    try {
+     let data = yield call(Apis.nameexamine,action.payload.data);
+      yield put({ type:companyTypes.NAMEEXAMINE_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  function* businessexamine(action) {
+    try {
+     let data = yield call(Apis.businessexamine,action.payload.data);
+      yield put({ type:companyTypes.BUSINESSEXAMINE_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  function* accountexamine(action) {
+    try {
+     let data = yield call(Apis.accountexamine,action.payload.data);
+      yield put({ type:companyTypes.ACCOUNTEXAMINE_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  function* taxexamine(action) {
+    try {
+     let data = yield call(Apis.taxexamine,action.payload.data);
+      yield put({ type:companyTypes.TAXEXAMINE_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
   yield takeLatest(companyTypes.COMPANYDETAILWEB, companydetailweb);
@@ -339,6 +386,11 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.LEGALDETAIL, legaldetail);
   yield takeLatest(companyTypes.GETCOMPANYBYLEGALID, getcompanybylegalid);
   yield takeLatest(companyTypes.LOCKLEGAL, locklegal);
+
+  yield takeLatest(companyTypes.NAMEEXAMINE, nameexamine);
+  yield takeLatest(companyTypes.BUSINESSEXAMINE, businessexamine);
+  yield takeLatest(companyTypes.ACCOUNTEXAMINE, accountexamine);
+  yield takeLatest(companyTypes.TAXEXAMINE, taxexamine);
 }
 
 
@@ -347,5 +399,10 @@ export default function* watchAuthRoot() {
 //GETCOMPANYBYLEGALID
 //LOCKLEGAL
 
+
+// [companyTypes.NAMEEXAMINE]: data=> ({data}),
+// [companyTypes.BUSINESSEXAMINE]: data=> ({data}),
+// [companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
+// [companyTypes.TAXEXAMINE]: data=> ({data}),
 
 

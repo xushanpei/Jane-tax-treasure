@@ -82,6 +82,16 @@ class Apis {
   //修改对接人信息
   updatedock =data=> ApiRequest.put(`${urls.UPDATEDOCK}`,data);
 
+  // //名称审核
+  nameexamine = data => ApiRequest.put(`${urls.NAMEEXAMINE}`,data);
+  // //工商阶段完成
+  businessexamine = data => ApiRequest.put(`${urls.BUSINESSEXAMINE}`,data);
+  // //银行开户完成
+  accountexamine = data => ApiRequest.put(`${urls.ACCOUNTEXAMINE}`,data);
+  // //税务认证
+  taxexamine = data => ApiRequest.put(`${urls.TAXEXAMINE}`,data);
+
+
   /**
    * 法人库
    */

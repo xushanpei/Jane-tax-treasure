@@ -126,6 +126,28 @@ const companyReducer = handleActions(
           locklegal: action.data
         });
       },
+
+      [companyTypes.NAMEEXAMINE_SUCCESS]: (state, action) => {
+        return state.merge({
+          nameexamine: action.data
+        });
+      },
+      [companyTypes.BUSINESSEXAMINE_SUCCESS]: (state, action) => {
+        return state.merge({
+          businessexamine: action.data
+        });
+      },
+
+      [companyTypes.ACCOUNTEXAMINE_SUCCESS]: (state, action) => {
+        return state.merge({
+          accountexamine: action.data
+        });
+      },
+      [companyTypes.TAXEXAMINE_SUCCESS]: (state, action) => {
+        return state.merge({
+          taxexamine: action.data
+        });
+      },
   
   },
   initState
@@ -137,3 +159,8 @@ export default companyReducer;
 //GETCOMPANYBYLEGALID
 //LOCKLEGAL
 
+
+// [companyTypes.NAMEEXAMINE]: data=> ({data}),
+// [companyTypes.BUSINESSEXAMINE]: data=> ({data}),
+// [companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
+// [companyTypes.TAXEXAMINE]: data=> ({data}),

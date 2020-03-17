@@ -67,7 +67,23 @@ GETCOMPANYBYLEGALID:"GETCOMPANYBYLEGALID",
 GETCOMPANYBYLEGALID_SUCCESS:"GETCOMPANYBYLEGALID_SUCCESS",
 //锁定法人
 LOCKLEGAL:"LOCKLEGAL",
-LOCKLEGAL_SUCCESS:"LOCKLEGAL_SUCCESS"
+LOCKLEGAL_SUCCESS:"LOCKLEGAL_SUCCESS",
+
+//名称审核
+NAMEEXAMINE:"NAMEEXAMINE",
+NAMEEXAMINE_SUCCESS:"NAMEEXAMINE_SUCCESS",
+
+//工商阶段完成
+BUSINESSEXAMINE:"BUSINESSEXAMINE",
+BUSINESSEXAMINE_SUCCESS:"BUSINESSEXAMINE_SUCCESS",
+
+//银行开户完成
+ACCOUNTEXAMINE:"ACCOUNTEXAMINE",
+ACCOUNTEXAMINE_SUCCESS:"ACCOUNTEXAMINE_SUCCESS",
+
+//税务认证
+TAXEXAMINE:"TAXEXAMINE",
+TAXEXAMINE_SUCCESS:"TAXEXAMINE_SUCCESS",
 
 
 
@@ -99,5 +115,20 @@ export default createActions({
 [companyTypes.LEGALDETAIL]: data=> ({data}),
 [companyTypes.GETCOMPANYBYLEGALID]: data=> ({data}),
 [companyTypes.LOCKLEGAL]: data=> ({data}),
+
+[companyTypes.NAMEEXAMINE]: data=> ({data}),
+[companyTypes.BUSINESSEXAMINE]: data=> ({data}),
+[companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
+[companyTypes.TAXEXAMINE]: data=> ({data}),
 });
 
+
+
+// // //名称审核
+// nameexamine = data => ApiRequest.put(`${urls.NAMEEXAMINE}`,data);
+// // //工商阶段完成
+// businessexamine = data => ApiRequest.put(`${urls.BUSINESSEXAMINE}`,data);
+// // //银行开户完成
+// accountexamine = data => ApiRequest.put(`${urls.ACCOUNTEXAMINE}`,data);
+// // //税务认证
+// taxexamine = data => ApiRequest.put(`${urls.TAXEXAMINE}`,data);

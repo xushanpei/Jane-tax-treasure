@@ -81,6 +81,14 @@ export const urls = {
   //修改对接人信息
   UPDATEDOCK:"/simpleTax/companyWeb/updateDock",
 
+  //名称审核
+  NAMEEXAMINE:"/simpleTax/companyWeb/nameExamine",
+  //工商阶段完成
+  BUSINESSEXAMINE:"/simpleTax/companyWeb/businessExamine",
+  //银行开户完成
+  ACCOUNTEXAMINE:"/simpleTax/companyWeb/accountExamine",
+  //税务认证
+  TAXEXAMINE:"/simpleTax/companyWeb/taxExamine",
   /**
    * 法人库
    */

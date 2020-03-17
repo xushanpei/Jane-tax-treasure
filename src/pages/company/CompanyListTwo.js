@@ -14,16 +14,16 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
+const { confirm } = Modal
 
-// //设立
-// COMPANYOPERATEESTABLISH:"COMPANYOPERATEESTABLISH",
-// COMPANYOPERATEESTABLISH_SUCCESS:"COMPANYOPERATEESTABLISH_SUCCESS",
-// //驳回
-// COMPANYOPERATEREJECT:"COMPANYOPERATEREJECT",
-// COMPANYOPERATEREJECT_SUCCESS:"COMPANYOPERATEREJECT_SUCCESS",
-// //锁定
-// COMPANYOPERATEBILLLOCK:"COMPANYOPERATEBILLLOCK",
-// COMPANYOPERATEBILLLOCK_SUCCESS:"COMPANYOPERATEBILLLOCK_SUCCESS"
+// // //名称审核
+// nameexamine = data => ApiRequest.put(`${urls.NAMEEXAMINE}`,data);
+// // //工商阶段完成
+// businessexamine = data => ApiRequest.put(`${urls.BUSINESSEXAMINE}`,data);
+// // //银行开户完成
+// accountexamine = data => ApiRequest.put(`${urls.ACCOUNTEXAMINE}`,data);
+// // //税务认证
+// taxexamine = data => ApiRequest.put(`${urls.TAXEXAMINE}`,data);
 @connect(
     ({ companyReducer, productReducer }) => ({ companyReducer, productReducer }),
     {
@@ -32,7 +32,12 @@ const FormItem = Form.Item;
         //驳回
         companyoperatereject: companyAction.companyoperatereject,
         //
-        sendnotice:companyAction.sendnotice
+        sendnotice:companyAction.sendnotice,
+
+        nameexamine:companyAction.nameexamine,
+        businessexamine:companyAction.businessexamine,
+        accountexamine:companyAction.accountexamine,
+        taxexamine:companyAction.taxexamine,
     }
 )
 class CompanyListTwos extends Component {
@@ -43,6 +48,8 @@ class CompanyListTwos extends Component {
             baseInfo: "",
             headerData: "",
 
+            //流程状态
+            firstVisi: true,
 
             routerList: [
                 {
@@ -84,18 +91,20 @@ class CompanyListTwos extends Component {
                 {
                     label: '名称审核完成',
                     value: 0
-                },
+                }
+            ],
+            plainOptions1:[
                 {
                     label: '工商阶段完成',
-                    value: 1
+                    value: 1,
                 },
                 {
                     label: '银行开户完成',
-                    value: 2
+                    value: 2,
                 },
                 {
                     label: '税务认证',
-                    value: 3
+                    value: 3,
                 },
             ],
             checkedList: [],
@@ -117,9 +126,41 @@ class CompanyListTwos extends Component {
 
 
     onChange = checkedList => {
-        this.setState({
-            checkedList,
-        });
+        console.log(checkedList);
+
+        if(checkedList[0] == 0){
+            console.log("选中0")
+            confirm({
+                title: '是否确定名称审核已完成?',
+                content: '完成点击 是 ,否则 否',
+                okText: '是',
+                okType: 'danger',
+                cancelText: '否',
+                onOk: ()=> {
+                  console.log('OK');
+                  //设置成选中
+                  this.setState({
+                    firstVisi: false,
+                    checkedList:[0]
+                })
+                },
+                onCancel : ()=> {
+                  console.log('Cancel');
+                  //不选择
+                  this.setState({
+                    firstVisi: true,
+                    checkedList:[]
+                })
+                },
+              });
+        }else{
+           if(checkedList.length > 0){
+            this.setState({
+                checkedList1: checkedList,
+            });
+           }
+        }
+        
     };
     onChangepiclist = piclist => {
         this.setState({
@@ -363,6 +404,12 @@ class CompanyListTwos extends Component {
                             <CheckboxGroup
                                 options={this.state.plainOptions}
                                 value={this.state.checkedList}
+                                onChange={this.onChange}
+                            />
+                            <CheckboxGroup
+                                options={this.state.plainOptions1}
+                                value={this.state.checkedList1}
+                                disabled={this.state.firstVisi}
                                 onChange={this.onChange}
                             />
                             <p className="borderp"></p>
