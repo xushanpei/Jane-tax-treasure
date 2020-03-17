@@ -6,13 +6,8 @@ export default {
   copyright: "Copyright © 2019 shunbega All Rights Reserved.",
   logo: require("../assets/image/jsb-logoX.png"),
 
-  /**
-   * host :  ip 
-   * port :  端口号
-   * 
-   */
-  host: "http://47.116.4.10",
-  // host:"http://192.168.0.212",
-  port: "8870", 
+  
+  // baseUrl: "http://47.116.4.10:8780",
+  baseUrl:"/api",
   persist: "root"
 };

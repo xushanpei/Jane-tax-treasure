@@ -106,4 +106,12 @@ export const urls = {
   BILLINFO:"/simpleTax/billWeb/billInfo",
   //发票审核通过
   AUDITPASS:"/simpleTax/billWeb/auditPass",
+  //开票
+  INVOICECOMPLETION:"/simpleTax/billWeb/invoiceCompletion",
+  //邮寄
+  EXPRESS:"/simpleTax/billWeb/express",
+  //驳回
+  REJECT:"/simpleTax/billWeb/reject",
+  //查看发票
+  VIEWINVOICE:"/simpleTax/billWeb/viewInvoice",
 };

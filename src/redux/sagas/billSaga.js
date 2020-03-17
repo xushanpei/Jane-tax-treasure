@@ -59,6 +59,58 @@ function* invoicepage(action) {
     }
   }
 
+  function* invoicecompletion(action) {
+    try {
+     let data = yield call(Apis.invoicecompletion,action.payload.data);
+  
+      yield put({ type:billTypes.INVOICECOMPLETION_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* express(action) {
+    try {
+     let data = yield call(Apis.express,action.payload.data);
+  
+      yield put({ type:billTypes.EXPRESS_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* reject(action) {
+    try {
+     let data = yield call(Apis.reject,action.payload.data);
+  
+      yield put({ type:billTypes.REJECT_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* viewinvoice(action) {
+    try {
+     let data = yield call(Apis.viewinvoice,action.payload.data);
+      console.log(data)
+      yield put({ type:billTypes.VIEWINVOICE_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 
 
@@ -68,6 +120,10 @@ export default function* watchAuthRoot() {
   yield takeLatest(billTypes.APPLYINVOICEPAGE, applyinvoicepage);
   yield takeLatest(billTypes.BILLINFO, billinfo);
   yield takeLatest(billTypes.AUDITPASS, auditpass);
+  yield takeLatest(billTypes.INVOICECOMPLETION, invoicecompletion);
+  yield takeLatest(billTypes.EXPRESS, express);
+  yield takeLatest(billTypes.REJECT, reject);
+  yield takeLatest(billTypes.VIEWINVOICE, viewinvoice);
 }
 
 
@@ -78,4 +134,8 @@ export default function* watchAuthRoot() {
 
 // BILLINFO
 //AUDITPASS
+//INVOICECOMPLETION_SUCCESS
+//EXPRESS
+//REJECT
+//VIEWINVOICE
 

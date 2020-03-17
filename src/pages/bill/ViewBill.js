@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, Form, DatePicker,message, Upload, Icon } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, Form, DatePicker, message, Upload, Icon } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import config from "../../config/base.conf"
+import moment from "moment"
+import Zmage from 'react-zmage'
 
 
 
@@ -13,11 +15,11 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 
 
-class OpenBills extends Component {
+class ViewBills extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileList:[],
+            fileList: [],
         };
     }
 
@@ -34,7 +36,7 @@ class OpenBills extends Component {
     };
 
     render() {
-        let { title, visible, onOk, onCancel,data } = this.props;
+        let { title, visible, onOk, onCancel, data, picData } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -53,8 +55,8 @@ class OpenBills extends Component {
             // headers: {
             //     authorization: 'authorization-text',
             // },
-            data:{
-                type:2
+            data: {
+                type: 2
             },
             onChange(info) {
                 if (info.file.status !== 'uploading') {
@@ -68,7 +70,18 @@ class OpenBills extends Component {
             },
         };
 
-        console.log("娃哈哈",this.state.fileList)
+        console.log("娃哈哈",picData.invoiceList)
+        if(picData.invoiceList){
+            let data = picData.invoiceList;
+            let pic=[];
+            for(let i=0; i< data.length; i++){
+                pic.push({
+                    src: data[i],
+                    alt:""
+                })
+            }
+            console.log("123",pic)
+        }
 
         return (
             <Modal
@@ -81,23 +94,26 @@ class OpenBills extends Component {
                 <Form {...formItemLayout}>
                     <FormItem label="发票代码">
                         {getFieldDecorator('invoiceCode', {
+                            initialValue: picData ? picData.invoiceCode : "",
                             rules: [{ required: true, message: '请输入发票代码' }],
                         })(
-                            <Input placeholder="请输入发票代码" />
+                            <Input disabled placeholder="请输入发票代码" />
                         )}
                     </FormItem>
                     <FormItem label="发票号码">
                         {getFieldDecorator('invoiceNumber', {
+                            initialValue: picData ? picData.invoiceNumber : "",
                             rules: [{ required: true, message: '请输入发票号码' }],
                         })(
-                            <Input placeholder="请输入发票号码" />
+                            <Input disabled placeholder="请输入发票号码" />
                         )}
                     </FormItem>
                     <FormItem label="开票日期">
                         {getFieldDecorator('billingTime', {
+                            initialValue: picData ? moment(picData.billingTime, 'YYYY-MM-DD') : "",
                             rules: [{ required: true, message: '请选择开票日期' }],
                         })(
-                            <DatePicker placeholder="请选择开票日期" />
+                            <DatePicker disabled placeholder="请选择开票日期" />
                         )}
                     </FormItem>
                     <FormItem label="名称">
@@ -110,7 +126,7 @@ class OpenBills extends Component {
                     </FormItem>
                     <FormItem label="纳税人识别号">
                         {getFieldDecorator('productName4', {
-                            initialValue: data ? data.txpayerNumber:"",
+                            initialValue: data ? data.txpayerNumber : "",
                             rules: [{ required: true, message: '请输入分类简介' }],
                         })(
                             <Input disabled />
@@ -126,22 +142,31 @@ class OpenBills extends Component {
                     </FormItem>
                     <FormItem label="地址电话">
                         {getFieldDecorator('productName6', {
-                            initialValue:  data ? data.address + data.officeTel :"",
+                            initialValue: data ? data.address + data.officeTel : "",
                             rules: [{ required: true, message: '请输入分类简介' }],
                         })(
                             <TextArea disabled />
                         )}
                     </FormItem>
-                    
+
                     <FormItem label="发票图片">
                         {getFieldDecorator('invoiceList', {
-                            rules: [{ required: true, message: '请上传发票图片' }],
+                            rules: [{ required: false, message: '请上传发票图片' }],
                         })(
-                            <Upload {...props}>
-                                <Button>
-                                    <Icon type="upload" /> 上传图片
-                                </Button>
-                            </Upload>
+                            <div className="pic" style={{width:"273px",height:"168px"}}>
+                                {
+                                    picData.invoiceList ? <Zmage
+                                    src={picData.invoiceList[0]}
+                                    alt="展示序列图片"
+                                    set={ picData.invoiceList.map((item,index)=>{
+                                        return {
+                                            src: item,
+                                            alt:""
+                                        }
+                                    }) }
+                                /> :""
+                                }
+                            </div>
                         )}
                     </FormItem>
                 </Form>
@@ -151,6 +176,6 @@ class OpenBills extends Component {
     }
 }
 
-const OpenBill = Form.create()(OpenBills);
+const ViewBill = Form.create()(ViewBills);
 
-export default OpenBill;
+export default ViewBill;

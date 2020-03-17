@@ -19,7 +19,7 @@ const { RangePicker } = DatePicker   //applyinvoicepage
         //获取公司类型
         productclassify: productAction.productclassify,
         invoicepage: billAction.invoicepage,
-        applyinvoicepage:billAction.applyinvoicepage
+        applyinvoicepage: billAction.applyinvoicepage
     }
 )
 class ApplyBill extends Component {
@@ -28,16 +28,16 @@ class ApplyBill extends Component {
         this.state = {
             //公司类型列表
             companyTypeList: "",
-            total:"",
+            total: "",
             // 筛选属性
             select: {
-                page:1,
-                limit:5,
-                invoiceType:"",
+                page: 1,
+                limit: 5,
+                invoiceType: "",
                 billStatus: "",
                 companyType: "",
                 startDate: "",
-                endDate:""
+                endDate: ""
             },
             searchValue: "",
             routerList: [
@@ -107,63 +107,54 @@ class ApplyBill extends Component {
                 {
                     title: '纳税人识别号',
                     key: 'txpayerNumber',
-                    dataIndex:"txpayerNumber"
+                    dataIndex: "txpayerNumber"
                 },
                 {
                     title: '开户银行',
                     key: 'openingBank',
-                    dataIndex:"openingBank"
+                    dataIndex: "openingBank"
                 },
                 {
                     title: '开票地址',
                     key: 'address',
-                    dataIndex:"address"
+                    dataIndex: "address"
                 },
                 {
                     title: '开票电话',
                     key: 'officeTel',
-                    dataIndex:"officeTel"
+                    dataIndex: "officeTel"
                 },
                 {
                     title: '开票状态',
                     key: 'billStatus',
                     render: (text, record) => {
-                        if(record.billStatus == 1){
+                        if (record.billStatus == 1) {
                             return <span>审核中</span>
                         }
-                        if(record.billStatus == 2){
+                        if (record.billStatus == 2) {
                             return <span>开票中</span>
                         }
-                        if(record.billStatus == 3){
+                        if (record.billStatus == 3) {
                             return <span>已开票</span>
                         }
-                        if(record.billStatus == 4){
+                        if (record.billStatus == 4) {
                             return <span>已驳回</span>
+                        }
+                        if (record.billStatus == 5) {
+                            return <span>已邮寄</span>
                         }
                     }
                 },
                 {
                     title: '操作',
                     key: 'action',
-                    render: (text, record) => (
-                        <Link to={`/billDetail/${record.billId}`}>
-                            查看详情
+                    render: (text, record) => {
+                        if (record.billStatus != 4) {
+                            return <Link to={`/billDetail/${record.billId}`}>
+                                查看详情
                         </Link>
-                        // <Dropdown overlay={
-                        //   <Menu>
-                        //     <Menu.Item key="0">
-                        //         <Link to="/orderDetail/0">
-                        //             查看详情
-                        //         </Link>
-                        //     </Menu.Item>
-                        //   </Menu>
-                        // } trigger={['click']}>
-                        //   <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                        //     操作 <Icon type="down" />
-                        //   </span>
-                        // </Dropdown>
-
-                    ),
+                        }
+                    }
                 },
             ],
             data: [],
@@ -242,7 +233,7 @@ class ApplyBill extends Component {
     // 订单类型
     setOrderType = (value) => {
         this.setState({
-            select: Object.assign(this.state.select, { companyType:value })
+            select: Object.assign(this.state.select, { companyType: value })
         })
     }
     // 支付方式 
@@ -256,7 +247,7 @@ class ApplyBill extends Component {
     setCreateTime = (value) => {
         if (value == "") {
             this.setState({
-                select: Object.assign(this.state.select, { startDate: value ,endDate: value}),
+                select: Object.assign(this.state.select, { startDate: value, endDate: value }),
                 searchValue: value
             })
         }
@@ -265,12 +256,12 @@ class ApplyBill extends Component {
     onChange = (date, dateString) => {
         console.log(date, dateString)
         this.setState({
-            select: Object.assign(this.state.select, { startDate: dateString[0] ,endDate: dateString[1]}),
+            select: Object.assign(this.state.select, { startDate: dateString[0], endDate: dateString[1] }),
             searchValue: date
         })
     }
     //搜索按钮
-    search = ()=>{
+    search = () => {
         console.log(this.state.select)
         this.props.applyinvoicepage(this.state.select)
     }
@@ -282,18 +273,18 @@ class ApplyBill extends Component {
             limit: 100
         })
         //获取发票申请列表
-         this.props.applyinvoicepage(this.state.select)
+        this.props.applyinvoicepage(this.state.select)
     }
 
-    paginationChange = (current)=>{
+    paginationChange = (current) => {
         console.log(current)
         this.setState({
-         select: Object.assign(this.state.select, { page: current} )
-        },()=>{
-          // 获取分页数据
-          this.props.applyinvoicepage(this.state.select)
+            select: Object.assign(this.state.select, { page: current })
+        }, () => {
+            // 获取分页数据
+            this.props.applyinvoicepage(this.state.select)
         })
-      }
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.productReducer.getIn(["productclassify", "data", "rows"])) {
@@ -303,17 +294,17 @@ class ApplyBill extends Component {
             })
         }
         //发票列表
-        if(nextProps.billReducer.getIn(["applyinvoicepage"])){
-           console.log("发票申请++++列表", nextProps.billReducer.getIn(["applyinvoicepage"]))
-           let data =  nextProps.billReducer.getIn(["applyinvoicepage","data","rows"]);
-           let total = nextProps.billReducer.getIn(["applyinvoicepage","data","total"]);
-           for(let i=0; i<data.length; i++){
-               data[i].key = i+1;
-           }
-           this.setState({
-            data,
-            total
-           })
+        if (nextProps.billReducer.getIn(["applyinvoicepage"])) {
+            console.log("发票申请++++列表", nextProps.billReducer.getIn(["applyinvoicepage"]))
+            let data = nextProps.billReducer.getIn(["applyinvoicepage", "data", "rows"]);
+            let total = nextProps.billReducer.getIn(["applyinvoicepage", "data", "total"]);
+            for (let i = 0; i < data.length; i++) {
+                data[i].key = i + 1;
+            }
+            this.setState({
+                data,
+                total
+            })
         }
     }
 
@@ -322,7 +313,7 @@ class ApplyBill extends Component {
 
     render() {
         let { routerList, searchValue, companyTypeList } = this.state;
-        let { billStatus, invoiceType, companyType, startDate ,endDate } = this.state.select
+        let { billStatus, invoiceType, companyType, startDate, endDate } = this.state.select
 
         return (
             <div className="product-container">
@@ -364,7 +355,7 @@ class ApplyBill extends Component {
                     <div className="line">
                         <div>申请时间 ：</div>
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={startDate  == "" ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setCreateTime.bind(this, "")} className={startDate == "" ? "active-bg" : ""}>全部</span>
                             <RangePicker
                                 onChange={this.onChange}
                                 value={searchValue}
@@ -392,19 +383,19 @@ class ApplyBill extends Component {
                 {/* table 部分 */}
                 <div className="table-content">
                     {/* 123 */}
-                    <Table 
-                    rowSelection={{
-                        onChange: (selectedRowKeys, selectedRows) => {
-                          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                        },
-                      }}
-                      pagination={{
-                        total: this.state.total,
-                        showTotal: (total) => `共 ${total} 条`,
-                        onChange: (current) => this.paginationChange(current),
-                        pageSize: this.state.select.limit,
-                      }}
-                    bordered columns={this.state.columns} dataSource={this.state.data} />
+                    <Table
+                        rowSelection={{
+                            onChange: (selectedRowKeys, selectedRows) => {
+                                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                            },
+                        }}
+                        pagination={{
+                            total: this.state.total,
+                            showTotal: (total) => `共 ${total} 条`,
+                            onChange: (current) => this.paginationChange(current),
+                            pageSize: this.state.select.limit,
+                        }}
+                        bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>
 
 

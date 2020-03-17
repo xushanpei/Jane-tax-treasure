@@ -16,8 +16,8 @@ class ApiRequest {
   constructor() {
     //创建axios实例
     this.instance = axios.create({
-      // baseURL: `http://192.168.0.254:8870`
-      baseURL:"/api"
+      // baseUrl: `http://192.168.0.254:8870`
+      baseURL:config.baseUrl
     });
   }
 

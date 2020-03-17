@@ -107,6 +107,14 @@ class Apis {
   billinfo = data => ApiRequest.get(`${urls.BILLINFO}?billId=${data.billId}`);
   //发票审核通过
   auditpass = data => ApiRequest.post(`${urls.AUDITPASS}`,data);
+  //开票
+  invoicecompletion = data => ApiRequest.post(`${urls.INVOICECOMPLETION}`,data);
+  //邮寄
+  express = data => ApiRequest.post(`${urls.EXPRESS}`,data);
+  //驳回
+  reject = data => ApiRequest.post(`${urls.REJECT}`,data);
+  //查看发票
+  viewinvoice = data => ApiRequest.get(`${urls.VIEWINVOICE}?billId=${data.billId}`);
 
 }
 

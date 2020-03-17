@@ -326,8 +326,10 @@
             position: relative;
             top:-40px;
             img{
-                height: 100px;
-                width: 130px;
+                height: 80px;
+                width: 100px;
+                margin-top:20px;
+                cursor: pointer;
             }
             span{
                 display: inline-block;

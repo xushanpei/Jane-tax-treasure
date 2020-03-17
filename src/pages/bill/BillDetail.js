@@ -7,6 +7,9 @@ import moment from "moment";
 import { Link } from 'react-router-dom';
 import OpenBill from "./OpenBill";
 import Pass from "./Pass"
+import NoPass from "./NoPass"
+import Express from "./Express"
+import ViewBill from "./ViewBill"
 import { connect } from "react-redux";
 import billAction from "../../redux/actions/billAction";
 
@@ -21,7 +24,16 @@ const { RangePicker } = DatePicker
         //详情
         billinfo: billAction.billinfo,
         //审核通过
-        auditpass: billAction.auditpass
+        auditpass: billAction.auditpass,
+        //开票
+        invoicecompletion: billAction.invoicecompletion,
+        //邮寄
+        express: billAction.express,
+        //驳回
+        reject: billAction.reject,
+        //查看发票
+        viewinvoice: billAction.viewinvoice
+
     }
 )
 class BillDetail extends Component {
@@ -29,9 +41,13 @@ class BillDetail extends Component {
         super(props);
         this.state = {
             visible: false,
-            passVisible:false,
+            passVisible: false,
+            expressVisible: false,
+            rejectVisible: false,
+            viewVisible: false,
             billId: "",
             billinfo: "",
+            picData: {},
             routerList: [
                 {
                     name: "首页",
@@ -78,7 +94,26 @@ class BillDetail extends Component {
         });
     };
     handleOk = e => {
-        console.log(e);
+        // console.log(e);
+        let data = e;
+        console.log("开票要提交的数据", data)
+        let invoiceList = data.invoiceList.fileList;
+        let list = [];
+        for (let i = 0; i < invoiceList.length; i++) {
+            list.push(invoiceList[i].response.data)
+        }
+        data.invoiceList = list;
+        data.billId = this.props.match.params.id;
+        data.billingTime = data.billingTime.format("YYYY-MM-DD")
+        //开票
+        this.props.invoicecompletion(data);
+        //开票成功后重新获取状态
+        //重新获取状态
+        setTimeout(() => {
+            this.props.billinfo({
+                billId: this.state.billId
+            })
+        }, 300)
         this.setState({
             visible: false,
         });
@@ -98,17 +133,17 @@ class BillDetail extends Component {
         });
     }
     passHandleOk = e => {
-        console.log("通过+++",e);
-    //    触发通过接口
-     this.props.auditpass(
-         Object.assign(e,{billId:this.props.match.params.id})
-     )
-     //重新获取状态
-       setTimeout(()=>{
-        this.props.billinfo({
-            billId: this.state.billId
-        })
-       },300)
+        console.log("通过+++", e);
+        //    触发通过接口
+        this.props.auditpass(
+            Object.assign(e, { billId: this.props.match.params.id })
+        )
+        //重新获取状态
+        setTimeout(() => {
+            this.props.billinfo({
+                billId: this.state.billId
+            })
+        }, 300)
 
 
 
@@ -123,6 +158,84 @@ class BillDetail extends Component {
             passVisible: false,
         });
     };
+    //驳回 reject
+    reject = () => {
+        this.setState({
+            rejectVisible: true
+        })
+    }
+    rejectHandleOk = e => {
+        console.log("驳回信息", e);
+        this.props.reject(Object.assign(
+            { billId: this.props.match.params.id }, e
+        ))
+        this.setState({
+            rejectVisible: false,
+        }, () => {
+            window.history.back(-1);
+        });
+    };
+
+    rejectHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            rejectVisible: false,
+        });
+    };
+
+
+
+
+    //邮寄弹出
+    expressShowModal = () => {
+        this.setState({
+            expressVisible: true
+        })
+    }
+    expressHandleOk = e => {
+        console.log("邮寄信息", e);
+        this.props.express({
+            billId: this.props.match.params.id,
+            ...e
+        })
+        this.setState({
+            expressVisible: false,
+        });
+        setTimeout(() => {
+            this.props.billinfo({
+                billId: this.state.billId
+            })
+        }, 300)
+    };
+
+    expressHandleCancel = e => {
+        console.log(e);
+        this.setState({
+            expressVisible: false,
+        });
+    };
+    //查看发票
+    viewinvoice = () => {
+        // 获取开票信息
+        this.props.viewinvoice({
+            billId: this.state.billId
+        })
+        this.setState({
+            viewVisible: true
+        })
+    }
+    viewHandleOk = () => {
+        this.setState({
+            viewVisible: false
+        })
+    }
+    //下载附件
+    download = (value) => {
+        var link = document.createElement('a');
+        link.setAttribute("download", "");
+        link.href = value;
+        link.click();
+    }
 
 
     componentWillMount() {
@@ -141,6 +254,17 @@ class BillDetail extends Component {
             console.log("详情列表", nextProps.billReducer.getIn(["billinfo", "data"]))
             this.setState({
                 billinfo: nextProps.billReducer.getIn(["billinfo", "data"])
+            })
+        }
+        //开票
+        if (nextProps.billReducer.getIn(["invoicecompletion"])) {
+            console.log(nextProps.billReducer.getIn(["invoicecompletion"]))
+        }
+        //获取开票信息
+        if (nextProps.billReducer.getIn(["viewinvoice"])) {
+            console.log("开票信息", nextProps.billReducer.getIn(["viewinvoice"]))
+            this.setState({
+                picData: nextProps.billReducer.getIn(["viewinvoice", "data"])
             })
         }
     }
@@ -190,31 +314,37 @@ class BillDetail extends Component {
                             </span>
                             <span className="divButton">
                                 {/* 通过不通过按钮组 */}
-                               {
-                                   baseInfo && baseInfo.billStatus == 3 ? <span className="btn-diy">
-                                   <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>查看发票</Button>
-                               </span> : ""
-                               }
-                               {
+                                {
+                                    baseInfo && baseInfo.billStatus == 3 ? <span className="btn-diy">
+                                        <Button onClick={this.viewinvoice} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>查看发票</Button>
+                                    </span> : ""
+                                }
+                                {
                                     baseInfo && baseInfo.billStatus == 2 ? <span className="btn-diy">
-                                    <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>开票</Button>
-                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
-                                </span> :""
-                               }
-                               {
+                                        <Button onClick={this.showModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>开票</Button>
+                                        {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
+                                    </span> : ""
+                                }
+                                {
                                     baseInfo && baseInfo.billStatus == 1 ? <span className="btn-diy">
-                                    <Button onClick={this.showPassModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
-                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
-                                </span> :""
-                               }
-                
+                                        <Button onClick={this.showPassModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button>
+                                        {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>通过</Button> */}
+                                    </span> : ""
+                                }
 
-                               {
-                                   baseInfo && baseInfo.billStatus == 1 ?  <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button> :""
-                               }
 
-                                
-                               
+                                {
+                                    baseInfo && baseInfo.billStatus == 1 ? <Button onClick={this.reject} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>驳回</Button> : ""
+                                }
+
+                                {
+                                    baseInfo && baseInfo.billStatus == 3 ? <span className="btn-diy">
+                                        <Button onClick={this.expressShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>邮寄</Button>
+                                    </span> : ""
+                                }
+
+
+
 
                             </span>
                         </div>
@@ -234,36 +364,44 @@ class BillDetail extends Component {
                             <div className="progress">
                                 <div>
                                     <span>申请</span><br />
-                                    <span>申请人 : 18861851261</span><br />
-                                    <span>2020-02-16  15:26:26</span>
+                                    <span>申请人 : {baseInfo && baseInfo.username ? baseInfo.username : ""}</span><br />
+                                    <span>{baseInfo && baseInfo.submitTime ? baseInfo.submitTime : ""}</span>
                                 </div>
                                 <div>
                                     <span>审核</span><br />
-                                    <span>审核人 : 徐梦绮</span> <br />
-                                    <span>已花费 24小时56分钟</span>
+                                    <span>审核人 : {baseInfo && baseInfo.auditName ? baseInfo.auditName : ""}</span> <br />
+                                    <span>{baseInfo && baseInfo.auditTime ? baseInfo.auditTime : ""}</span>
                                 </div>
                                 <div>
                                     <span>开票中</span><br />
-                                    <span>经办人 : 徐善培</span>
-                                    <span></span>
+                                    <span>经办人 : {baseInfo && baseInfo.invoiceName ? baseInfo.invoiceName : ""}</span><br />
+                                    <span>{baseInfo && baseInfo.invoiceTime ? baseInfo.invoiceTime : ""}</span>
                                 </div>
                                 <div>
                                     <span>已开票</span><br />
-                                    <span>经办人 : 徐善培</span>
+                                    <span>经办人 : {baseInfo && baseInfo.postName ? baseInfo.postName : ""}</span><br />
+                                    <span>{baseInfo && baseInfo.postTime ? baseInfo.postTime : ""}</span>
+                                </div>
+                                <div>
+                                    <span>已邮寄</span><br />
+                                    <span></span>
                                     <span></span>
                                 </div>
                             </div>
                             {
-                                baseInfo && baseInfo.billStatus == 1 ?  <p style={{ width: "30%" }} className="progress-line"></p> : ""
+                                baseInfo && baseInfo.billStatus == 1 ? <p style={{ width: "30%" }} className="progress-line"></p> : ""
                             }
                             {
-                                baseInfo && baseInfo.billStatus == 2 ?  <p style={{ width: "58%" }} className="progress-line"></p> : ""
+                                baseInfo && baseInfo.billStatus == 2 ? <p style={{ width: "50%" }} className="progress-line"></p> : ""
                             }
                             {
-                                baseInfo && baseInfo.billStatus == 3 ?  <p style={{ width: "100%" }} className="progress-line"></p> : ""
+                                baseInfo && baseInfo.billStatus == 3 ? <p style={{ width: "80%" }} className="progress-line"></p> : ""
                             }
                             {
-                                baseInfo && baseInfo.billStatus == 4 ?  <p style={{ width: "100%" }} className="progress-line"></p> : ""
+                                baseInfo && baseInfo.billStatus == 4 ? <p style={{ width: "90%" }} className="progress-line"></p> : ""
+                            }
+                            {
+                                baseInfo && baseInfo.billStatus == 5 ? <p style={{ width: "100%" }} className="progress-line"></p> : ""
                             }
                         </div>
                         {/* 状态 */}
@@ -358,22 +496,16 @@ class BillDetail extends Component {
                         </div>
                         {/* 合同附件 */}
                         <div className="billPic">
-                            <div>
-                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
-                                <span>合同附件X</span>
-                            </div>
-                            <div>
-                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
-                                <span>合同附件X</span>
-                            </div>
-                            <div>
-                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
-                                <span>合同附件X</span>
-                            </div>
-                            <div>
-                                <img src={require("../../assets/image/sfz.png")} alt="" /><br />
-                                <span>合同附件X</span>
-                            </div>
+                            {
+                                contractInfo && contractInfo.dataList ? contractInfo.dataList.map((item, key) => {
+                                    return <div key={key}> 
+                                        <img  onClick={this.download.bind(this, item)} src={require("../../assets/image/file.png")} alt="" /><br />
+                                <span>合同附件{key+1}</span>
+                                    </div>
+                                }) : ""
+                            }
+
+
                         </div>
 
 
@@ -394,7 +526,7 @@ class BillDetail extends Component {
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
-                    data={this.state.customerInfo}
+                    data={customerInfo}
                 >
                 </OpenBill>
 
@@ -403,9 +535,32 @@ class BillDetail extends Component {
                     visible={this.state.passVisible}
                     onOk={this.passHandleOk}
                     onCancel={this.passHandleCancel}
-                    // data={this.state.customerInfo}
+                // data={this.state.customerInfo}
                 >
                 </Pass>
+                {/* /NoPass */}
+                <NoPass
+                    title="驳回"
+                    visible={this.state.rejectVisible}
+                    onOk={this.rejectHandleOk}
+                    onCancel={this.rejectHandleCancel}
+                // data={this.state.customerInfo}
+                >
+                </NoPass>
+
+                <Express title="邮寄信息"
+                    visible={this.state.expressVisible}
+                    onOk={this.expressHandleOk}
+                    onCancel={this.expressHandleCancel}></Express>
+
+                <ViewBill
+                    title="查看开票信息"
+                    visible={this.state.viewVisible}
+                    onOk={this.viewHandleOk}
+                    onCancel={this.viewHandleOk}
+                    data={customerInfo}
+                    picData={this.state.picData}
+                ></ViewBill>
 
             </div>
         );

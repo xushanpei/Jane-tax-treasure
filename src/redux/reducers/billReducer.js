@@ -32,6 +32,26 @@ const billReducer = handleActions(
           auditpass: action.data
         });
       },
+      [billTypes.INVOICECOMPLETION_SUCCESS]: (state, action) => {
+        return state.merge({
+          invoicecompletion: action.data
+        });
+      },
+      [billTypes.EXPRESS_SUCCESS]: (state, action) => {
+        return state.merge({
+          express: action.data
+        });
+      },
+      [billTypes.REJECT_SUCCESS]: (state, action) => {
+        return state.merge({
+          reject: action.data
+        });
+      },
+      [billTypes.VIEWINVOICE_SUCCESS]: (state, action) => {
+        return state.merge({
+          viewinvoice: action.data
+        });
+      },
   },
   initState
 );
@@ -40,4 +60,8 @@ export default billReducer;
 
 //BILLINFO
 //AUDITPASS
+//INVOICECOMPLETION
+//EXPRESS
+//REJECT
+//VIEWINVOICE
 
