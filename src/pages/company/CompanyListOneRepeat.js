@@ -124,7 +124,7 @@ class CompanyListOneRepeat extends Component {
             if(data.status == 201){
                 // message.warning(data.message)
             }else{
-                this.props.changeState(3)
+                // this.props.changeState(3)
             }
         }
 
@@ -142,6 +142,9 @@ class CompanyListOneRepeat extends Component {
         this.props.companyreviewoperatepass({
             companyId: this.state.baseInfo.companyId
         })
+        setTimeout(()=>{
+            // this.props.changeState(3)
+        },300)
     }
     //复审不通过 
     companyreviewoperatenopass =()=>{
@@ -263,18 +266,18 @@ class CompanyListOneRepeat extends Component {
                             <Radio value={1}>是</Radio>
                             <Radio value={2}>否</Radio>
                         </Radio.Group> <br/> */}
-                        <span>{getcompletedata.sealFlag}</span><br/>
+                        <span>{getcompletedata.sealFlag == 1 ? "是" : "否"}</span><br/>
 
                         <div style={{marginTop:"10px"}}>
-                        <span>经营范围:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>经营范围:</span> &nbsp;&nbsp;&nbsp;&nbsp;
                             {/* <Checkbox.Group options={this.state.options} defaultValue={['Apple']}  /> */}
                             {getcompletedata.businessId?  getcompletedata.businessId.replace(/,/g," ") : ""}
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>法人学历: { getcompletedata.education }</span>
+                    <span>法人学历: { getcompletedata.education == 1 ? "是" : "否" }</span>
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>政治面貌: { getcompletedata.affiliation }</span>
+                    <span>政治面貌: { getcompletedata.affiliation == 1 ? "是" : "否" }</span>
                         </div>
                         </div>
                     </div>

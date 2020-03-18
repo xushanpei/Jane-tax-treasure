@@ -85,6 +85,28 @@ ACCOUNTEXAMINE_SUCCESS:"ACCOUNTEXAMINE_SUCCESS",
 TAXEXAMINE:"TAXEXAMINE",
 TAXEXAMINE_SUCCESS:"TAXEXAMINE_SUCCESS",
 
+//设立资料选项
+GETDATATYPE:"GETDATATYPE",
+GETDATATYPE_SUCCESS:"GETDATATYPE_SUCCESS",
+
+//增加上传项
+ADDDATATYPE:"ADDDATATYPE",
+ADDDATATYPE_SUCCESS:"ADDDATATYPE_SUCCESS",
+
+//勾选//取消
+CHECKDATATYPE:"CHECKDATATYPE",
+CHECKDATATYPE_SUCCESS:"CHECKDATATYPE_SUCCESS",
+
+//查看上传资料
+DATALIST:"DATALIST",
+DATALIST_SUCCESS:"DATALIST_SUCCESS",
+//一键通知
+NOTICE:"NOTICE",
+NOTICE_SUCCESS:"NOTICE_SUCCESS",
+//工商信息
+GETDATA:"GETDATA",
+GETDATA_SUCCESS:"GETDATA_SUCCESS",
+
 
 
 
@@ -120,15 +142,13 @@ export default createActions({
 [companyTypes.BUSINESSEXAMINE]: data=> ({data}),
 [companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
 [companyTypes.TAXEXAMINE]: data=> ({data}),
+[companyTypes.GETDATATYPE]: data=> ({data}),
+[companyTypes.ADDDATATYPE]: data=> ({data}),
+[companyTypes.CHECKDATATYPE]: data=> ({data}),
+[companyTypes.DATALIST]: data=> ({data}),
+[companyTypes.NOTICE]: data=> ({data}),
+[companyTypes.GETDATA]: data=> ({data}),
 });
 
 
-
-// // //名称审核
-// nameexamine = data => ApiRequest.put(`${urls.NAMEEXAMINE}`,data);
-// // //工商阶段完成
-// businessexamine = data => ApiRequest.put(`${urls.BUSINESSEXAMINE}`,data);
-// // //银行开户完成
-// accountexamine = data => ApiRequest.put(`${urls.ACCOUNTEXAMINE}`,data);
-// // //税务认证
-// taxexamine = data => ApiRequest.put(`${urls.TAXEXAMINE}`,data);
+//勾选//取消  CHECKDATATYPE

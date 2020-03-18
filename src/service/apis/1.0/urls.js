@@ -89,6 +89,19 @@ export const urls = {
   ACCOUNTEXAMINE:"/simpleTax/companyWeb/accountExamine",
   //税务认证
   TAXEXAMINE:"/simpleTax/companyWeb/taxExamine",
+  //设立资料选项
+  GETDATATYPE:"/simpleTax/dataWeb/getDataType",
+  //增加上传项目
+  ADDDATATYPE:"/simpleTax/dataWeb/addDataType",
+  //勾选//取消
+  CHECKDATATYPE:"/simpleTax/dataWeb/checkDataType",
+  //查看上传资料
+  DATALIST:"/simpleTax/dataWeb/dataList",
+  //一键通知
+  NOTICE:"/simpleTax/dataWeb/notice",
+  //工商信息
+  GETDATA:"/simpleTax/companyWeb/getData",
+
   /**
    * 法人库
    */

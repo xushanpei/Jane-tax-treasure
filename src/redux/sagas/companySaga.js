@@ -360,6 +360,94 @@ function* companyweblist(action) {
     }
   }
 
+  function* getdatatype(action) {
+    try {
+     let data = yield call(Apis.getdatatype,action.payload.data);
+      yield put({ type:companyTypes.GETDATATYPE_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* adddatatype(action) {
+    try {
+     let data = yield call(Apis.adddatatype,action.payload.data);
+      yield put({ type:companyTypes.ADDDATATYPE_SUCCESS,data:data });
+      // message.success(data.message)
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* checkdatatype(action) {
+    try {
+     let data = yield call(Apis.checkdatatype,action.payload.data);
+      yield put({ type:companyTypes.CHECKDATATYPE_SUCCESS,data:data });
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* datalist(action) {
+    try {
+     let data = yield call(Apis.datalist,action.payload.data);
+      yield put({ type:companyTypes.DATALIST_SUCCESS,data:data });
+      // message.success(data.message)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* notice(action) {
+    try {
+     let data = yield call(Apis.notice,action.payload.data);
+      yield put({ type:companyTypes.NOTICE_SUCCESS,data:data });
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  function* getdata(action) {
+    try {
+     let data = yield call(Apis.getdata,action.payload.data);
+      yield put({ type:companyTypes.GETDATA_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -391,18 +479,19 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.BUSINESSEXAMINE, businessexamine);
   yield takeLatest(companyTypes.ACCOUNTEXAMINE, accountexamine);
   yield takeLatest(companyTypes.TAXEXAMINE, taxexamine);
+  yield takeLatest(companyTypes.GETDATATYPE, getdatatype);
+  yield takeLatest(companyTypes.ADDDATATYPE, adddatatype);
+  yield takeLatest(companyTypes.CHECKDATATYPE, checkdatatype);
+  yield takeLatest(companyTypes.DATALIST, datalist);
+  yield takeLatest(companyTypes.NOTICE, notice);
+  yield takeLatest(companyTypes.GETDATA, getdata);
 }
 
 
-
-//LEGALDETAIL
-//GETCOMPANYBYLEGALID
-//LOCKLEGAL
-
-
-// [companyTypes.NAMEEXAMINE]: data=> ({data}),
-// [companyTypes.BUSINESSEXAMINE]: data=> ({data}),
-// [companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
-// [companyTypes.TAXEXAMINE]: data=> ({data}),
+//ADDDATATYPE
+//CHECKDATATYPE
+//DATALIST
+//NOTICE
+//GETDATA
 
 

@@ -10,7 +10,7 @@ const FormItem = Form.Item ;
 const { TextArea } = Input;
 
 
-class Bohuis extends Component {
+class BankOpens extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,8 +45,6 @@ class Bohuis extends Component {
         },
       };
 
-      console.log("资料项", data)
-
     return (
         <Modal
         wrapClassName="divModals"
@@ -57,29 +55,18 @@ class Bohuis extends Component {
       >
        
        <Form {...formItemLayout}>
-       <FormItem label="驳回项">
-            {getFieldDecorator('id', {
-              rules: [{required: true, message: '请选择驳回项'}],
+       <FormItem label="开户行">
+            {getFieldDecorator('openBank', {
+              rules: [{required: true, message: '请输入开户行'}],
             })(
-              <Select
-              mode="tags"
-              placeholder="请选择驳回项"
-              style={{ width: '100%' }}
-            >
-              {
-                data ? data.map((item,key)=>{
-                  return   <Option key={key} value={item.value}>{item.label}</Option>
-                }) : ""
-              }
-            </Select>
+                <Input placeholder={"请输入开户行"} ></Input>
             )}
           </FormItem>
-          
-          <FormItem label="驳回理由">
-            {getFieldDecorator('content', {
-              rules: [{required: true, message: '请输入驳回理由'}],
+          <FormItem label="银行账户">
+            {getFieldDecorator('bankAccount', {
+              rules: [{required: true, message: '请输入银行账户'}],
             })(
-                <TextArea placeholder={"请输入驳回理由"} rows={5}></TextArea>
+                <Input placeholder={"请输入银行账户"} rows={5}></Input>
             )}
           </FormItem>
 
@@ -91,6 +78,6 @@ class Bohuis extends Component {
   }
 }
 
-const Bohui = Form.create()(Bohuis);
+const BankOpen = Form.create()(BankOpens);
 
-export default Bohui;
+export default BankOpen;

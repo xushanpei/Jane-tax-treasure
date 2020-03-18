@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import companyAction from "../../redux/actions/companyAction";
 import Bohui from "./Bohui"
 import SendMsg from "./SendMsg"
+import BankOpen from "./BankOpen"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -32,12 +33,22 @@ const { confirm } = Modal
         //驳回
         companyoperatereject: companyAction.companyoperatereject,
         //
-        sendnotice:companyAction.sendnotice,
+        sendnotice: companyAction.sendnotice,
 
-        nameexamine:companyAction.nameexamine,
-        businessexamine:companyAction.businessexamine,
-        accountexamine:companyAction.accountexamine,
-        taxexamine:companyAction.taxexamine,
+        nameexamine: companyAction.nameexamine,
+        businessexamine: companyAction.businessexamine,
+        accountexamine: companyAction.accountexamine,
+        taxexamine: companyAction.taxexamine,
+        //设立资料选项获取
+        getdatatype: companyAction.getdatatype,
+        //增加上传项
+        adddatatype:companyAction.adddatatype,
+        //勾选//取消
+        checkdatatype: companyAction.checkdatatype,
+        //获取上传资料
+        datalist: companyAction.datalist,
+        //一键通知
+        notice: companyAction.notice
     }
 )
 class CompanyListTwos extends Component {
@@ -93,79 +104,141 @@ class CompanyListTwos extends Component {
                     value: 0
                 }
             ],
-            plainOptions1:[
+            plainOptions1: [
                 {
                     label: '工商阶段完成',
                     value: 1,
-                },
+                }
+            ],
+            plainOptions2: [
                 {
                     label: '银行开户完成',
                     value: 2,
-                },
+                }
+            ],
+            plainOptions3: [
                 {
                     label: '税务认证',
                     value: 3,
-                },
+                }
             ],
             checkedList: [],
+            checkedList1: [],
+            checkedList2: [],
+            checkedList3: [],
             piclistOptions: [
-                {
-                    label: '法人身份证',
-                    value: 0
-                },
-                {
-                    label: '法人一寸白底照',
-                    value: 1
-                },
+                
             ],
             piclist: [],
             visible: false,
-            bohuiVisible: false
+            bohuiVisible: false,
+            bankOpenVisible:false,
+            ischecked:[],
+            allChecked:[],
         }
     }
 
 
     onChange = checkedList => {
         console.log(checkedList);
-
-        if(checkedList[0] == 0){
-            console.log("选中0")
+        if (checkedList[0] == 0) {
             confirm({
                 title: '是否确定名称审核已完成?',
-                content: '完成点击 是 ,否则 否',
+                content: '完成点击 是 ,未完成点击否',
                 okText: '是',
                 okType: 'danger',
                 cancelText: '否',
-                onOk: ()=> {
-                  console.log('OK');
-                  //设置成选中
-                  this.setState({
-                    firstVisi: false,
-                    checkedList:[0]
-                })
+                onOk: () => {
+                    this.setState({
+                        checkedList
+                    },()=>{
+                        //名称审核
+                        this.props.nameexamine({
+                            companyId: this.state.baseInfo.companyId
+                        })
+                    })
                 },
-                onCancel : ()=> {
-                  console.log('Cancel');
-                  //不选择
-                  this.setState({
-                    firstVisi: true,
-                    checkedList:[]
-                })
-                },
-              });
-        }else{
-           if(checkedList.length > 0){
-            this.setState({
-                checkedList1: checkedList,
-            });
-           }
+                onCancel: () => {
+                    this.setState({
+                        checkedList: []
+                    })
+                 },
+            })
         }
-        
+        if (checkedList[0] == 1) {
+            confirm({
+                title: '是否确定工商阶段已完成?',
+                content: '完成点击 是 ,未完成点击否',
+                okText: '是',
+                okType: 'danger',
+                cancelText: '否',
+                onOk: () => {
+                    this.setState({
+                        checkedList1: checkedList
+                    },()=>{
+                        //工商阶段完成
+                        this.props.businessexamine({
+                            companyId: this.state.baseInfo.companyId
+                        })
+
+                    })
+                },
+                onCancel: () => {
+                    this.setState({
+                        checkedList1: []
+                    })
+                 },
+            })
+
+        }
+        if (checkedList[0] == 2) {
+            this.setState({
+                checkedList2: checkedList,
+                bankOpenVisible: true
+            })
+        }
+        if (checkedList[0] == 3) {
+            confirm({
+                title: '是否确定税务认证已完成?',
+                content: '完成点击 是 ,未完成点击否',
+                okText: '是',
+                okType: 'danger',
+                cancelText: '否',
+                onOk: () => {
+                    this.setState({
+                        checkedList3: checkedList
+                    },()=>{
+                        //税务认证接口
+                        this.props.taxexamine({
+                            companyId: this.state.baseInfo.companyId
+                        })
+                    })
+                },
+                onCancel: () => {
+                    this.setState({
+                        checkedList3: []
+                    })
+                 },
+            })
+        }
+
     };
     onChangepiclist = piclist => {
-        this.setState({
-            piclist
+        console.log(piclist)
+    //    修改要上传的资料项
+    this.props.checkdatatype({
+        id: piclist.toString(),
+        companyId:this.state.baseInfo.companyId
+    })
+
+    setTimeout(()=>{
+        this.props.getdatatype({
+            companyId: this.state.baseInfo.companyId
         })
+    },300)
+        // this.setState({
+        //     ischecked:piclist
+        // })
     }
 
     //增加上传设立资料
@@ -174,19 +247,44 @@ class CompanyListTwos extends Component {
             visible: true,
         });
     };
+//  银行开户信息
+bankOpenHandleOk = e => {
+        console.log("开户信息",e)
+        this.setState({
+            bankOpenVisible : false
+        })
+        //触发接口
+        this.props.accountexamine(Object.assign(e,{  companyId: this.state.baseInfo.companyId }))
+}
+bankOpenHandleCancel = () => {
+    this.setState({
+        bankOpenVisible : false,
+        checkedList2: []
+    })
+}
+
+
 
     handleOk = e => {
         this.props.form.validateFields((err, values) => {
             if (err) return;//检查Form表单填写的数据是否满足rules的要求
-            console.log(values)
-            let data = this.state.piclistOptions;
-            data.push(values);
+            console.log("***********************",values)
             this.setState({
                 visible: false,
-                piclistOptions: data
-            }, () => {
-                this.props.form.resetFields()
             });
+            this.props.adddatatype({
+                companyId: this.state.baseInfo.companyId,
+                list: [values]
+            })
+            setTimeout(()=>{
+                // this.props.changeState(3)
+                this.props.getdatatype({
+                    companyId: this.state.baseInfo.companyId
+                })
+            },500)
+
+                this.props.form.resetFields()
+           
         })
     };
 
@@ -200,18 +298,18 @@ class CompanyListTwos extends Component {
 
     // 下面是驳回的弹框方法
     bohuiHandleOk = e => {
-        // this.props.form.validateFields((err, values) => {
-        //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
-            // console.log(values)
-            this.setState({
-                bohuiVisible: false
-            }, () => {
-                //触发驳回的方法
-                this.props.companyoperatereject(
-                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
-                )
-            })
-        // })
+        console.log(e)
+        let data = e;
+        data.id = data.id.toString();
+        this.setState({
+            bohuiVisible: false
+        }, () => {
+            //触发驳回的方法
+            this.props.companyoperatereject(
+                Object.assign({ companyId: this.state.baseInfo.companyId }, data)
+            )
+        })
+      
     };
 
     bohuiHandleCancel = e => {
@@ -221,7 +319,9 @@ class CompanyListTwos extends Component {
         });
     };
 
-
+ componentDidMount(){
+     
+ }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.baseInfo) {
@@ -229,6 +329,36 @@ class CompanyListTwos extends Component {
                 baseInfo: nextProps.baseInfo
             }, () => {
                 console.log("接受到的基本信息对接人信息", nextProps.baseInfo);
+                if(nextProps.baseInfo.progress == 2){
+                    // 设置名称审核选中
+                    this.setState({
+                        checkedList:[0]
+                    })
+                }
+                if(nextProps.baseInfo.progress == 3){
+                    // 设置名称审核选中
+                    this.setState({
+                        checkedList:[0],
+                        checkedList1:[1]
+                    })
+                }
+                if(nextProps.baseInfo.progress == 4){
+                    // 设置名称审核选中
+                    this.setState({
+                        checkedList:[0],
+                        checkedList1:[1],
+                        checkedList2:[2]
+                    })
+                }
+                if(nextProps.baseInfo.progress == 5){
+                    // 设置名称审核选中
+                    this.setState({
+                        checkedList:[0],
+                        checkedList1:[1],
+                        checkedList2:[2],
+                        checkedList3:[3]
+                    })
+                }
             })
         }
 
@@ -259,8 +389,39 @@ class CompanyListTwos extends Component {
                 message.warning(data.message)
             } else {
                 message.success(data.message)
-                this.props.changeState(4)
+                // this.props.changeState(4)
             }
+        }
+        //获取设立资料项
+        if(nextProps.companyReducer.getIn(["getdatatype"])){
+           console.log("设立资料项", nextProps.companyReducer.getIn(["getdatatype"]));
+           let list = nextProps.companyReducer.getIn(["getdatatype","data"]);
+        //    改变数据格式
+        let data = [];
+        let ischecked = [];
+        let allChecked = [];
+        list.map((item,key)=>{
+            data.push({
+                label: item.name,
+                value: item.id,
+                key: item.id
+            })
+            if(item.checked == 1){
+                ischecked.push(item.id);
+                allChecked.push({
+                    label: item.name,
+                    value: item.id,
+                })
+            }
+        })
+    
+           this.setState({
+            piclistOptions: data,
+            ischecked,
+            allChecked
+           },()=>{
+               console.log("选")
+           })
         }
     }
     // 通过
@@ -276,10 +437,16 @@ class CompanyListTwos extends Component {
         })
     }
 
-     // 发消息给客户 sendnotice
-     sendnotice = ()=>{
+    // 发消息给客户 sendnotice
+    sendnotice = () => {
         this.setState({
-            sendMsgVisible : true
+            sendMsgVisible: true
+        })
+    }
+    //一键通知
+    notice = () => {
+        this.props.notice({
+            companyId: this.state.baseInfo.companyId
         })
     }
 
@@ -287,14 +454,14 @@ class CompanyListTwos extends Component {
         // this.props.form.validateFields((err, values) => {
         //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
         //     console.log(values)
-            this.setState({
-                sendMsgVisible: false
-            }, () => {
-                //触发驳回的方法
-                this.props.sendnotice(
-                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
-                )
-            })
+        this.setState({
+            sendMsgVisible: false
+        }, () => {
+            //触发驳回的方法
+            this.props.sendnotice(
+                Object.assign({ companyId: this.state.baseInfo.companyId }, e)
+            )
+        })
         // })
     };
 
@@ -409,7 +576,19 @@ class CompanyListTwos extends Component {
                             <CheckboxGroup
                                 options={this.state.plainOptions1}
                                 value={this.state.checkedList1}
-                                disabled={this.state.firstVisi}
+                                disabled={this.state.checkedList[0] == 0 ? false : true}
+                                onChange={this.onChange}
+                            />
+                            <CheckboxGroup
+                                options={this.state.plainOptions2}
+                                value={this.state.checkedList2}
+                                disabled={this.state.checkedList1[0] == 1 ? false : true}
+                                onChange={this.onChange}
+                            />
+                            <CheckboxGroup
+                                options={this.state.plainOptions3}
+                                value={this.state.checkedList3}
+                                disabled={this.state.checkedList2[0] == 2 ? false : true}
                                 onChange={this.onChange}
                             />
                             <p className="borderp"></p>
@@ -417,12 +596,12 @@ class CompanyListTwos extends Component {
 
                             <CheckboxGroup style={{ marginTop: "15px" }}
                                 options={this.state.piclistOptions}
-                                value={this.state.piclist}
+                                value={this.state.ischecked}
                                 onChange={this.onChangepiclist}
                             /> &nbsp;&nbsp;
                             <span onClick={this.showModal} className="add"><Icon type="plus-circle" /> 增加上传项</span>
                             {/* 添加一键通知按钮 */}
-                            <Button className="tipButton" style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>一键通知用户</Button>
+                            <Button onClick={this.notice} className="tipButton" style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>一键通知用户</Button>
                             {/* 查看上传资料 */}
                             <div className="lookList">
                                 <p>查看上传资料</p>
@@ -556,20 +735,21 @@ class CompanyListTwos extends Component {
                 >
                     <Form {...formItemLayout}>
                         <FormItem label="上传名称">
-                            {getFieldDecorator('label', {
+                            {getFieldDecorator('name', {
                                 rules: [{ required: true, message: '请输入上传名称' }],
                             })(
                                 <Input placeholder="请输入上传名称" />
                             )}
                         </FormItem>
                         <FormItem label="上传分类">
-                            {getFieldDecorator('value', {
+                            {getFieldDecorator('type', {
                                 rules: [{ required: true, message: '请选择上传分类' }],
                             })(
                                 <Select placeholder="请选择上传分类" style={{ width: "160px" }}>
-                                    <Option value="1">图片</Option>
-                                    <Option value="2">视频</Option>
-                                    <Option value="3">文件</Option>
+                                    <Option value="1">身份证</Option>
+                                    <Option value="2">图片</Option>
+                                    <Option value="3">视频</Option>
+                                    <Option value="4">文件</Option>
                                 </Select>
                             )}
                         </FormItem>
@@ -580,7 +760,7 @@ class CompanyListTwos extends Component {
                     visible={this.state.bohuiVisible}
                     onOk={this.bohuiHandleOk}
                     onCancel={this.bohuiHandleCancel}
-
+                    data={this.state.allChecked}
                 >
                 </Bohui>
                 <SendMsg
@@ -590,6 +770,13 @@ class CompanyListTwos extends Component {
                     onCancel={this.sendMsgHandleCancel}
                 >
                 </SendMsg>
+                    
+                <BankOpen
+                    title="开户信息"
+                    visible={this.state.bankOpenVisible}
+                    onOk={this.bankOpenHandleOk}
+                    onCancel={this.bankOpenHandleCancel}
+                ></BankOpen>
             </div>
         );
     }

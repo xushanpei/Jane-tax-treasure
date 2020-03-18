@@ -148,6 +148,37 @@ const companyReducer = handleActions(
           taxexamine: action.data
         });
       },
+
+      [companyTypes.GETDATATYPE_SUCCESS]: (state, action) => {
+        return state.merge({
+          getdatatype: action.data
+        });
+      },
+      [companyTypes.ADDDATATYPE_SUCCESS]: (state, action) => {
+        return state.merge({
+          adddatatype: action.data
+        });
+      },
+      [companyTypes.CHECKDATATYPE_SUCCESS]: (state, action) => {
+        return state.merge({
+          checkdatatype: action.data
+        });
+      },
+      [companyTypes.DATALIST_SUCCESS]: (state, action) => {
+        return state.merge({
+          datalist: action.data
+        });
+      },
+      [companyTypes.NOTICE_SUCCESS]: (state, action) => {
+        return state.merge({
+          notice: action.data
+        });
+      },
+      [companyTypes.GETDATA_SUCCESS]: (state, action) => {
+        return state.merge({
+          getdata: action.data
+        });
+      },
   
   },
   initState
@@ -155,12 +186,7 @@ const companyReducer = handleActions(
 
 export default companyReducer;
 
-//LEGALDETAIL
-//GETCOMPANYBYLEGALID
-//LOCKLEGAL
-
-
-// [companyTypes.NAMEEXAMINE]: data=> ({data}),
-// [companyTypes.BUSINESSEXAMINE]: data=> ({data}),
-// [companyTypes.ACCOUNTEXAMINE]: data=> ({data}),
-// [companyTypes.TAXEXAMINE]: data=> ({data}),
+//CHECKDATATYPE
+//DATALIST
+//NOTICE
+//GETDATA

@@ -37,6 +37,12 @@ const { RangePicker } = DatePicker
         getcompletedata: companyAction.getcompletedata,
         //修改对接人信息
         updatedock: companyAction.updatedock,
+        //设立资料 
+        getdatatype: companyAction.getdatatype,
+        //获取上传资料
+        datalist: companyAction.datalist,
+        //工商信息
+        getdata: companyAction.getdata
     }
 )
 class CompanyDetail extends Component {
@@ -89,15 +95,30 @@ class CompanyDetail extends Component {
         this.props.getcompletedata({
             companyId: this.props.match.params.data
         })
+       //设立资料
+         this.props.getdatatype({
+        companyId: this.props.match.params.data
+     })
+     //上传资料
+     this.props.datalist({
+        companyId: this.props.match.params.data
+     })
+     //获取工商信息
+     this.props.getdata({
+        id: this.props.match.params.data
+     })
 
     }
+    
 
     componentWillReceiveProps(nextProps) {
 
         if (nextProps.companyReducer.getIn(["getbasiccompany", "data"])) {
 
             this.setState({
-                getbasiccompany: nextProps.companyReducer.getIn(["getbasiccompany", "data"])
+                getbasiccompany: nextProps.companyReducer.getIn(["getbasiccompany", "data"]),
+                companyStatus : nextProps.companyReducer.getIn(["getbasiccompany", "data","companyStatus"])
+
             })
         }
         if (nextProps.companyReducer.getIn(["getcompanyoperaterecord"])) {
@@ -135,18 +156,30 @@ class CompanyDetail extends Component {
         this.setState({
             companyStatus: state
         }, () => {
-            //获取公司操作基本信息,对接人信息
-            this.props.getbasiccompany({
-                companyId: this.props.match.params.data
-            })
-            //操作记录
-            this.props.getcompanyoperaterecord({
-                companyId: this.props.match.params.data
-            })
-            //头部返回信息
-            this.props.companyoperatedetail({
-                companyId: this.props.match.params.data
-            })
+           //获取公司操作基本信息,对接人信息
+        this.props.getbasiccompany({
+            companyId: this.props.match.params.data
+        })
+        //操作记录
+        this.props.getcompanyoperaterecord({
+            companyId: this.props.match.params.data
+        })
+        //头部返回信息
+        this.props.companyoperatedetail({
+            companyId: this.props.match.params.data
+        })
+        //补全资料信息
+        this.props.getcompletedata({
+            companyId: this.props.match.params.data
+        })
+       //设立资料
+         this.props.getdatatype({
+        companyId: this.props.match.params.data
+     })
+     //上传资料
+     this.props.datalist({
+        companyId: this.props.match.params.data
+     })
         })
     }
 

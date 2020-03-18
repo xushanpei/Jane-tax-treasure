@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker
     {
         //锁定-----
         companyoperatebilllock: companyAction.companyoperatebilllock,
-        sendnotice:companyAction.sendnotice
+        sendnotice: companyAction.sendnotice
     }
 )
 class CompanyListThree extends Component {
@@ -29,7 +29,7 @@ class CompanyListThree extends Component {
             baseInfo: "",
             //头部信息
             headerData: "",
-
+            getdata: "",
 
             routerList: [
                 {
@@ -64,7 +64,7 @@ class CompanyListThree extends Component {
 
             ],
             //
-            sendMsgVisible:false
+            sendMsgVisible: false
 
         }
     }
@@ -99,6 +99,14 @@ class CompanyListThree extends Component {
         if (nextProps.companyReducer.getIn(["companyoperatebilllock"])) {
             console.log("锁定的数据", nextProps.companyReducer.getIn(["companyoperatebilllock"]));
         }
+
+        //工商信息
+        if (nextProps.companyReducer.getIn(["getdata"])) {
+            console.log("工商信息", nextProps.companyReducer.getIn(["getdata"]));
+            this.setState({
+                getdata: nextProps.companyReducer.getIn(["getdata", "data"])
+            })
+        }
     }
 
     //锁定
@@ -111,9 +119,9 @@ class CompanyListThree extends Component {
     }
 
     // 发消息给客户 sendnotice
-    sendnotice = ()=>{
+    sendnotice = () => {
         this.setState({
-            sendMsgVisible : true
+            sendMsgVisible: true
         })
     }
 
@@ -121,14 +129,14 @@ class CompanyListThree extends Component {
         // this.props.form.validateFields((err, values) => {
         //     if (err) return;//检查Form表单填写的数据是否满足rules的要求
         //     console.log(values)
-            this.setState({
-                sendMsgVisible: false
-            }, () => {
-                //触发驳回的方法
-                this.props.sendnotice(
-                    Object.assign({ companyId: this.state.baseInfo.companyId }, e)
-                )
-            })
+        this.setState({
+            sendMsgVisible: false
+        }, () => {
+            //触发驳回的方法
+            this.props.sendnotice(
+                Object.assign({ companyId: this.state.baseInfo.companyId }, e)
+            )
+        })
         // })
     };
 
@@ -142,7 +150,7 @@ class CompanyListThree extends Component {
 
 
     render() {
-        let { routerList, baseInfo, headerData } = this.state
+        let { routerList, baseInfo, headerData, getdata } = this.state
         return (
             <div>
                 <BreadeHeader routerList={routerList}></BreadeHeader>
@@ -258,22 +266,22 @@ class CompanyListThree extends Component {
                         <p>工商信息   <span className="updateData"></span> </p>
                         <div className="base-content">
                             <div>
-                                <span>申请人 : 18861851261</span>
-                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>纳税人类型 : 一般纳税人</span>
-                                <span>简税宝服务期限 : 2022-02-10</span>
-                                <span>公司地区 : 江苏省 南京市 江宁区</span>
-                                <span>公司法人 : 徐善培</span>
-                                <span>法人证件 : 已提交</span>
+                                <span>公司名称 : {getdata.name}</span>
+                                <span>法定代表人 : {getdata.legalName}</span>
+                                <span>注册资本 : {getdata.registeredCapital}</span>
+                                <span>企业类型 : {getdata.type}</span>
+                                <span>成立日期 : {getdata.establishTime}</span>
+                                <span>所属地区 : {getdata.area}</span>
+                                <span>所属行业 : {getdata.industryName}</span>
                             </div>
                             <div>
-                                <span>申请人 : 18861851261</span>
-                                <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
-                                <span>纳税人类型 : 一般纳税人</span>
-                                <span>简税宝服务期限 : 2022-02-10</span>
-                                <span>公司地区 : 江苏省 南京市 江宁区</span>
-                                <span>公司法人 : 徐善培</span>
-                                <span>法人证件 : 已提交</span>
+                                <span>统一信用代码 : {getdata.creditCode}</span>
+                                <span>公司注册号 : {getdata.registrationNumber}</span>
+                                <span>经营期限 : {getdata.period}</span>
+                                <span>核准日期 : {getdata.approvalTime}</span>
+                                <span>登记机关 : {getdata.registrationAuthority}</span>
+                                <span>注册地址 : {getdata.registrationAddress}</span>
+                                <span> </span>
                             </div>
                             <div className="zh">
                                 {/* <span>申请人 : 18861851261</span>
@@ -283,7 +291,7 @@ class CompanyListThree extends Component {
                                 <span>公司地区 : 江苏省 南京市 江宁区</span>
                                 <span>公司法人 : 徐善培</span>
                                 <span>法人证件 : 已提交</span> */}
-                                <img src={require("../../assets/image/sfz.png")} alt="" /> <br />
+                                <img style={{width:"300px",height:"177px"}} src={getdata.license ? getdata.license : require("../../assets/image/sfz.png")} alt="" /> <br />
                                 <span className="btn-diy" style={{ display: "block", marginLeft: "85px" }}>
                                     <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>点击上传营业执照</Button>
                                 </span>

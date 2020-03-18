@@ -90,6 +90,18 @@ class Apis {
   accountexamine = data => ApiRequest.put(`${urls.ACCOUNTEXAMINE}`,data);
   // //税务认证
   taxexamine = data => ApiRequest.put(`${urls.TAXEXAMINE}`,data);
+  //设立资料选项
+  getdatatype = data => ApiRequest.get(`${urls.GETDATATYPE}?companyId=${data.companyId}`);
+  //增加上传项
+  adddatatype = data => ApiRequest.post(`${urls.ADDDATATYPE}`,data);
+  //勾选//取消
+  checkdatatype = data => ApiRequest.put(`${urls.CHECKDATATYPE}`,data);
+  //查看上传资料
+  datalist = data => ApiRequest.get(`${urls.DATALIST}?companyId=${data.companyId}`);
+  //一键通知
+  notice = data => ApiRequest.put(`${urls.NOTICE}`,data);
+  //工商信息
+  getdata = data => ApiRequest.get(`${urls.GETDATA}?id=${data.id}`);
 
 
   /**
