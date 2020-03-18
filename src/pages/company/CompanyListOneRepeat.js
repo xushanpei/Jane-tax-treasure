@@ -143,7 +143,7 @@ class CompanyListOneRepeat extends Component {
             companyId: this.state.baseInfo.companyId
         })
         setTimeout(()=>{
-            // this.props.changeState(3)
+            this.props.changeState(3)
         },300)
     }
     //复审不通过 

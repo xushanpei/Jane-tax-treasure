@@ -386,9 +386,9 @@ bankOpenHandleCancel = () => {
             let data = nextProps.companyReducer.getIn(["companyoperateestablish"]);
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", data.status)
             if (data.status !== 200) {
-                message.warning(data.message)
+                // message.warning(data.message)
             } else {
-                message.success(data.message)
+                // message.success(data.message)
                 // this.props.changeState(4)
             }
         }
@@ -429,6 +429,9 @@ bankOpenHandleCancel = () => {
         this.props.companyoperateestablish({
             companyId: this.state.baseInfo.companyId
         })
+        setTimeout(()=>{
+            this.props.changeState(4)
+        },300)
     }
     // 驳回 -- 接口需要修改
     nopass = () => {
