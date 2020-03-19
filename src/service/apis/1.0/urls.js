@@ -101,6 +101,16 @@ export const urls = {
   NOTICE:"/simpleTax/dataWeb/notice",
   //工商信息
   GETDATA:"/simpleTax/companyWeb/getData",
+  //更新营业执照图片地址
+  UPDATELICENSE:"/simpleTax/companyWeb/updateLicense",
+  //发票统计信息
+  GETINVOICEINFO:"/simpleTax/companyWeb/getInvoiceInfo",
+  //获取行业下拉列
+  INDUSTRYLIST:"/simpleTax/industryWeb/industryList",
+  //修改公司基本信息
+  UPDATEBASICCOMPANY:"/simpleTax/companyWeb/updateBasicCompany",
+  //添加信息
+  
 
   /**
    * 法人库
@@ -135,4 +145,9 @@ export const urls = {
   REJECT:"/simpleTax/billWeb/reject",
   //查看发票
   VIEWINVOICE:"/simpleTax/billWeb/viewInvoice",
+
+  /**
+   * 字典列表
+   */
+  GETDICTLISTBYVALUE:"/simpleTax/dictApp/getDictListByValue",
 };

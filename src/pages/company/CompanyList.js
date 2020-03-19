@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { connect } from "react-redux";
 import companyAction from "../../redux/actions/companyAction";
 import productAction from "../../redux/actions/productAction";
+import Addinfo from "./Addinfo"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
@@ -20,6 +21,8 @@ const { RangePicker } = DatePicker
     companydetailweb: companyAction.companydetailweb,
     //获取公司类型
     productclassify: productAction.productclassify,
+    //获取归属人
+    getdictlistbyvalue: companyAction.getdictlistbyvalue
   }
 )
 class CompanyList extends Component {
@@ -36,7 +39,9 @@ class CompanyList extends Component {
         companyTypeId: "",
         establishBeginTime: "",
         establishEndTime: "",
-        search: ""
+        search: "",
+        //归属人信息
+        getdictlistbyvalue:"",
       },
       searchValue: "",
       routerList: [
@@ -122,7 +127,7 @@ class CompanyList extends Component {
                       公司操作
                       </Link>
                   </Menu.Item>
-                  <Menu.Item key="1">
+                  <Menu.Item key="1" onClick={this.showModal}>
                     {/* <Link to="/companyListThree">
                       公司详情
                       </Link> */}
@@ -309,6 +314,11 @@ class CompanyList extends Component {
     })
     //  获取公司列表
     this.props.companyweblist(this.state.select)
+
+    //获取归属人
+    this.props.getdictlistbyvalue({
+      type:"belonger"
+    })
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.productReducer.getIn(["productclassify"])) {
@@ -329,6 +339,16 @@ class CompanyList extends Component {
         data,
         total
       })
+    }
+
+    //归属人信息
+    if(nextProps.companyReducer.getIn(["getdictlistbyvalue"])){
+      console.log("归属人信息", nextProps.companyReducer.getIn(["getdictlistbyvalue"]))
+      let getdictlistbyvalue = nextProps.companyReducer.getIn(["getdictlistbyvalue","data"])
+      this.setState({
+        getdictlistbyvalue
+      })
+
     }
   }
 
@@ -414,7 +434,13 @@ class CompanyList extends Component {
         </div>
 
 
-
+        <Addinfo 
+          title="添加信息"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          // data={this.state.allChecked}
+        ></Addinfo>
       </div>
     );
   }

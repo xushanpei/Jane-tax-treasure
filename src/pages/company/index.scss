@@ -251,7 +251,7 @@
     display: flex;
     justify-content: space-between;
     & > div{
-        width:calc( (100% - 60px)/4 );
+        width:calc( (100% - 80px)/5 );
         background: #FFF;
         height: 120px;
         margin-top: 20px;
@@ -318,5 +318,12 @@
     img{
         width: 273px;
         height: 168px;
+    }
+}
+
+// ant-upload-list ant-upload-list-text
+.upload_diy{
+    .ant-upload-list,.ant-upload-list-text{
+        display: none !important;
     }
 }

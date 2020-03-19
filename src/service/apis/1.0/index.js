@@ -102,6 +102,15 @@ class Apis {
   notice = data => ApiRequest.put(`${urls.NOTICE}`,data);
   //工商信息
   getdata = data => ApiRequest.get(`${urls.GETDATA}?id=${data.id}`);
+  //更新营业执照图片地址
+  updatelicense = data => ApiRequest.put(`${urls.UPDATELICENSE}`,data);
+  //发票统计信息
+  getinvoiceinfo = data => ApiRequest.get(`${urls.GETINVOICEINFO}?companyId=${data.companyId}`);
+  //获取行业下拉
+  industrylist = data => ApiRequest.get(`${urls.INDUSTRYLIST}?companyId=${data.companyId}`);
+  //修改公司基本信息
+  updatebasiccompany = data => ApiRequest.put(`${urls.UPDATEBASICCOMPANY}`,data);
+
 
 
   /**
@@ -138,6 +147,11 @@ class Apis {
   //查看发票
   viewinvoice = data => ApiRequest.get(`${urls.VIEWINVOICE}?billId=${data.billId}`);
 
+  /**
+   * 字典列表
+   */
+  //归属人
+  getdictlistbyvalue = data => ApiRequest.get(`${urls.GETDICTLISTBYVALUE}?type=${data.type}`)
 }
 
 export default new Apis();

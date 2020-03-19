@@ -426,12 +426,24 @@ bankOpenHandleCancel = () => {
     }
     // 通过
     pass = () => {
-        this.props.companyoperateestablish({
-            companyId: this.state.baseInfo.companyId
+        confirm({
+            title: '是否确定设立通过?',
+            content: '完成点击 是 ,未完成点击否',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+                this.props.companyoperateestablish({
+                    companyId: this.state.baseInfo.companyId
+                })
+                setTimeout(()=>{
+                    this.props.changeState(4)
+                },1000)
+            },
+            onCancel: () => {
+               
+             },
         })
-        setTimeout(()=>{
-            this.props.changeState(4)
-        },300)
     }
     // 驳回 -- 接口需要修改
     nopass = () => {
@@ -634,7 +646,7 @@ bankOpenHandleCancel = () => {
 
                     {/* 基本信息 */}
                     <div className="process base">
-                        <p>基本信息   <span className="updateData">修改</span> </p>
+                        <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
                                 <span>申请人 : {baseInfo.applyPhone}</span>
@@ -674,8 +686,8 @@ bankOpenHandleCancel = () => {
                                 <span>开票额度 : {baseInfo.quota}</span>
                                 <span>注册资本 : {baseInfo.registeredCapital}</span>
                                 <span>法人邮箱 : {baseInfo.companyLegalEmail}</span>
-                                <span>  </span>
-                                <span> </span>
+                            <span>开票开始时间 : { baseInfo.invoiceBeginTime }</span>
+                                <span>开票截止时间 : { baseInfo.invoiceEndTime } </span>
                                 <span> </span>
                             </div>
                         </div>

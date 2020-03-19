@@ -448,6 +448,85 @@ function* companyweblist(action) {
     }
   }
 
+  function* updatelicense(action) {
+    try {
+     let data = yield call(Apis.updatelicense,action.payload.data);
+      yield put({ type:companyTypes.UPDATELICENSE_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  function* getinvoiceinfo(action) {
+    try {
+     let data = yield call(Apis.getinvoiceinfo,action.payload.data);
+      yield put({ type:companyTypes.GETINVOICEINFO_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* industrylist(action) {
+    try {
+     let data = yield call(Apis.industrylist,action.payload.data);
+      yield put({ type:companyTypes.INDUSTRYLIST_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* updatebasiccompany(action) {
+    try {
+     let data = yield call(Apis.updatebasiccompany,action.payload.data);
+      yield put({ type:companyTypes.UPDATEBASICCOMPANY_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
+  function* getdictlistbyvalue(action) {
+    try {
+     let data = yield call(Apis.getdictlistbyvalue,action.payload.data);
+      yield put({ type:companyTypes.GETDICTLISTBYVALUE_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -485,6 +564,11 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.DATALIST, datalist);
   yield takeLatest(companyTypes.NOTICE, notice);
   yield takeLatest(companyTypes.GETDATA, getdata);
+  yield takeLatest(companyTypes.UPDATELICENSE, updatelicense);
+  yield takeLatest(companyTypes.GETINVOICEINFO, getinvoiceinfo);
+  yield takeLatest(companyTypes.INDUSTRYLIST, industrylist);
+  yield takeLatest(companyTypes.UPDATEBASICCOMPANY, updatebasiccompany);
+  yield takeLatest(companyTypes.GETDICTLISTBYVALUE, getdictlistbyvalue);
 }
 
 
@@ -493,5 +577,10 @@ export default function* watchAuthRoot() {
 //DATALIST
 //NOTICE
 //GETDATA
+//UPDATELICENSE
+//GETINVOICEINFO
+//INDUSTRYLIST
+//UPDATEBASICCOMPANY
+//GETDICTLISTBYVALUE
 
 

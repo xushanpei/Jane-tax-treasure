@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, DatePicker, Menu, Dropdown, Icon, Upload, message } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
@@ -18,7 +18,9 @@ const { RangePicker } = DatePicker
     {
         //锁定-----
         companyoperatebilllock: companyAction.companyoperatebilllock,
-        sendnotice: companyAction.sendnotice
+        sendnotice: companyAction.sendnotice,
+        //更新营业执照
+        updatelicense: companyAction.updatelicense
     }
 )
 class CompanyListThree extends Component {
@@ -30,7 +32,7 @@ class CompanyListThree extends Component {
             //头部信息
             headerData: "",
             getdata: "",
-
+            getinvoiceinfo: "",
             routerList: [
                 {
                     name: "首页",
@@ -107,6 +109,13 @@ class CompanyListThree extends Component {
                 getdata: nextProps.companyReducer.getIn(["getdata", "data"])
             })
         }
+        //发票统计信息
+        if (nextProps.companyReducer.getIn(["getinvoiceinfo"])) {
+            console.log("发票统计信息", nextProps.companyReducer.getIn(["getinvoiceinfo"]))
+            this.setState({
+                getinvoiceinfo: nextProps.companyReducer.getIn(["getinvoiceinfo", "data"])
+            })
+        }
     }
 
     //锁定
@@ -146,11 +155,56 @@ class CompanyListThree extends Component {
             sendMsgVisible: false
         });
     };
-
+    upOnChange = (info) => {
+        console.log(info.file.response);
+        if (info.file.response && info.file.response.status == 200) {
+            message.success(info.file.response.message)
+            //图片url地址 info.file.response.data
+            this.props.updatelicense({
+                companyId: this.state.baseInfo.companyId,
+                url: info.file.response.data
+            })
+            setTimeout(() => {
+                this.props.changeState(4)
+            }, 300)
+        }
+    }
+    //限制文件类型
+    handleBeforeUpload = file => {
+        //限制图片 格式、size、分辨率
+        const isJPG = file.type === 'image/jpeg';
+        const isJPEG = file.type === 'image/jpeg';
+        const isGIF = file.type === 'image/gif';
+        const isPNG = file.type === 'image/png';
+        if (!(isJPG || isJPEG || isGIF || isPNG)) {
+            message.warning("只能上传JPG 、JPEG 、GIF、 PNG格式的图片~")
+            return false;
+        } else {
+            message.success("上传成功")
+        }
+        // const isLt2M = file.size / 1024 / 1024 < 2;
+        // if (!isLt2M) {
+        //   Modal.error({
+        //     title: '超过2M限制，不允许上传~',
+        //   });
+        //   return;
+        // }
+        // return (isJPG || isJPEG || isGIF || isPNG) && isLt2M && this.checkImageWH(file);
+    };
 
 
     render() {
-        let { routerList, baseInfo, headerData, getdata } = this.state
+        let { routerList, baseInfo, headerData, getdata, getinvoiceinfo } = this.state;
+        // 上传营业执照
+        const props = {
+            name: 'file',
+            action: '/api/simpleTax/document/upload',
+            data: {
+                type: 1
+            }
+        };
+
+
         return (
             <div>
                 <BreadeHeader routerList={routerList}></BreadeHeader>
@@ -226,39 +280,40 @@ class CompanyListThree extends Component {
                     <div className="comBlock">
                         <div>
                             <span>年开票额度</span>
-                            <span>450000000</span>
+                            <span>{getinvoiceinfo.yearInvoice}</span>
                         </div>
                         <div>
                             <span>剩余额度</span>
-                            <span>450000000</span>
-                        </div>
-                        <div>
-                            <span>本月额度</span>
-                            <span>450000000</span>
-                        </div>
-                        <div>
-                            <span>本月剩余额度</span>
-                            <span>450000000</span>
-                        </div>
-                    </div>
-                    <div className="comBlock">
-                        <div>
-                            <span>税金预缴率</span>
-                            <span>450000000</span>
+                            <span>{getinvoiceinfo.surplusInvoice}</span>
                         </div>
                         <div>
                             <span>总开票</span>
-                            <span>450000000</span>
+                            <span>{getinvoiceinfo.totalNum}</span>
                         </div>
                         <div>
                             <span>本月已开票</span>
-                            <span>450000000</span>
+                            <span>{getinvoiceinfo.monthNum}</span>
                         </div>
                         <div>
                             <span>申请中</span>
-                            <span>450000000</span>
+                            <span>{getinvoiceinfo.applyNum}</span>
                         </div>
                     </div>
+                    {/* <div className="comBlock">
+
+                        <div>
+                            <span>总开票</span>
+                            <span>{getinvoiceinfo.totalNum}</span>
+                        </div>
+                        <div>
+                            <span>本月已开票</span>
+                            <span>{getinvoiceinfo.monthNum}</span>
+                        </div>
+                        <div>
+                            <span>申请中</span>
+                            <span>{getinvoiceinfo.applyNum}</span>
+                        </div>
+                    </div> */}
 
                     {/* 工商信息 */}
 
@@ -283,7 +338,7 @@ class CompanyListThree extends Component {
                                 <span>注册地址 : {getdata.registrationAddress}</span>
                                 <span> </span>
                             </div>
-                            <div className="zh">
+                            <div className="zh upload_diy">
                                 {/* <span>申请人 : 18861851261</span>
                                 <span>公司名称 : 南京严氏文化传媒公司 (随机名称)</span>
                                 <span>纳税人类型 : 一般纳税人</span>
@@ -291,9 +346,17 @@ class CompanyListThree extends Component {
                                 <span>公司地区 : 江苏省 南京市 江宁区</span>
                                 <span>公司法人 : 徐善培</span>
                                 <span>法人证件 : 已提交</span> */}
-                                <img style={{width:"300px",height:"177px"}} src={getdata.license ? getdata.license : require("../../assets/image/sfz.png")} alt="" /> <br />
-                                <span className="btn-diy" style={{ display: "block", marginLeft: "85px" }}>
-                                    <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>点击上传营业执照</Button>
+                                <img style={{ width: "300px", height: "177px" }} src={getdata.license ? getdata.license : require("../../assets/image/sfz.png")} alt="" /> <br />
+                                <span className="btn-diy" style={{ display: "block", marginLeft: "80px" }}>
+                                    {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>点击上传营业执照</Button> */}
+                                    <Upload
+                                        {...props}
+                                        beforeUpload={this.handleBeforeUpload}
+                                        onChange={this.upOnChange}>
+                                        <Button>
+                                            <Icon type="upload" /> 点击上传营业执照
+                                        </Button>
+                                    </Upload>
                                 </span>
                             </div>
                         </div>
@@ -302,7 +365,7 @@ class CompanyListThree extends Component {
 
                     {/* 基本信息 */}
                     <div className="process base">
-                        <p>基本信息   <span className="updateData">修改</span> </p>
+                        <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
                                 <span>申请人 : {baseInfo.applyPhone}</span>
@@ -342,8 +405,8 @@ class CompanyListThree extends Component {
                                 <span>开票额度 : {baseInfo.quota}</span>
                                 <span>注册资本 : {baseInfo.registeredCapital}</span>
                                 <span>法人邮箱 : {baseInfo.companyLegalEmail}</span>
-                                <span>  </span>
-                                <span> </span>
+                                <span>开票开始时间 : { baseInfo.invoiceBeginTime }</span>
+                                <span>开票截止时间 : { baseInfo.invoiceEndTime } </span>
                                 <span> </span>
                             </div>
                         </div>

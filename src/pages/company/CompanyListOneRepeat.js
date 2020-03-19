@@ -12,6 +12,7 @@ import NoPass from "./NoPass"
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
+const { confirm } = Modal
 //companyreviewoperatepass
 
 
@@ -138,13 +139,32 @@ class CompanyListOneRepeat extends Component {
 
     //复审通过
     companyreviewoperatepass = ()=>{
-        console.log("复审通过");
+        confirm({
+            title: '是否确定审核通过?',
+            content: '完成点击 是 ,未完成点击否',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+                 console.log("复审通过");
         this.props.companyreviewoperatepass({
             companyId: this.state.baseInfo.companyId
         })
         setTimeout(()=>{
             this.props.changeState(3)
-        },300)
+        },1000)
+            },
+            onCancel: () => {
+               
+             },
+        })
+
+
+
+
+
+
+       
     }
     //复审不通过 
     companyreviewoperatenopass =()=>{
@@ -169,7 +189,7 @@ class CompanyListOneRepeat extends Component {
             setTimeout(()=>{
                 
                 this.props.changeState("2-1")
-            },300)
+            },1000)
         });
       };
     
@@ -266,7 +286,7 @@ class CompanyListOneRepeat extends Component {
                             <Radio value={1}>是</Radio>
                             <Radio value={2}>否</Radio>
                         </Radio.Group> <br/> */}
-                        <span>{getcompletedata.sealFlag == 1 ? "是" : "否"}</span><br/>
+                        <span>{getcompletedata.sealFlag}</span><br/>
 
                         <div style={{marginTop:"10px"}}>
                         <span>经营范围:</span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -274,10 +294,10 @@ class CompanyListOneRepeat extends Component {
                             {getcompletedata.businessId?  getcompletedata.businessId.replace(/,/g," ") : ""}
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>法人学历: { getcompletedata.education == 1 ? "是" : "否" }</span>
+                    <span>法人学历: { getcompletedata.education }</span>
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>政治面貌: { getcompletedata.affiliation == 1 ? "是" : "否" }</span>
+                    <span>政治面貌: { getcompletedata.affiliation }</span>
                         </div>
                         </div>
                     </div>
@@ -286,7 +306,7 @@ class CompanyListOneRepeat extends Component {
 
                     {/* 基本信息 */}
                     <div className="process base">
-                        <p>基本信息   <span className="updateData">修改</span> </p>
+                        <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
                                 <span>申请人 : {baseInfo.applyPhone}</span>
@@ -326,8 +346,8 @@ class CompanyListOneRepeat extends Component {
                                 <span>开票额度 : {baseInfo.quota}</span>
                                 <span>注册资本 : {baseInfo.registeredCapital}</span>
                                 <span>法人邮箱 : {baseInfo.companyLegalEmail}</span>
-                                <span>  </span>
-                                <span> </span>
+                                <span>开票开始时间 : { baseInfo.invoiceBeginTime }</span>
+                                <span>开票截止时间 : { baseInfo.invoiceEndTime } </span>
                                 <span> </span>
                             </div>
                         </div>

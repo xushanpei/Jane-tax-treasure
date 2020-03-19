@@ -11,6 +11,7 @@ import NoPass from "./NoPass"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
+const { confirm } = Modal
 
 
 @connect(
@@ -98,7 +99,14 @@ class CompanyListOne extends Component {
 
     //通过 
     companyoperatepass = ()=>{
-        console.log("tongguo");
+        confirm({
+            title: '是否确定审核通过?',
+            content: '完成点击 是 ,未完成点击否',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+                console.log("tongguo");
         this.props.companyoperatepass({
             companyId: this.state.baseInfo.companyId
         });
@@ -106,7 +114,17 @@ class CompanyListOne extends Component {
        //修改状态
        setTimeout(()=>{
         this.props.changeState("2-1");
-       },300)
+       },1000)
+            },
+            onCancel: () => {
+               
+             },
+        })
+
+
+
+
+        
     }
     //不通过
     companyoperatenopass = ()=>{
@@ -211,7 +229,7 @@ class CompanyListOne extends Component {
                     </div>
                     {/* 基本信息 */}
                     <div className="process base">
-                        <p>基本信息   <span className="updateData">修改</span> </p>
+                        <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
                                 <span>申请人 : {baseInfo.applyPhone}</span>
@@ -251,8 +269,8 @@ class CompanyListOne extends Component {
                                 <span>开票额度 : {baseInfo.quota}</span>
                                 <span>注册资本 : {baseInfo.registeredCapital}</span>
                                 <span>法人邮箱 : {baseInfo.companyLegalEmail}</span>
-                                <span>  </span>
-                                <span> </span>
+                                <span>开票开始时间 : { baseInfo.invoiceBeginTime }</span>
+                                <span>开票截止时间 : { baseInfo.invoiceEndTime } </span>
                                 <span> </span>
                             </div>
                         </div>

@@ -495,7 +495,10 @@ class OrderDetail extends Component {
         <p><span>付款时间:</span> <span>{this.state.data4[0].payTime}</span></p>
         <p><span>付款方名称:</span> <span>{this.state.data4[0].payName}</span></p>
           <p><span className="pic">支付凭证: </span>
-            <img src={this.state.data4[0].voucher ? this.state.data4[0].voucher : require("../../assets/image/sfz.png")} alt=""/>
+          {
+            this.state.data4[0].voucher ? <Zmage src={this.state.data4[0].voucher}/> : <img src={require("../../assets/image/sfz.png")} alt=""/>
+          }
+            
           </p>
       </> :""
     }

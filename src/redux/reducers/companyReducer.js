@@ -179,6 +179,34 @@ const companyReducer = handleActions(
           getdata: action.data
         });
       },
+      [companyTypes.UPDATELICENSE_SUCCESS]: (state, action) => {
+        return state.merge({
+          updatelicense: action.data
+        });
+      },
+
+      [companyTypes.GETINVOICEINFO_SUCCESS]: (state, action) => {
+        return state.merge({
+          getinvoiceinfo: action.data
+        });
+      },
+      [companyTypes.INDUSTRYLIST_SUCCESS]: (state, action) => {
+        return state.merge({
+          industrylist: action.data
+        });
+      },
+
+      [companyTypes.UPDATEBASICCOMPANY_SUCCESS]: (state, action) => {
+        return state.merge({
+          updatebasiccompany: action.data
+        });
+      },
+
+      [companyTypes.GETDICTLISTBYVALUE_SUCCESS]: (state, action) => {
+        return state.merge({
+          getdictlistbyvalue: action.data
+        });
+      },
   
   },
   initState
@@ -190,3 +218,8 @@ export default companyReducer;
 //DATALIST
 //NOTICE
 //GETDATA
+//UPDATELICENSE
+//GETINVOICEINFO
+//INDUSTRYLIST
+//UPDATEBASICCOMPANY
+//GETDICTLISTBYVALUE
