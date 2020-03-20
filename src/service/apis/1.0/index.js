@@ -110,6 +110,10 @@ class Apis {
   industrylist = data => ApiRequest.get(`${urls.INDUSTRYLIST}?companyId=${data.companyId}`);
   //修改公司基本信息
   updatebasiccompany = data => ApiRequest.put(`${urls.UPDATEBASICCOMPANY}`,data);
+  //通知记录
+  noticelist = data => ApiRequest.get(`${urls.NOTICELIST}?businessId=${data.businessId}&page=${data.page}&limit=${data.limit}`);
+  //添加信息
+  uptbelonger = data => ApiRequest.put(`${urls.UPTBELONGER}`,data);
 
 
 
@@ -126,6 +130,10 @@ class Apis {
   getcompanybylegalid = data => ApiRequest.get(`${urls.GETCOMPANYBYLEGALID}?legalId=${data.legalId}&page=${data.page}&limit=${data.limit}`);
   //锁定法人
   locklegal  = data =>ApiRequest.put(`${urls.LOCKLEGAL}`,data);
+  //获取经办人列表
+  getmanagerlist = data => ApiRequest.get(`${urls.GETMANAGERLIST}`);
+
+
 
   /**
    * 发票
@@ -151,7 +159,7 @@ class Apis {
    * 字典列表
    */
   //归属人
-  getdictlistbyvalue = data => ApiRequest.get(`${urls.GETDICTLISTBYVALUE}?type=${data.type}`)
+  getdictlistbyvalue = data => ApiRequest.get(`${urls.GETDICTLISTBYVALUE}?type=${data.type}`);
 }
 
 export default new Apis();

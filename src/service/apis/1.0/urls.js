@@ -109,7 +109,12 @@ export const urls = {
   INDUSTRYLIST:"/simpleTax/industryWeb/industryList",
   //修改公司基本信息
   UPDATEBASICCOMPANY:"/simpleTax/companyWeb/updateBasicCompany",
+  //获取经办人列表
+  GETMANAGERLIST:"/simpleTax/companyWeb/getManagerList",
+  //通知记录
+  NOTICELIST:"/simpleTax/messageWeb/noticeList",
   //添加信息
+  UPTBELONGER :"/simpleTax/companyWeb/uptBelonger",
   
 
   /**

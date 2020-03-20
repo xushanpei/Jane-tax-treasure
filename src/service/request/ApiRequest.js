@@ -30,8 +30,12 @@ class ApiRequest {
   };
 
   authentication = data => {
-    // console.log("判断token状态,是否过期",data);
-    message.error(data.message);
+    if(data.status == 50101){
+      message.warning("当前账号在其他设备登录,请重新登录")
+    }
+    if(data.status == 50102 || data.status == 50103){
+      message.warning("当前身份验证过期,请重新登录")
+    }
     setTimeout(() => {
           localStorage.removeItem(`persist:${config.persist}`);
           window.location.href = "/login";

@@ -11,6 +11,7 @@ import Bohui from "./Bohui"
 import SendMsg from "./SendMsg"
 import BankOpen from "./BankOpen"
 
+
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
@@ -48,7 +49,11 @@ const { confirm } = Modal
         //获取上传资料
         datalist: companyAction.datalist,
         //一键通知
-        notice: companyAction.notice
+        notice: companyAction.notice,
+        //获取经办人列表
+        getmanagerlist:companyAction.getmanagerlist,
+        //通知记录
+        noticelist:companyAction.noticelist
     }
 )
 class CompanyListTwos extends Component {
@@ -58,10 +63,13 @@ class CompanyListTwos extends Component {
             //基本信息/对接人信息
             baseInfo: "",
             headerData: "",
-
+            twoVisible:false,
             //流程状态
             firstVisi: true,
-
+            getmanagerlist:"",
+            twoVisible:false,
+            noticelist:[],
+            datalist:[],
             routerList: [
                 {
                     name: "首页",
@@ -91,6 +99,51 @@ class CompanyListTwos extends Component {
                     key: 'content',
                 }
             ],
+            noticelistColumns: [
+                {
+                    title: '标题',
+                    dataIndex: 'title',
+                    key: 'title',
+                    // render: text => text,
+                },
+                {
+                    title: '内容',
+                    dataIndex: 'content',
+                    key: 'content',
+                    width:"50%"
+                },
+                {
+                    title: '发送时间',
+                    dataIndex: 'sendTime',
+                    key: 'sendTime',
+                },
+                {
+                    title: '读取时间',
+                    dataIndex: 'readTime',
+                    key: 'readTime',
+                },
+
+                // {
+                //     title: '发送人',
+                //     dataIndex: 'crtName',
+                //     key: 'crtName',
+                // },
+                {
+                    title: '是否读取',
+                    key: 'readFlag',
+                    render: (text,record)=> {
+                        if(record.readFlag == 0){
+                            return <span>未读</span>
+                        }else{
+                            return <span>已读</span>
+                        }
+                    }
+                }
+            ],
+
+
+
+
             data: [
 
             ],
@@ -319,9 +372,18 @@ bankOpenHandleCancel = () => {
         });
     };
 
- componentDidMount(){
-     
- }
+    //下载附件
+    download = (value) => {
+        var link = document.createElement('a');
+        link.setAttribute("download", "");
+        link.href = value.url;
+        link.click();
+    }
+
+componentWillMount(){
+    // 获取经办人列表
+    this.props.getmanagerlist();
+}
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.baseInfo) {
@@ -423,9 +485,32 @@ bankOpenHandleCancel = () => {
                console.log("选")
            })
         }
+
+        //获取经办人列表
+        if(nextProps.companyReducer.getIn(["getmanagerlist"])){
+            console.log("经办人列表", nextProps.companyReducer.getIn(["getmanagerlist","data"]))
+            this.setState({
+                getmanagerlist: nextProps.companyReducer.getIn(["getmanagerlist","data"])
+            })
+        }
+
+        //通知记录
+        if(nextProps.companyReducer.getIn(["noticelist"])){
+            console.log("通知记录", nextProps.companyReducer.getIn(["noticelist","data","rows"]))
+            this.setState({
+                noticelist: nextProps.companyReducer.getIn(["noticelist","data","rows"])
+            })
+        }
+        //获取上传资料
+        if(nextProps.companyReducer.getIn(["datalist","data"])){
+            this.setState({
+                datalist: nextProps.companyReducer.getIn(["datalist","data"])
+            })
+        }
     }
     // 通过
     pass = () => {
+       
         confirm({
             title: '是否确定设立通过?',
             content: '完成点击 是 ,未完成点击否',
@@ -445,6 +530,11 @@ bankOpenHandleCancel = () => {
              },
         })
     }
+
+
+
+
+
     // 驳回 -- 接口需要修改
     nopass = () => {
         this.setState({
@@ -621,7 +711,18 @@ bankOpenHandleCancel = () => {
                             <div className="lookList">
                                 <p>查看上传资料</p>
                                 <div className="lookList-content">
-                                    <div>
+
+                                    {
+                                        this.state.datalist ? this.state.datalist.map((item,key)=>{
+                                            return <div>
+                                           <img  onClick={this.download.bind(this, item)} src={require("../../assets/image/file.png")} alt="" />
+                                        <p>{item.name}</p>
+                                        </div>
+                                        }) :""
+                                    }
+
+                                {/* <img  onClick={this.download.bind(this, item)} src={require("../../assets/image/file.png")} alt="" /> */}
+                                    {/* <div>
                                         <img src={require("../../assets/image/sfz.png")} alt="" />
                                         <p>资料名称</p>
                                     </div>
@@ -636,7 +737,7 @@ bankOpenHandleCancel = () => {
                                     <div>
                                         <img src={require("../../assets/image/sfz.png")} alt="" />
                                         <p>资料名称</p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -735,7 +836,7 @@ bankOpenHandleCancel = () => {
                     <div className="process">
                         <p>通知记录</p>
                         <div className="todo_table">
-                            <Table size="small" bordered columns={this.state.columns} dataSource={this.state.data} />
+                            <Table size="small" bordered columns={this.state.noticelistColumns} dataSource={this.state.noticelist} />
                         </div>
                     </div>
 
@@ -792,6 +893,8 @@ bankOpenHandleCancel = () => {
                     onOk={this.bankOpenHandleOk}
                     onCancel={this.bankOpenHandleCancel}
                 ></BankOpen>
+
+                
             </div>
         );
     }

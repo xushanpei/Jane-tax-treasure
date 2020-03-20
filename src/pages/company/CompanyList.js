@@ -22,7 +22,9 @@ const { RangePicker } = DatePicker
     //获取公司类型
     productclassify: productAction.productclassify,
     //获取归属人
-    getdictlistbyvalue: companyAction.getdictlistbyvalue
+    getdictlistbyvalue: companyAction.getdictlistbyvalue,
+    //添加信息\
+    uptbelonger: companyAction.uptbelonger
   }
 )
 class CompanyList extends Component {
@@ -127,7 +129,7 @@ class CompanyList extends Component {
                       公司操作
                       </Link>
                   </Menu.Item>
-                  <Menu.Item key="1" onClick={this.showModal}>
+                  <Menu.Item key="1" onClick={this.showModal.bind(this,record)}>
                     {/* <Link to="/companyListThree">
                       公司详情
                       </Link> */}
@@ -179,19 +181,34 @@ class CompanyList extends Component {
         },
       ],
       visible: false,
-      editVisible: false
+      editVisible: false,
+      companyId:"",
+      dataLists:"",
     };
   }
 
   // 添加 modal 用的方法
-  showModal = () => {
+  showModal = (value) => {
+    console.log(value)
+    this.setState({
+      companyId: value.companyId,
+      dataLists:value
+    })
     this.setState({
       visible: true,
     });
   };
 
   handleOk = e => {
+    //添加信息
     console.log(e);
+
+    // 触发接口
+    this.props.uptbelonger(Object.assign({companyId: this.state.companyId},e));
+    // 更新数据
+    setTimeout(()=>{
+      this.props.companyweblist(this.state.select)
+    },300)
     this.setState({
       visible: false,
     });
@@ -439,7 +456,8 @@ class CompanyList extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          // data={this.state.allChecked}
+          getdictlistbyvalue={this.state.getdictlistbyvalue}
+          data = {this.state.dataLists}
         ></Addinfo>
       </div>
     );

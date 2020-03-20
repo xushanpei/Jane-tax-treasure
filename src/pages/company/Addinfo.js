@@ -38,7 +38,7 @@ class Addinfos extends Component {
 //   }
 
   render() {
-    let { title, visible, onOk, onCancel, baseInfo , type, htype} = this.props;
+    let { title, visible, onOk, onCancel, baseInfo , type, htype, getdictlistbyvalue,dataLists} = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -68,13 +68,13 @@ class Addinfos extends Component {
        <Form {...formItemLayout}>
        <FormItem label="归属人">
             {getFieldDecorator('belong', {
-                // initialValue:baseInfo.companyType,
+                initialValue:dataLists?  dataLists.belongValue : null,
               rules: [{required: true, message: '请选择归属人'}],
             })(
-                <Select>
+                <Select placeholder="请选择归属人">
                     {
-                        type? type.map((item,key)=>{
-                        return <Option key={key} value={item.id}>{item.name}</Option>
+                        getdictlistbyvalue? getdictlistbyvalue.map((item,key)=>{
+                        return <Option key={key} value={item.value}>{item.label}</Option>
                         }) : ""
                     }
                 </Select>
@@ -82,7 +82,7 @@ class Addinfos extends Component {
           </FormItem>
           <FormItem label="联系人">
             {getFieldDecorator('contact', {
-                // initialValue:baseInfo.quota,
+                initialValue:dataLists?  dataLists.contact : "",
               rules: [{required: true, message: '请输入联系人'}],
             })(
                 <Input placeholder={"请输入联系人"} ></Input>
@@ -90,7 +90,7 @@ class Addinfos extends Component {
           </FormItem>
           <FormItem label="推荐人">
             {getFieldDecorator('recommender', {
-                // initialValue:baseInfo.registeredCapital,
+                initialValue:dataLists? dataLists.recommender : "",
               rules: [{required: true, message: '请输入推荐人'}],
             })(
                 <Input placeholder={"请输入注册资本"} ></Input>
@@ -98,7 +98,7 @@ class Addinfos extends Component {
           </FormItem>
           <FormItem label="转换人">
             {getFieldDecorator('transform', {
-                // initialValue:baseInfo.industryName,
+                initialValue:dataLists? dataLists.transform : "",
               rules: [{required: true, message: '请输入转换人'}],
             })(
                 <Input placeholder={"请输入转换人"} ></Input>

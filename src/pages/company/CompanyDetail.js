@@ -49,7 +49,9 @@ const { RangePicker } = DatePicker
         //行业下拉列表
         industrylist: companyAction.industrylist,
         //修改基本信息
-        updatebasiccompany: companyAction.updatebasiccompany
+        updatebasiccompany: companyAction.updatebasiccompany,
+        //通知记录
+        noticelist:companyAction.noticelist
     }
 )
 class CompanyDetail extends Component {
@@ -132,6 +134,12 @@ class CompanyDetail extends Component {
         this.props.industrylist({
             companyId: this.props.match.params.data
         });
+        //获取通知记录
+        this.props.noticelist({
+            businessId: this.props.match.params.data,
+            page:1,
+            limit: 100
+        })
 
     }
 

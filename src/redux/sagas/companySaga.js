@@ -526,6 +526,53 @@ function* companyweblist(action) {
       
     }
   }
+  function* getmanagerlist(action) {
+    try {
+     let data = yield call(Apis.getmanagerlist,action.payload.data);
+      yield put({ type:companyTypes.GETMANAGERLIST_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  //通知记录
+  function* noticelist(action) {
+    try {
+     let data = yield call(Apis.noticelist,action.payload.data);
+      yield put({ type:companyTypes.NOTICELIST_SUCCESS,data:data });
+      // if(data.status != 200){
+      //   message.warning(data.message)
+      // }else{
+      //   message.success(data.message)
+      // }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  //uptbelonger
+  function* uptbelonger(action) {
+    try {
+     let data = yield call(Apis.uptbelonger,action.payload.data);
+      yield put({ type:companyTypes.UPTBELONGER_SUCCESS,data:data });
+      if(data.status != 200){
+        message.warning(data.message)
+      }else{
+        message.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
 
 
 export default function* watchAuthRoot() {
@@ -569,6 +616,9 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.INDUSTRYLIST, industrylist);
   yield takeLatest(companyTypes.UPDATEBASICCOMPANY, updatebasiccompany);
   yield takeLatest(companyTypes.GETDICTLISTBYVALUE, getdictlistbyvalue);
+  yield takeLatest(companyTypes.GETMANAGERLIST, getmanagerlist);
+  yield takeLatest(companyTypes.NOTICELIST, noticelist);
+  yield takeLatest(companyTypes.UPTBELONGER, uptbelonger);
 }
 
 
@@ -582,5 +632,9 @@ export default function* watchAuthRoot() {
 //INDUSTRYLIST
 //UPDATEBASICCOMPANY
 //GETDICTLISTBYVALUE
+//GETMANAGERLIST
+//NOTICELIST
+
+//UPTBELONGER
 
 

@@ -239,9 +239,9 @@ searchChange = (e)=>{
 
     componentWillMount() {
         //   获取省
-        // this.props.getregionbypid({
-        //     pId: ""
-        // });
+        this.props.getregionbypid({
+            pId: ""
+        });
         //获取法人库列表
         this.props.legallist({
             page:this.state.page,
@@ -271,81 +271,81 @@ searchChange = (e)=>{
 
 
 
-        // if (nextProp.companyReducer.getIn(["getregionbypid"])) {
-        //     console.log("省", nextProp.companyReducer.getIn(["getregionbypid", "data"]))
-        //     let options = [];
-        //     let data = nextProp.companyReducer.getIn(["getregionbypid", "data"]);
-        //     for (let i = 0; i < data.length; i++) {
-        //         options.push({
-        //             label: data[i].name,
-        //             value: data[i].id
-        //         })
-        //     }
-        //     this.setState({
-        //         options,
-        //         // status:1
-        //     })
+        if (nextProp.companyReducer.getIn(["getregionbypid"])) {
+            console.log("省", nextProp.companyReducer.getIn(["getregionbypid", "data"]))
+            let options = [];
+            let data = nextProp.companyReducer.getIn(["getregionbypid", "data"]);
+            for (let i = 0; i < data.length; i++) {
+                options.push({
+                    label: data[i].name,
+                    value: data[i].id
+                })
+            }
+            this.setState({
+                options,
+                // status:1
+            })
 
-        // }
-        // //获取市
-        // if (nextProp.companyReducer.getIn(["sgetregionbypid"])) {
-        //     console.log("省", nextProp.companyReducer.getIn(["sgetregionbypid", "data"]))
-        //     let soptions = [];
-        //     let data = nextProp.companyReducer.getIn(["sgetregionbypid", "data"]);
-        //     for (let i = 0; i < data.length; i++) {
-        //         soptions.push({
-        //             label: data[i].name,
-        //             value: data[i].id
-        //         })
-        //     }
-        //     this.setState({
-        //         soptions,
-        //         // status:2
-        //     })
+        }
+        //获取市
+        if (nextProp.companyReducer.getIn(["sgetregionbypid"])) {
+            console.log("省", nextProp.companyReducer.getIn(["sgetregionbypid", "data"]))
+            let soptions = [];
+            let data = nextProp.companyReducer.getIn(["sgetregionbypid", "data"]);
+            for (let i = 0; i < data.length; i++) {
+                soptions.push({
+                    label: data[i].name,
+                    value: data[i].id
+                })
+            }
+            this.setState({
+                soptions,
+                // status:2
+            })
 
-        // }
-        // //区
-        // if (nextProp.companyReducer.getIn(["qgetregionbypid"])) {
-        //     console.log("省", nextProp.companyReducer.getIn(["qgetregionbypid", "data"]))
-        //     let qoptions = [];
-        //     let data = nextProp.companyReducer.getIn(["qgetregionbypid", "data"]);
-        //     for (let i = 0; i < data.length; i++) {
-        //         qoptions.push({
-        //             label: data[i].name,
-        //             value: data[i].id
-        //         })
-        //     }
-        //     this.setState({
-        //         qoptions,
-        //         // status:3
-        //     })
+        }
+        //区
+        if (nextProp.companyReducer.getIn(["qgetregionbypid"])) {
+            console.log("省", nextProp.companyReducer.getIn(["qgetregionbypid", "data"]))
+            let qoptions = [];
+            let data = nextProp.companyReducer.getIn(["qgetregionbypid", "data"]);
+            for (let i = 0; i < data.length; i++) {
+                qoptions.push({
+                    label: data[i].name,
+                    value: data[i].id
+                })
+            }
+            this.setState({
+                qoptions,
+                // status:3
+            })
 
-        // }
+        }
 
     }
     // //sChange
-    // sChange = (value) => {
-    //     console.log(value)
-    //     this.props.sgetregionbypid({
-    //         pId: value
-    //     })
-    //     this.setState({
-    //         status: 2
-    //     })
+    sChange = (value) => {
+        console.log(value)
+        this.props.sgetregionbypid({
+            pId: value
+        })
+        this.setState({
+            status: 2
+        })
 
-    // }
-    // siChange = (value) => {
-    //     console.log(value)
-    //     this.props.qgetregionbypid({
-    //         pId: value
-    //     })
-    //     this.setState({
-    //         status: 3
-    //     })
-    // }
-    // qChange = (value) => {
-    //     console.log(value)
-    // }
+    }
+    siChange = (value) => {
+        console.log(value)
+        this.props.qgetregionbypid({
+            pId: value
+        })
+        this.setState({
+            status: 3
+        })
+    }
+    qChange = (value) => {
+        console.log(value)
+    }
 
 //锁定法人操作
 locklegal = (legalId)=>{

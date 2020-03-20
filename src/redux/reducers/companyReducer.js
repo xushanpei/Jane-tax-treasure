@@ -207,6 +207,22 @@ const companyReducer = handleActions(
           getdictlistbyvalue: action.data
         });
       },
+
+      [companyTypes.GETMANAGERLIST_SUCCESS]: (state, action) => {
+        return state.merge({
+          getmanagerlist: action.data
+        });
+      },
+      [companyTypes.NOTICELIST_SUCCESS]: (state, action) => {
+        return state.merge({
+          noticelist: action.data
+        });
+      },
+      [companyTypes.UPTBELONGER_SUCCESS]: (state, action) => {
+        return state.merge({
+          uptbelonger: action.data
+        });
+      },
   
   },
   initState
@@ -223,3 +239,7 @@ export default companyReducer;
 //INDUSTRYLIST
 //UPDATEBASICCOMPANY
 //GETDICTLISTBYVALUE
+//GETMANAGERLIST
+
+//NOTICELIST
+//UPTBELONGER

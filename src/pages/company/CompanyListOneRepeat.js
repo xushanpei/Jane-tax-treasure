@@ -8,6 +8,7 @@ import { Link,Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 import companyAction from "../../redux/actions/companyAction";
 import NoPass from "./NoPass"
+import TwoModal from "./TwoModal"
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -22,7 +23,9 @@ const { confirm } = Modal
         //复审通过-----
         companyreviewoperatepass:companyAction.companyreviewoperatepass,
         //复审不通过
-        companyreviewoperatenopass: companyAction.companyreviewoperatenopass
+        companyreviewoperatenopass: companyAction.companyreviewoperatenopass,
+        //获取经办人列表
+        getmanagerlist:companyAction.getmanagerlist
     }
 )
 class CompanyListOneRepeat extends Component {
@@ -35,6 +38,7 @@ class CompanyListOneRepeat extends Component {
             getcompletedata:"",
             value:1,
             visible:false,
+            getmanagerlist:"",
             options:[
                 { label: '选项1', value: 'Apple' },
                 { label: '选项2', value: 'Pear' },
@@ -76,7 +80,10 @@ class CompanyListOneRepeat extends Component {
         }
     }
 
-
+    componentWillMount(){
+        // 获取经办人列表
+        this.props.getmanagerlist()
+    }
 
     onChange = e => {
         console.log('radio checked', e.target.value);
@@ -129,43 +136,76 @@ class CompanyListOneRepeat extends Component {
             }
         }
 
-
+        //获取经办人列表
+        if(nextProps.companyReducer.getIn(["getmanagerlist"])){
+            console.log("经办人列表", nextProps.companyReducer.getIn(["getmanagerlist","data"]))
+            this.setState({
+                getmanagerlist: nextProps.companyReducer.getIn(["getmanagerlist","data"])
+            })
+        }
 
     }
     // nopass = ()=>{
     //     // console.log("退出")
-    //     // window.history.back(-1); 
+    //     // window.history.back(-1);  
     // }
 
     //复审通过
     companyreviewoperatepass = ()=>{
-        confirm({
-            title: '是否确定审核通过?',
-            content: '完成点击 是 ,未完成点击否',
-            okText: '是',
-            okType: 'danger',
-            cancelText: '否',
-            onOk: () => {
-                 console.log("复审通过");
-        this.props.companyreviewoperatepass({
-            companyId: this.state.baseInfo.companyId
+        this.setState({
+            twoVisible: true
         })
-        setTimeout(()=>{
-            this.props.changeState(3)
-        },1000)
-            },
-            onCancel: () => {
-               
-             },
-        })
-
-
-
-
-
-
-       
     }
+
+    twoHandleOk = e => {
+        console.log("粑粑了累吧", e, this.state.baseInfo.companyId)
+        let data = {};
+        data.companyId = this.state.baseInfo.companyId;
+        data.handleId = e.typeName;
+        //经办人姓名
+        this.state.getmanagerlist.map((item,key)=>{
+            if(item.value == e.typeName ){
+                data.handleName = item.label
+            }
+        })
+        //省名称
+        data.provinceName = e.totalInvoice[0];
+        // data.provinceId
+        //市名称
+        data.cityName = e.totalInvoice[1];
+        //区名称
+        data.areaName = e.totalInvoice[2];
+
+        console.log("GGGG",data)
+
+        // data.handleName
+
+        this.props.companyreviewoperatepass(data);
+        setTimeout(()=>{
+            this.props.changeState(4)
+        },1000)
+        this.setState({
+            twoVisible: false
+        })
+}
+twoHandleCancel = () => {
+    this.setState({
+        twoVisible: false
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
     //复审不通过 
     companyreviewoperatenopass =()=>{
         console.log("复审不通过");
@@ -286,7 +326,7 @@ class CompanyListOneRepeat extends Component {
                             <Radio value={1}>是</Radio>
                             <Radio value={2}>否</Radio>
                         </Radio.Group> <br/> */}
-                        <span>{getcompletedata.sealFlag}</span><br/>
+                        <span>{getcompletedata.sealFlag == 1 ? "是" : "否"}</span><br/>
 
                         <div style={{marginTop:"10px"}}>
                         <span>经营范围:</span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -294,10 +334,10 @@ class CompanyListOneRepeat extends Component {
                             {getcompletedata.businessId?  getcompletedata.businessId.replace(/,/g," ") : ""}
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>法人学历: { getcompletedata.education }</span>
+                    <span>法人学历:&nbsp;&nbsp;&nbsp;&nbsp; { getcompletedata.education }</span>
                         </div>
                         <div style={{marginTop:"10px"}}>
-                    <span>政治面貌: { getcompletedata.affiliation }</span>
+                    <span>政治面貌: &nbsp;&nbsp;&nbsp;&nbsp;{ getcompletedata.affiliation }</span>
                         </div>
                         </div>
                     </div>
@@ -400,6 +440,14 @@ class CompanyListOneRepeat extends Component {
          
         >
         </NoPass>
+
+        <TwoModal 
+                    title="经办人选择"
+                    visible={this.state.twoVisible}
+                    onOk={this.twoHandleOk}
+                    onCancel={this.twoHandleCancel}
+                    getmanagerlist ={this.state.getmanagerlist}
+                ></TwoModal>
             </div>
         );
     }
