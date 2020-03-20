@@ -154,12 +154,22 @@ class Apis {
   reject = data => ApiRequest.post(`${urls.REJECT}`,data);
   //查看发票
   viewinvoice = data => ApiRequest.get(`${urls.VIEWINVOICE}?billId=${data.billId}`);
+  //发票列表统计不同状态数量
+  countstatus = data => ApiRequest.get(`${urls.COUNTSTATUS}`);
 
   /**
    * 字典列表
    */
   //归属人
   getdictlistbyvalue = data => ApiRequest.get(`${urls.GETDICTLISTBYVALUE}?type=${data.type}`);
+
+
+
+
+  /**
+   * 用户
+   */
+  userpage = data => ApiRequest.get(`${urls.USERPAGE}?page=${data.page}&limit=${data.limit}&startDate=${data.startDate}&endDate=${data.endDate}&search=${data.search}`);
 }
 
 export default new Apis();

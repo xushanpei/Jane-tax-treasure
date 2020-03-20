@@ -150,9 +150,17 @@ export const urls = {
   REJECT:"/simpleTax/billWeb/reject",
   //查看发票
   VIEWINVOICE:"/simpleTax/billWeb/viewInvoice",
+  //发票列表统计不同状态数量
+  COUNTSTATUS:"/simpleTax/billWeb/countStatus",
 
   /**
    * 字典列表
    */
   GETDICTLISTBYVALUE:"/simpleTax/dictApp/getDictListByValue",
+
+
+  /**
+   * 用户
+   */
+  USERPAGE:"/simpleTax/userWeb/userPage",
 };

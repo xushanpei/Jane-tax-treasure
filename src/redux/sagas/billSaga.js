@@ -111,6 +111,19 @@ function* invoicepage(action) {
     }
   }
 
+  function* countstatus(action) {
+    try {
+     let data = yield call(Apis.countstatus,action.payload.data);
+      console.log(data)
+      yield put({ type:billTypes.COUNTSTATUS_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 
 
@@ -124,6 +137,7 @@ export default function* watchAuthRoot() {
   yield takeLatest(billTypes.EXPRESS, express);
   yield takeLatest(billTypes.REJECT, reject);
   yield takeLatest(billTypes.VIEWINVOICE, viewinvoice);
+  yield takeLatest(billTypes.COUNTSTATUS, countstatus);
 }
 
 
@@ -138,4 +152,6 @@ export default function* watchAuthRoot() {
 //EXPRESS
 //REJECT
 //VIEWINVOICE
+
+//COUNTSTATUS
 

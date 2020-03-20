@@ -4,6 +4,7 @@ import productSaga from "./productSaga";
 import orderSaga from "./orderSaga";
 import companySaga from "./companySaga"
 import billSaga from "./billSaga"
+import userSaga from "./userSaga"
 /*添加对action的监听 */
 export default function* rootSaga() {
   yield all([fork(authSaga)]);
@@ -11,4 +12,5 @@ export default function* rootSaga() {
   yield all([fork(orderSaga)]);
   yield all([fork(companySaga)]);
   yield all([fork(billSaga)]);
+  yield all([fork(userSaga)]);
 }

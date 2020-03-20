@@ -52,6 +52,11 @@ const billReducer = handleActions(
           viewinvoice: action.data
         });
       },
+      [billTypes.COUNTSTATUS_SUCCESS]: (state, action) => {
+        return state.merge({
+          countstatus: action.data
+        });
+      },
   },
   initState
 );
@@ -64,4 +69,5 @@ export default billReducer;
 //EXPRESS
 //REJECT
 //VIEWINVOICE
+//COUNTSTATUS
 

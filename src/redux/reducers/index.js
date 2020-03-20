@@ -5,7 +5,8 @@ import authReducer from "./authReducer";
 import productReducer from "./productReducer";
 import orderReducer from "./orderReducer";
 import companyReducer from "./companyReducer";
-import billReducer from "./billReducer"
+import billReducer from "./billReducer";
+import userReducer from "./userReducer"
 
 export default history =>
   combineReducers({
@@ -15,5 +16,6 @@ export default history =>
     productReducer,
     orderReducer,
     companyReducer,
-    billReducer
+    billReducer,
+    userReducer
   });
