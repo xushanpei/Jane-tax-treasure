@@ -148,7 +148,7 @@ export default createActions({
 [companyTypes.COMPANYOPERATEPASS]: data=> ({data}),
 [companyTypes.COMPANYOPERATENOPASS]: data=> ({data}),
 [companyTypes.GETCOMPLETEDATA]: data=> ({data}),
-[companyTypes.COMPANYREVIEWOPERATEPASS]: data=> ({data}),
+[companyTypes.COMPANYREVIEWOPERATEPASS]: (data,callback)=> ({data,callback}),
 [companyTypes.COMPANYREVIEWOPERATENOPASS]: data=> ({data}),
 [companyTypes.COMPANYOPERATEESTABLISH]: data=> ({data}),
 [companyTypes.COMPANYOPERATEREJECT]: data=> ({data}),

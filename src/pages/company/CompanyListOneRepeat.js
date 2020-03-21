@@ -180,10 +180,13 @@ class CompanyListOneRepeat extends Component {
 
         // data.handleName
 
-        this.props.companyreviewoperatepass(data);
-        setTimeout(()=>{
+        this.props.companyreviewoperatepass(data,(data)=>{
+            console.log("执行完了",data);
             this.props.changeState(4)
-        },1000)
+        });
+        // setTimeout(()=>{
+        //     this.props.changeState(4)
+        // },1000)
         this.setState({
             twoVisible: false
         })

@@ -115,8 +115,10 @@ function* companyweblist(action) {
   }
 
   function* companyreviewoperatepass(action) {
+    console.log(action)
     try {
      let data = yield call(Apis.companyreviewoperatepass,action.payload.data);
+     action.payload.callback(data)
   
       yield put({ type:companyTypes.COMPANYREVIEWOPERATEPASS_SUCCESS,data:data });
       console.log("999999999999999999",data)
