@@ -204,7 +204,7 @@ class CorporateLibraryDetail extends Component {
           </div>
 
           {/* top4 */}
-          <div className="baseInfo">
+          <div className="baseInfo lastInfo">
             <p>{detail.legalName}的公司列表</p>
             <div className="baseInfo-table">
               {/* table */}
