@@ -469,7 +469,7 @@ class BillDetail extends Component {
                                 {
                                     baseInfo && baseInfo.billStatus == 5 ? (
                                         <span> 快递单号: 
-                                            {/* {customerInfo ? customerInfo.unitAddress : ""} */}
+                                            {customerInfo ? customerInfo.expressNumber : ""}
                                              </span>
                                     ): ""
                                 }
