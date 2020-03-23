@@ -1,6 +1,6 @@
  import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker, message } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 
@@ -22,6 +22,11 @@ class EditProduct extends Component {
 
   onOk = () => {
     this.props.form.validateFields((err, values) => {
+      console.log(values)
+      if(values.taxRateSuf == ""){
+          this.props.form.setFieldsValue({taxRatePre: ""})
+          message.warning("实际汇率未填写完成")
+      }
       if (err) return;//检查Form表单填写的数据是否满足rules的要求
       this.props.onOk(values);//调用父组件给的onOk方法并传入Form的参数。
       this.props.form.resetFields();//重置Form表单的内容
@@ -113,19 +118,23 @@ class EditProduct extends Component {
                 <Input  placeholder="请输入产品价格"/>
             )}
           </FormItem>
-          <FormItem label="实际税率"  help={this.state.help} validateStatus={this.state.validateStatus} >
+          <FormItem label="实际税率"  >
             {getFieldDecorator('taxRatePre', {initialValue:data.taxRatePre,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <span>
-                   <Input value={data.taxRatePre} onChange={this.tax} placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
+                   <Input value={data.taxRatePre} onChange={(e)=>{
+                      data.taxRatePre = e.target.value
+                   }}  placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             )},
             {getFieldDecorator('taxRateSuf', {initialValue:data.taxRateSuf,
               rules: [{required: true, message: '请选择分类'}],
             })(
               <span>
-                   <Input value={data.taxRateSuf} onChange={this.tax} placeholder="请输入" style={{width:"120px"}}/>
+                   <Input value={data.taxRateSuf} onChange={(e)=>{
+                      data.taxRateSuf = e.target.value
+                   }} placeholder="请输入" style={{width:"120px"}}/>
               </span>
             )}
           </FormItem>
@@ -147,7 +156,7 @@ class EditProduct extends Component {
             {getFieldDecorator('vatReturn', {initialValue:data.vatReturn,
               rules: [{required: true, message: '请选择分类'}],
             })(
-                <Input placeholder="请输入增值税返还"/>
+                <Input suffix="%" placeholder="请输入增值税返还"/>
             )}
           </FormItem>
           <FormItem label="纳税人类型">

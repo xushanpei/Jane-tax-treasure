@@ -170,6 +170,11 @@ class Apis {
    * 用户
    */
   userpage = data => ApiRequest.get(`${urls.USERPAGE}?page=${data.page}&limit=${data.limit}&startDate=${data.startDate}&endDate=${data.endDate}&search=${data.search}`);
+  //删除
+  remove = data => ApiRequest.delete(`${urls.REMOVE}?userId=${data.userId}`);
+
+  //客服列表
+  managerpage = data => ApiRequest.get(`${urls.MANAGERPAGE}?page=${data.page}&limit=${data.limit}&search=${data.search}`)
 }
 
 export default new Apis();

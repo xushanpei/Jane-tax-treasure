@@ -5,6 +5,8 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import AddCustomerService from "./AddCustomerService";
 import EditCustomerService from "./EditCustomerService"
+import { connect } from "react-redux";
+import userAction from "../../redux/actions/userAction";
 
 const { Option } = Select
 // key: '1',
@@ -16,12 +18,24 @@ const { Option } = Select
 //       action:"操作"
 
   
-  
-
+// managerpage
+@connect(
+  ({ userReducer }) => ({ userReducer }),
+  {
+    managerpage: userAction.managerpage,
+ 
+  }
+)
 class CustomerService extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      search:{
+        page:1,
+        limit:10,
+        search:""
+      },
+
       routerList: [
         {
           name: "首页",
@@ -197,6 +211,10 @@ class CustomerService extends Component {
   });
 }
 
+componentWillMount(){
+  this.props.managerpage(this.state.search)
+}
+
 
 
 
@@ -232,7 +250,7 @@ class CustomerService extends Component {
           <div>
 
             <span>搜索</span>
-            <Input style={{ width: "20%" ,marginRight:"30px"}}  placeholder="请输入客服姓名" />
+            <Input onChange={this.onChange} style={{ width: "20%" ,marginRight:"30px"}}  placeholder="请输入客服姓名" />
             <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>搜索</Button>
             {/* <Button style={{backgroundColor:"#17A2A9",color:"#FFF",marginLeft:"10px"}}>导出</Button> */}
 

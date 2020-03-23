@@ -126,7 +126,7 @@ class PeopleBases extends Component {
           <FormItem label="开票开始时间">
             {getFieldDecorator('invoiceBeginTime', {
                 initialValue: baseInfo.invoiceBeginTime?   moment(baseInfo.invoiceBeginTime,"YYYY-MM-DD") :  null,
-              rules: [{required: true, message: '请选择开票时间'}],
+              rules: [{required: false, message: '请选择开票时间'}],
             })(
                 <DatePicker   placeholder="请选择开票时间"
                 // disabledDate ={this.disabledDate}

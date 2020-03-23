@@ -76,7 +76,7 @@ class OrderDetail extends Component {
           render: (text, record) => (
             <div>
               <p>订单总额 : ￥{record.totalPrice.price}</p>
-          <p>后台改价 : -￥{record.totalPrice.uptPrice}</p>
+          <p>后台改价 : ￥{record.totalPrice.uptPrice}</p>
           <p>实付款金额 : ￥{record.totalPrice.amount}</p>
             </div>
           ),
@@ -244,8 +244,8 @@ class OrderDetail extends Component {
             phone: data.phone,
             totalPrice: {
               price:data.price,
-              uptPrice:data.uptPrice ? data.uptPrice :  "    /",
-              amount:data.amount ? data.amount : " /"
+              uptPrice:data.uptPrice ? data.uptPrice :  "    0",
+              amount:data.amount ? data.amount : " 0"
             },
             payTypeName: data.payTypeName,
             statusName:data.statusName
@@ -276,10 +276,10 @@ class OrderDetail extends Component {
         data4:[
           {
             key:1,
-            amount:data.amount? data.amount : "/",
+            amount:data.amount? data.amount : "",
             payName:data.payName,
             payStatusName:data.payStatusName,
-            payTime:data.payTime ? data.payName : "/",
+            payTime:data.payTime ? data.payTime : "",
             voucher:data.voucher
           }
         ]
@@ -410,7 +410,7 @@ class OrderDetail extends Component {
               <span>{orderDetail.endTime}</span>
             </div>
           </div>
-          <p style={{ width: this.state.name == "未支付" ? "15%" : this.state.name == "已支付" ? "100%" : "58%" }} className="progress-line"></p>
+          <p style={{ width: this.state.name == "未支付" ? "15%" : this.state.name == "已支付" ? "100%" : this.state.name == "已取消"? "5%" : "" }} className="progress-line"></p>
 
           {/* 基本信息 */}
           <div className="order-list-content">
@@ -432,7 +432,7 @@ class OrderDetail extends Component {
 
           {/* 已完成  付款信息 */}
             {
-              this.state.name != "未支付" && this.state.payTypeName != "线下支付" ?  <div className="order-list-content">
+              this.state.name != "未支付" && this.state.name != "已取消" && this.state.payTypeName != "线下支付" ?  <div className="order-list-content">
             <p className="order-title">
               付款信息
                     </p>
@@ -445,7 +445,7 @@ class OrderDetail extends Component {
 
           {/* 已完成  付款信息  线下支付 */}
           {
-            this.state.name != "未支付" && this.state.payTypeName == "线下支付" ? <div className="order-list-content">
+            this.state.name != "未支付" && this.state.name != "已取消" && this.state.payTypeName == "线下支付" ? <div className="order-list-content">
             <p className="order-title">
               付款信息(线下支付)
                     </p>
@@ -457,7 +457,7 @@ class OrderDetail extends Component {
 
           {/* 订单备注 */}
           {
-            this.state.name != "未支付" ? <div className="order-list-content">
+            this.state.name != "未支付" && this.state.name != "已取消" ? <div className="order-list-content">
             <p className="order-title">
               订单备注
                     </p>
@@ -467,7 +467,7 @@ class OrderDetail extends Component {
 
           {/* 订单记录 */}
           {
-            this.state.name != "未支付" ? <div className="order-list-content">
+            this.state.name != "未支付" && this.state.name != "已取消" ? <div className="order-list-content">
             <p className="order-title">
               订单记录
                     </p>
@@ -476,7 +476,7 @@ class OrderDetail extends Component {
           </div> :""
           }
           {
-            this.state.name =="审核中" && this.state.payTypeName == "线下支付" ? <p style={{ textAlign: "center" }}>
+            this.state.name =="审核中" && this.state.name != "已取消" && this.state.payTypeName == "线下支付" ? <p style={{ textAlign: "center" }}>
             <Button onClick={this.okPay} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px", marginTop: "15px", marginBottom: "15px" }}>款项已到确认收款</Button>
           </p> :""
           }

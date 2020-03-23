@@ -118,7 +118,8 @@
     }
     .baseInfo{
         width: 100%;
-        height: 400px;
+        min-height: 400px;
+        height:auto;
         background: #FFF;
         margin-top:20px;
         & > p{
@@ -178,4 +179,7 @@
 }
 .ant-select-sm .ant-select-selection__clear, .ant-select-sm .ant-select-arrow{
     right: 0 !important;
+}
+.lastInfo{
+    height: auto !important;
 }

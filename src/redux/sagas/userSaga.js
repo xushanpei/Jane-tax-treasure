@@ -7,21 +7,54 @@ import Apis from "../../service/apis/1.0";
 
 
 
-function* productlist(action) {
-//   console.log(action.payload)
-//   try {
-//    let data = yield call(Apis.productlist,action.payload.data);
-//     yield put({ type:userTypes.PRODUCTLIST_SUCCESS,data:data });
+function* userpage(action) {
+  console.log(action.payload)
+  try {
+   let data = yield call(Apis.userpage,action.payload.data);
+    yield put({ type:userTypes.USERPAGE_SUCCESS,data:data });
 
-//   } catch (error) {
-//     console.log(error)
-//   } finally {
+  } catch (error) {
+    console.log(error)
+  } finally {
     
-//   }
+  }
 }
+
+function* remove(action) {
+    console.log(action.payload)
+    try {
+     let data = yield call(Apis.remove,action.payload.data);
+      yield put({ type:userTypes.REMOVE_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+  
+
+  function* managerpage(action) {
+    console.log(action.payload)
+    try {
+     let data = yield call(Apis.managerpage,action.payload.data);
+      yield put({ type:userTypes.MANAGERPAGE_SUCCESS,data:data });
+  
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 
 export default function* watchAuthRoot() {
-//   yield takeLatest(userTypes.PRODUCTLIST, productlist);
+  yield takeLatest(userTypes.USERPAGE, userpage);
+  yield takeLatest(userTypes.REMOVE, remove);
+  yield takeLatest(userTypes.MANAGERPAGE, managerpage);
 }
+
+//DELETE
+//MANAGERPAGE
 

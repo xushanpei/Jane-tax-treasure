@@ -9,9 +9,20 @@ const initState = fromJS({
 
 const userReducer = handleActions(
   {
-    [userTypes.PRODUCTLIST_SUCCESS]: (state, action) => {
+    [userTypes.USERPAGE_SUCCESS]: (state, action) => {
       return state.merge({
-        productlist: action.data
+        userpage: action.data
+      });
+    },
+    [userTypes.REMOVE_SUCCESS]: (state, action) => {
+      return state.merge({
+        remove: action.data
+      });
+    },
+
+    [userTypes.MANAGERPAGE_SUCCESS]: (state, action) => {
+      return state.merge({
+        managerpage: action.data
       });
     },
  
@@ -20,3 +31,9 @@ const userReducer = handleActions(
 );
 
 export default userReducer;
+
+
+//
+//DELETE
+
+//MANAGERPAGE

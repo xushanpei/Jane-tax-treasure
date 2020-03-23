@@ -122,7 +122,7 @@ class AddProduct extends Component {
             {getFieldDecorator('vatReturn', {
               rules: [{required: true, message: '请输入增值税返还'}],
             })(
-                <Input placeholder="请输入增值税返还"/>
+                <Input suffix="%" placeholder="请输入增值税返还"/>
             )}
           </FormItem>
           <FormItem label="纳税人类型">

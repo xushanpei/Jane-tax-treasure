@@ -5,20 +5,37 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-
+//userpage
+import { connect } from "react-redux";
+import userAction from "../../redux/actions/userAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
+const { confirm } = Modal
 
+@connect(
+    ({ userReducer }) => ({ userReducer }),
+    {
+        userpage: userAction.userpage,
+        //删除
+        remove: userAction.remove
+    }
+  )
 class User extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // 筛选属性
             select: {
-                createTime: 0
+                page:1,
+                limit:10,
+                startDate:"",
+                endDate:"",
+                search:"",
+                // createTime: 0
             },
             searchValue: "",
+            total:"",
             routerList: [
                 {
                     name: "首页",
@@ -30,51 +47,35 @@ class User extends Component {
                 }
             ],
             columns: [
-                {
-                    title: '用户ID',
-                    dataIndex: 'key',
-                    key: 'key',
-                    render: text => text,
-                },
+                // {
+                //     title: '用户ID',
+                //     dataIndex: 'userId',
+                //     key: 'userId',
+                // },
                 {
                     title: '头像',
                     // dataIndex: 'name',
-                    key: 'name',
-                    render: () => (
+                    key: 'photo',
+                    render: (text,record) => (
                         <div className="avatar">
-                            <img src={require("../../assets/image/jsb-logoX.png")} alt=""/>
+                            <img src={record.photo} alt=""/>
                         </div>
                     )
                 },
                 {
                     title: '手机号',
-                    dataIndex: 'type',
-                    key: 'type',
+                    dataIndex: 'phone',
+                    key: 'phone',
                 },
                 {
                     title: '姓名',
-                    key: 'number',
-                    dataIndex: 'number',
-                    //   render: tags => (
-                    //     <span>
-                    //       {tags.map(tag => {
-                    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-                    //         if (tag === 'loser') {
-                    //           color = 'volcano';
-                    //         }
-                    //         return (
-                    //           <Tag color={color} key={tag}>
-                    //             {tag.toUpperCase()}
-                    //           </Tag>
-                    //         );
-                    //       })}
-                    //     </span>
-                    //   ),
+                    key: 'name',
+                    dataIndex: 'name',
                 },
                 {
                     title: '电子邮箱',
-                    key: 'state',
-                    dataIndex: 'state',
+                    key: 'email',
+                    dataIndex: 'email',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -84,8 +85,8 @@ class User extends Component {
                 },
                 {
                     title: '购买次数',
-                    key: 'num',
-                    dataIndex: 'num',
+                    key: 'buyCount',
+                    dataIndex: 'buyCount',
                     // render: (text, record) => (
                     //   <span>
                     //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
@@ -95,12 +96,8 @@ class User extends Component {
                 },
                 {
                     title: '加入时间',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'crt_time',
+                    dataIndex:"crt_time"
                 },
                 {
                     title: '操作',
@@ -114,7 +111,7 @@ class User extends Component {
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Item key="1">
-                                    <span onClick={this.deleteUser}>删除</span>
+                                    <span onClick={this.deleteUser.bind(this, record.id)}>删除</span>
                                 </Menu.Item>
                             </Menu>
                         } trigger={['click']}>
@@ -127,42 +124,6 @@ class User extends Component {
                 },
             ],
             data: [
-                {
-                    key: '1',
-                    name: '套餐一',
-                    type: '18861851261',
-                    number: "舜贝佳",
-                    state: "xu_shan_pei@163.com",
-                    num:100,
-                    payType: "100",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '2',
-                    name: '套餐一',
-                    type: '18861851261',
-                    number: "舜贝佳",
-                    state: "xu_shan_pei@163.com",
-                    num:100,
-                    payType: "100",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '3',
-                    name: '套餐一',
-                    type: '18861851261',
-                    number: "舜贝佳",
-                    state: "xu_shan_pei@163.com",
-                    num:100,
-                    payType: "100",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
             ],
             visible: false,
             editVisible: false
@@ -175,10 +136,12 @@ class User extends Component {
         if (value == "") {
             this.setState({
                 select: {
-                    orderState: this.state.select.orderState,
-                    orderType: this.state.select.orderType,
-                    payType: this.state.select.payType,
-                    createTime: value
+                    // createTime: value
+                page:1,
+                limit:10,
+                startDate:"",
+                endDate:"",
+                search:this.state.select.search,
                 },
                 searchValue: value
             })
@@ -189,25 +152,76 @@ class User extends Component {
         console.log(date, dateString)
         this.setState({
             select: {
-                orderState: this.state.select.orderState,
-                orderType: this.state.select.orderType,
-                payType: this.state.select.payType,
-                createTime: date
+                page:1,
+                limit:10,
+                startDate:dateString[0],
+                endDate:dateString[1],
+                search:this.state.select.search,
             },
             searchValue: date
         })
     }
 
-    deleteUser = () => {
-        console.log("提示是否需要删除");
+    deleteUser = (id) => {
+        // console.log("提示是否需要删除"); remove
+        confirm({
+            title: '是否确定删除此用户?',
+            // content: '完成点击 是 ,未完成点击否',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+               this.props.remove({
+                userId: id
+               })
+
+               setTimeout(()=>{
+                this.props.userpage(this.state.select)
+                   
+               },300)
+            },
+            onCancel: () => {
+               
+             },
+        })
+    }
+//搜所
+    search = ()=>{
+        this.props.userpage(this.state.select)
     }
 
+    paginationChange = (current)=>{
+        console.log(current)
+        this.setState({
+          select: {
+            page: current,
+            limit: this.state.select.limit,
+            startDate:this.state.select.startDate,
+                endDate:this.state.select.endDate,
+                search:this.state.select.search,
+          },
+        },()=>{
+          // 获取分页数据
+          this.props.userpage(this.state.select)
+        })
+      }
+ componentWillMount(){
+     this.props.userpage(this.state.select)
+ }
+ componentWillReceiveProps(nextProps){
+    if(nextProps.userReducer.getIn(["userpage"])){
+        this.setState({
+            data: nextProps.userReducer.getIn(["userpage","data","rows"]),
+            total: nextProps.userReducer.getIn(["userpage","data","total"])
+        })
+    }
+ }
 
 
 
     render() {
         let { routerList, searchValue } = this.state;
-        let { orderState, orderType, payType, createTime } = this.state.select
+        let { orderState, orderType, payType, startDate } = this.state.select
 
         return (
             <div className="product-container">
@@ -220,7 +234,7 @@ class User extends Component {
                     <div className="line">
                         <div>注册时间 ：</div>
                         <div>
-                            <span onClick={this.setCreateTime.bind(this, "")} className={createTime == 0 ? "active-bg" : ""}>全部</span>
+                            <span onClick={this.setCreateTime.bind(this, "")} className={startDate == "" ? "active-bg" : ""}>全部</span>
                             <RangePicker
                                 onChange={this.onChange}
                                 value={searchValue}
@@ -239,7 +253,7 @@ class User extends Component {
                     <div className="line">
                         <div></div>
                         <div style={{ marginLeft: "62px" }}>
-                            <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
+                            <Button onClick={this.search} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>搜索</Button>
                             <Button style={{ backgroundColor: "#17A2A9", color: "#FFF", marginLeft: "10px" }}>导出</Button>
                         </div>
                     </div>
@@ -248,7 +262,19 @@ class User extends Component {
                 {/* table 部分 */}
                 <div className="table-content">
                     {/* 123 */}
-                    <Table bordered columns={this.state.columns} dataSource={this.state.data} />
+                    <Table bordered
+                    rowSelection={{
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                        },
+                      }}
+                      pagination={{
+                        total: this.state.total,
+                        showTotal: (total) => `共 ${total} 条`,
+                        onChange: (current) => this.paginationChange(current),
+                        pageSize: this.state.select.limit,
+                      }}
+                    columns={this.state.columns} dataSource={this.state.data} />
                 </div>
 
 

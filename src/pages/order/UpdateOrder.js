@@ -64,10 +64,10 @@ class UpdateOrder extends Component {
             )}
           </FormItem>
           <FormItem label="赠送时长">
-            {getFieldDecorator('giveMonth', {  initialValue:data.giveTime,
-              rules: [{required: true, message: '请输入赠送时长'}],
+            {getFieldDecorator('giveMonth', {  initialValue:data.giveTime=="无" ? null : data.giveTime? data.giveTime.replace("个月","") : "",
+              rules: [{required: false, message: '请输入赠送时长'}],
             })(
-                <Input/>
+                <Input suffix="月" placeholder="请输入赠送时长" />
             )}
           </FormItem>
 

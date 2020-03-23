@@ -171,7 +171,7 @@ class Product extends Component {
     if (nextProps.productReducer && nextProps.productReducer.getIn(["productlist","data"])) {
       console.log("+++++++++++++", nextProps.productReducer.getIn(["productlist", "data"]))
       let data = nextProps.productReducer.getIn(["productlist", "data"]);
-      if (data.rows && data.rows.length > 0) {
+      // if (data.rows && data.rows.length > 0) {
         let list = data.rows;
         for (let i = 0; i < list.length; i++) {
           list[i].key = i + 1;
@@ -180,7 +180,7 @@ class Product extends Component {
           total: data.total,
           data: list
         })
-      }
+      // }
 
 
     }
@@ -250,6 +250,7 @@ class Product extends Component {
       visible: false,
     },()=>{
       this.props.addproductlist(data);
+      window.location.reload();
       setTimeout(()=>{
         this.props.productlist({
           page: 1,

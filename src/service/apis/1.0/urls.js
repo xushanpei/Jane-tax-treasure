@@ -163,4 +163,9 @@ export const urls = {
    * 用户
    */
   USERPAGE:"/simpleTax/userWeb/userPage",
+  //删除
+  REMOVE:"/simpleTax/userWeb/remove",
+
+  //客服列表
+  MANAGERPAGE:"/simpleTax/managerWeb/managerPage",
 };

@@ -65,28 +65,35 @@ class PeopleRevises extends Component {
           </FormItem>
           <FormItem label="对接人身份证">
             {getFieldDecorator('dockNum', {initialValue:baseInfo.dockNum,
-              rules: [{required: true, message: '请输入对接人身份证'}],
+              rules: [{required: true, message: '请输入对接人身份证'},
+              {pattern: new RegExp(/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/),message:"请输入正确的身份证号码 !" }
+              // /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
+            ],
             })(
                 <Input placeholder={"请输入对接人身份证"} ></Input>
             )}
           </FormItem>
           <FormItem label="对接人手机号">
             {getFieldDecorator('dockPhone', {initialValue:baseInfo.dockPhone,
-              rules: [{required: true, message: '请输入对接人手机号'}],
+              rules: [{required: true, message: '请输入对接人手机号'},
+              {pattern: new RegExp(/^1[3456789]\d{9}$/),message:"请输入正确的手机号码 !" }
+            ],
             })(
                 <Input placeholder={"请输入对接人手机号"} ></Input>
             )}
           </FormItem>
           <FormItem label="对接人邮箱">
             {getFieldDecorator('dockEmail', {initialValue:baseInfo.dockEmail,
-              rules: [{required: true, message: '请输入对接人邮箱'}],
+              rules: [{required: true, message: '请输入对接人邮箱'},
+              {pattern: new RegExp(/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/),message:"请输入正确的邮箱 !" }]
             })(
                 <Input placeholder={"请输入对接人邮箱"} ></Input>
             )}
           </FormItem>
           <FormItem label="邮寄地址">
             {getFieldDecorator('address', {initialValue:baseInfo.address,
-              rules: [{required: true, message: '请输入邮寄地址'}],
+              rules: [{required: true, message: '请输入邮寄地址'},
+            ],
             })(
                 <Input placeholder={"请输入邮寄地址"} ></Input>
             )}

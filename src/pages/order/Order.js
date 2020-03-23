@@ -134,6 +134,22 @@ class Order extends Component {
                     操作 <Icon type="down" />
                   </span>
                 </Dropdown>
+            }else{
+              return <Dropdown overlay={
+                <Menu>
+                  {
+                     <Menu.Item key="0">
+                      <Link to={`/orderDetail/${record.orderId}`}>
+                        订单详情
+                    </Link>
+                    </Menu.Item> 
+                  }
+                </Menu>
+              } trigger={['click']}>
+                <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  操作 <Icon type="down" />
+                </span>
+              </Dropdown>
             }
           }
         },

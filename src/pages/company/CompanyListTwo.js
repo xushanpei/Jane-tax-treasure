@@ -550,8 +550,23 @@ componentWillMount(){
     }
     //一键通知
     notice = () => {
-        this.props.notice({
+        // this.props.notice({
+        //     companyId: this.state.baseInfo.companyId
+        // })
+        confirm({
+            title: '是否确定通知用户?',
+            // content: '完成点击 是 ,未完成点击否',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk: () => {
+               this.props.notice({
             companyId: this.state.baseInfo.companyId
+        })
+            },
+            onCancel: () => {
+                
+             },
         })
     }
 

@@ -464,7 +464,15 @@ class BillDetail extends Component {
                             <div>
                                 <span>纳税人识别号：{customerInfo ? customerInfo.txpayerNumber : ""}</span>
                                 <span>客户地址：{customerInfo ? customerInfo.unitAddress : ""}</span>
-                                <span> &nbsp; </span>
+                                {/* //baseInfo.billStatus == 5 */}
+                                {/* <span> 快递单号: {customerInfo ? customerInfo.unitAddress : ""} </span> */}
+                                {
+                                    baseInfo && baseInfo.billStatus == 5 ? (
+                                        <span> 快递单号: 
+                                            {/* {customerInfo ? customerInfo.unitAddress : ""} */}
+                                             </span>
+                                    ): ""
+                                }
                             </div>
                             <div>
                                 <span>开户银行：{customerInfo ? customerInfo.openingBank : ""}</span>

@@ -51,7 +51,7 @@ const { RangePicker } = DatePicker
         //修改基本信息
         updatebasiccompany: companyAction.updatebasiccompany,
         //通知记录
-        noticelist:companyAction.noticelist
+        noticelist: companyAction.noticelist
     }
 )
 class CompanyDetail extends Component {
@@ -72,7 +72,7 @@ class CompanyDetail extends Component {
             peopleBaseVisible: false,
             type: "",
             htype: "",
-            
+
 
         };
     }
@@ -137,7 +137,7 @@ class CompanyDetail extends Component {
         //获取通知记录
         this.props.noticelist({
             businessId: this.props.match.params.data,
-            page:1,
+            page: 1,
             limit: 100
         })
 
@@ -300,7 +300,12 @@ class CompanyDetail extends Component {
                 data.typeId = item.id
             }
         })
-        data.invoiceBeginTime = data.invoiceBeginTime.format("YYYY-MM-DD")
+        if (data.invoiceBeginTime) {
+            data.invoiceBeginTime = data.invoiceBeginTime.format("YYYY-MM-DD")
+        } else {
+            data.invoiceBeginTime = ""
+        }
+
 
         console.log("最终数据", data)
         this.setState({
@@ -308,13 +313,13 @@ class CompanyDetail extends Component {
         }, () => {
             // 触发修改的接口
             this.props.updatebasiccompany(
-                Object.assign({companyId: this.props.match.params.data}, data)
+                Object.assign({ companyId: this.props.match.params.data }, data)
             )
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.props.getbasiccompany({
                     companyId: this.props.match.params.data
                 })
-            },300)
+            }, 300)
         })
     };
 

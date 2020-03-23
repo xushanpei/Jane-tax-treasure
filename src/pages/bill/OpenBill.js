@@ -4,6 +4,7 @@ import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch, Modal, 
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import config from "../../config/base.conf"
+import moment from "moment"
 
 
 
@@ -32,6 +33,12 @@ class OpenBills extends Component {
         this.props.form.resetFields();//重置Form表单的内容
         this.props.onCancel()//调用父组件给的方法
     };
+
+      disabledDate = (current) => {
+        let curDate = new Date();
+        var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
+    return current <= moment(preDate)
+  }
 
     render() {
         let { title, visible, onOk, onCancel,data } = this.props;
@@ -97,7 +104,7 @@ class OpenBills extends Component {
                         {getFieldDecorator('billingTime', {
                             rules: [{ required: true, message: '请选择开票日期' }],
                         })(
-                            <DatePicker placeholder="请选择开票日期" />
+                            <DatePicker disabledDate={this.disabledDate} placeholder="请选择开票日期" />
                         )}
                     </FormItem>
                     <FormItem label="名称">
