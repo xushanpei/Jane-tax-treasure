@@ -111,7 +111,7 @@ class User extends Component {
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Item key="1">
-                                    <span onClick={this.deleteUser.bind(this, record.id)}>删除</span>
+                                    <span onClick={this.deleteUser.bind(this, record.userId)}>删除</span>
                                 </Menu.Item>
                             </Menu>
                         } trigger={['click']}>
