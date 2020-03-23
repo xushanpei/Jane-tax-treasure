@@ -19,7 +19,9 @@ const { RangePicker } = DatePicker   //applyinvoicepage
         //获取公司类型
         productclassify: productAction.productclassify,
         invoicepage: billAction.invoicepage,
-        applyinvoicepage: billAction.applyinvoicepage
+        applyinvoicepage: billAction.applyinvoicepage,
+        //发票数量统计
+    countstatus: billAction.countstatus
     }
 )
 class ApplyBill extends Component {
@@ -29,6 +31,7 @@ class ApplyBill extends Component {
             //公司类型列表
             companyTypeList: "",
             total: "",
+            num:"",
             // 筛选属性
             select: {
                 page: 1,
@@ -273,7 +276,9 @@ class ApplyBill extends Component {
             limit: 100
         })
         //获取发票申请列表
-        this.props.applyinvoicepage(this.state.select)
+        this.props.applyinvoicepage(this.state.select);
+        // 获取发票统计数量
+     this.props.countstatus();
     }
 
     paginationChange = (current) => {
@@ -306,6 +311,14 @@ class ApplyBill extends Component {
                 total
             })
         }
+
+        //发票统计数量
+   if(nextProps.billReducer.getIn(["countstatus"])){
+    console.log("发票统计数量", nextProps.billReducer.getIn(["countstatus"]))
+    this.setState({
+        num: nextProps.billReducer.getIn(["countstatus","data"])
+    })
+ }
     }
 
 
@@ -327,10 +340,11 @@ class ApplyBill extends Component {
                         <div>发票状态 ：</div>
                         <div>
                             <span onClick={this.setOrderState.bind(this, "")} className={billStatus == 0 ? "active-bg" : ""}>全部</span>
-                            <span onClick={this.setOrderState.bind(this, 1)} className={billStatus == 1 ? "active-bg" : ""}>审核中</span>
-                            <span onClick={this.setOrderState.bind(this, 2)} className={billStatus == 2 ? "active-bg" : ""}>开票中</span>
-                            <span onClick={this.setOrderState.bind(this, 3)} className={billStatus == 3 ? "active-bg" : ""}>已开票</span>
-                            <span onClick={this.setOrderState.bind(this, 4)} className={billStatus == 4 ? "active-bg" : ""}>已驳回</span>
+        <span onClick={this.setOrderState.bind(this, 1)} className={billStatus == 1 ? "active-bg" : ""}>审核中({this.state.num.inAudit})</span>
+                            <span onClick={this.setOrderState.bind(this, 2)} className={billStatus == 2 ? "active-bg" : ""}>开票中({this.state.num.inInvoice})</span>
+                            <span onClick={this.setOrderState.bind(this, 3)} className={billStatus == 3 ? "active-bg" : ""}>已开票({this.state.num.invoiceFinish})</span>
+                            <span onClick={this.setOrderState.bind(this, 4)} className={billStatus == 4 ? "active-bg" : ""}>已驳回({this.state.num.reject})</span>
+                            <span onClick={this.setOrderState.bind(this, 5)} className={billStatus == 5 ? "active-bg" : ""}>已邮寄({this.state.num.post})</span>
                         </div>
                     </div>
                     <div className="line">

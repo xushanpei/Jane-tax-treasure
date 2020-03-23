@@ -18,7 +18,9 @@ const { RangePicker } = DatePicker
   {
     //获取公司类型
     productclassify: productAction.productclassify,
-    invoicepage:billAction.invoicepage
+    invoicepage:billAction.invoicepage,
+    //发票数量统计
+    countstatus: billAction.countstatus
   }
 )
 class BillList extends Component {
@@ -269,7 +271,9 @@ class BillList extends Component {
       limit:100
     })
     //获取发票列表
-     this.props.invoicepage(this.state.select)
+     this.props.invoicepage(this.state.select);
+     // 获取发票统计数量
+     this.props.countstatus();
   }
 
   componentWillReceiveProps(nextProps){
@@ -290,6 +294,10 @@ class BillList extends Component {
         data,
         total:nextProps.billReducer.getIn(["invoicepage","data","total"])
       })
+   }
+   //发票统计数量
+   if(nextProps.billReducer.getIn(["countstatus"])){
+      console.log("发票统计数量", nextProps.billReducer.getIn(["countstatus"]))
    }
   }
 
