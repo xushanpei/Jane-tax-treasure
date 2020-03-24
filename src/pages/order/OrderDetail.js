@@ -410,7 +410,7 @@ class OrderDetail extends Component {
               <span>{orderDetail.endTime}</span>
             </div>
           </div>
-          <p style={{ width: this.state.name == "未支付" ? "15%" : this.state.name == "已支付" ? "100%" : this.state.name == "已取消"? "5%" : "" }} className="progress-line"></p>
+          <p style={{ width: this.state.name == "未支付" ? "15%" : this.state.name == "已支付" ? "100%" : this.state.name == "已取消"? "5%" : "58%" }} className="progress-line"></p>
 
           {/* 基本信息 */}
           <div className="order-list-content">
