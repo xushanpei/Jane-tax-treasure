@@ -40,11 +40,12 @@ class Product extends Component {
       // 搜索字段
       search: {
         page: 1,
-        limit: 5,
+        limit: 20,
         companyTypeId: "",
         packageState: "",
         search: ""
       },
+      current:1,
       switchState:"",
       //返回字段
       total: "",
@@ -150,6 +151,9 @@ class Product extends Component {
     this.props.productlist(this.state.search);
   }
   paginationChange = (current)=>{
+    this.setState({
+      current
+    })
     console.log(current)
     this.setState({
       search: {
@@ -240,6 +244,7 @@ class Product extends Component {
   handleOk = e => {
     console.log("获取来的数据",e);
     let data = e;
+    data.vatReturn = data.vatReturn
     this.state.productclassify.map((item,key)=>{
       if(item.id == e.companyTypeId){
       data.companyTypeName = item.name
@@ -286,6 +291,7 @@ class Product extends Component {
   editHandleOk = e => {
     console.log(e);
     let data = e;
+    data.vatReturn = data.vatReturn 
     // 添加 state ,  
     this.state.productclassify.map((item,key)=>{
       if(item.id == e.companyTypeId){
@@ -342,11 +348,14 @@ class Product extends Component {
 
 
   onChange(data, value) {
+    this.setState({
+      current:1
+    })
     // console.log(`选中 ${data} ${value}`);
     if (data == "产品分类") {
       this.setState({
         search: {
-          page: this.state.search.page,
+          page: 1,
           limit: this.state.search.limit,
           companyTypeId: value,
           packageState: this.state.search.packageState,
@@ -357,7 +366,7 @@ class Product extends Component {
     if (data == "产品状态") {
       this.setState({
         search: {
-          page: this.state.search.page,
+          page: 1,
           limit: this.state.search.limit,
           companyTypeId: this.state.search.companyTypeId,
           packageState: value,
@@ -368,7 +377,7 @@ class Product extends Component {
     if (data == "搜索") {
       this.setState({
         search: {
-          page: this.state.search.page,
+          page: 1,
           limit: this.state.search.limit,
           companyTypeId: this.state.search.companyTypeId,
           packageState: this.state.search.packageState,
@@ -443,6 +452,7 @@ class Product extends Component {
               showTotal: (total) => `共 ${total} 条`,
               onChange: (current) => this.paginationChange(current),
               pageSize: this.state.search.limit,
+              current: this.state.current
             }}
             columns={this.state.columns}
             dataSource={this.state.data} />

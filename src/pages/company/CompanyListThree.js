@@ -33,6 +33,7 @@ class CompanyListThree extends Component {
             headerData: "",
             getdata: "",
             getinvoiceinfo: "",
+            billLockFlag:"",
             routerList: [
                 {
                     name: "首页",
@@ -74,9 +75,9 @@ class CompanyListThree extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.baseInfo) {
             this.setState({
-                baseInfo: nextProps.baseInfo
+                baseInfo: nextProps.baseInfo,
             }, () => {
-                console.log("接受到的基本信息对接人信息", nextProps.baseInfo);
+                console.log("00000000000接受到的基本信息对接人信息", nextProps.baseInfo);
             })
         }
 
@@ -94,7 +95,8 @@ class CompanyListThree extends Component {
         if (nextProps.headerData) {
             console.log("接收到的头部操作信息", nextProps.headerData)
             this.setState({
-                headerData: nextProps.headerData
+                headerData: nextProps.headerData,
+                billLockFlag: nextProps.headerData.billLockFlag
             })
         }
         //锁定
@@ -124,6 +126,12 @@ class CompanyListThree extends Component {
         this.props.companyoperatebilllock({
             companyId: this.state.baseInfo.companyId,
         })
+
+        setTimeout(() => {
+            this.props.changeState(4)
+        }, 300)
+
+
 
     }
 
@@ -166,7 +174,7 @@ class CompanyListThree extends Component {
             })
             setTimeout(() => {
                 this.props.changeState(4)
-            }, 300)
+            }, 500)
         }
     }
     //限制文件类型
@@ -201,6 +209,10 @@ class CompanyListThree extends Component {
             action: '/api/simpleTax/document/upload',
             data: {
                 type: 1
+            },
+            headers:{
+                Authorization: localStorage.getItem("token"),
+                "User-Client" : "web"
             }
         };
 
@@ -215,7 +227,12 @@ class CompanyListThree extends Component {
                             <span>{headerData.companyName}</span>
                             <span>
                                 {/* 通过不通过按钮组 */}
-                                <Button onClick={this.companyoperatebilllock} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
+                                {/* billLockFlag */}
+                                {
+                                    this.state.billLockFlag == 1? 
+                                    <Button onClick={this.companyoperatebilllock} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
+                                    :   <Button onClick={this.companyoperatebilllock} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>解锁</Button>
+                                }
                                 <span className="btn-diy">
                                     <Button onClick={this.sendnotice} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>发消息给客户</Button>
                                 </span>
@@ -368,7 +385,7 @@ class CompanyListThree extends Component {
                         <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
-                                <span>申请人 : {baseInfo.applyPhone}</span>
+                                <span>申请人 : {headerData.applyName}</span>
                                 <span>公司名称 : {baseInfo.companyName}</span>
                                 <span>纳税人类型 : {baseInfo.taxpayerType == 1 ? "一般纳税人" : "小规模纳税人"}</span>
                                 <span>简税宝服务期限 : {baseInfo.serviceEndTime}</span>

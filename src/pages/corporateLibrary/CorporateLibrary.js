@@ -48,6 +48,7 @@ class CorporateLibrary extends Component {
             page:1,
             limit:20,
             total:"",
+            current:1,
             routerList: [
                 {
                     name: "首页",
@@ -171,8 +172,19 @@ searchChange = (e)=>{
 
  // 搜所按钮
  searchClick = () => {
+     this.setState({
+         current:1
+     },()=>{
     this.props.legallist({
-        page:this.state.page,
+            page:1,
+            limit:this.state.limit,
+            search:this.state.search,
+            startDate:this.state.startDate,
+            endDate:this.state.endDate
+        })
+     })
+    this.props.legallist({
+        page:1,
         limit:this.state.limit,
         search:this.state.search,
         startDate:this.state.startDate,
@@ -452,6 +464,7 @@ locklegal = (legalId)=>{
                         showTotal: (total) => `共 ${total} 条`,
                         onChange: (current) => this.paginationChange(current),
                         pageSize: this.state.limit,
+                        current:this.state.current
                       }}
                     bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>

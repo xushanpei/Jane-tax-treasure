@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker,Radio } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker,Radio, Cascader } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
+import dataList from "./city";
 
 const { Option } = Select;
 const { MonthPicker, RangePicker, TimePicker } = DatePicker;
@@ -64,7 +65,7 @@ class AddCustomerServices extends Component {
 
        <Form {...formItemLayout}>
        <FormItem label="客服岗位">
-            {getFieldDecorator('productName3', {initialValue:this.state.value,
+            {getFieldDecorator('type', {initialValue:1,
               rules: [{required: true, message: '请输入分类简介'}],
             })(
                 <Radio.Group  onChange={this.onChange} >
@@ -74,39 +75,44 @@ class AddCustomerServices extends Component {
             )}
           </FormItem>
           <FormItem label="客服姓名">
-            {getFieldDecorator('productName', {
-              rules: [{required: true, message: '请输入分类名称'}],
+            {getFieldDecorator('name', {
+              rules: [{required: true, message: '请输入客服姓名'}],
             })(
-              <Input placeholder="请输入分类名称"/>
+              <Input placeholder="请输入客服姓名"/>
             )}
           </FormItem>
           <FormItem label="登录账号">
-            {getFieldDecorator('productName2', {
-              rules: [{required: true, message: '请输入分类排序'}],
+            {getFieldDecorator('username', {
+              rules: [{required: true, message: '请输入登录账号'}],
             })(
-                <Input placeholder="请输入分类排序"/>
+                <Input placeholder="请输入登录账号"/>
             )}
           </FormItem>
           <FormItem label="初始密码">
-            {getFieldDecorator('productName4', {
-              rules: [{required: true, message: '请输入分类排序'}],
+            {getFieldDecorator('password', {
+              rules: [{required: true, message: '请输入初始密码'}],
             })(
-                <Input.Password  placeholder="请输入分类排序"/>
+                <Input.Password  placeholder="请输入初始密码"/>
             )}
           </FormItem>
           {
             this.state.value == 2 ? (
-              <FormItem label="园区拓展部">
-            {getFieldDecorator('productName10', {
-              rules: [{required: true, message: '请选择'}],
+               
+            <FormItem label="地区选择">
+              {getFieldDecorator('area', {
+              rules: [{required: true, message: '地区选择'}],
             })(
-                <Select placeholder="请选择" style={{width:"160px"}}>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
-              </Select>
+                <Cascader placeholder="请选择地区"
+                              options={dataList}
+                              changeOnSelect
+                              placeholder="地区选择"
+                          />  
             )}
-          </FormItem>
+
+
+            
+            </FormItem> 
+        
             ) : ""
           }
           </Form>

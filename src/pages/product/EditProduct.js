@@ -120,19 +120,19 @@ class EditProduct extends Component {
           </FormItem>
           <FormItem label="实际税率"  >
             {getFieldDecorator('taxRatePre', {initialValue:data.taxRatePre,
-              rules: [{required: true, message: '请选择分类'}],
+              rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
-                   <Input value={data.taxRatePre} onChange={(e)=>{
+                   <Input suffix="%" value={data.taxRatePre} onChange={(e)=>{
                       data.taxRatePre = e.target.value
                    }}  placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             )},
             {getFieldDecorator('taxRateSuf', {initialValue:data.taxRateSuf,
-              rules: [{required: true, message: '请选择分类'}],
+              rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
-                   <Input value={data.taxRateSuf} onChange={(e)=>{
+                   <Input suffix="%" value={data.taxRateSuf} onChange={(e)=>{
                       data.taxRateSuf = e.target.value
                    }} placeholder="请输入" style={{width:"120px"}}/>
               </span>
@@ -142,14 +142,14 @@ class EditProduct extends Component {
             {getFieldDecorator('serviceMonth', {initialValue:data.serviceMonth,
               rules: [{required: true, message: '请选择分类'}],
             })(
-              <Input placeholder="请输入服务时长"/>
+              <Input suffix="h" placeholder="请输入服务时长"/>
             )}
           </FormItem>
           <FormItem label="赠送时长">
             {getFieldDecorator('giveMonth', {initialValue:data.giveMonth,
               rules: [{required: true, message: '请选择分类'}],
             })(
-                <Input placeholder="请输入赠送时长"/>
+                <Input suffix="h" placeholder="请输入赠送时长"/>
             )}
           </FormItem>
           <FormItem label="增值税返还">

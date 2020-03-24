@@ -45,6 +45,8 @@ export const urls = {
   ADDREMARK:"/simpleTax/orderWeb/addRemark",
   //订单修改
   UPTORDER:"/simpleTax/orderWeb/uptOrder",
+  //订单数
+  GETORDERCOUNT:"/simpleTax/orderWeb/getOrderCount",
 
    /**
    * 公司模块
@@ -115,6 +117,8 @@ export const urls = {
   NOTICELIST:"/simpleTax/messageWeb/noticeList",
   //添加信息
   UPTBELONGER :"/simpleTax/companyWeb/uptBelonger",
+  //公司数据
+  GETCOMPANYSTATUSNUM :"/simpleTax/companyWeb/getCompanyStatusNum",
   
 
   /**
@@ -165,6 +169,16 @@ export const urls = {
   USERPAGE:"/simpleTax/userWeb/userPage",
   //删除
   REMOVE:"/simpleTax/userWeb/remove",
+  //用户详情
+  USERINFO:"/simpleTax/userWeb/userInfo",
+  //用户详情订单列表
+  USERORDERLIST:"/simpleTax/orderWeb/userOrderList",
+  //启用/冻结
+  ISUSING:'/simpleTax/userWeb/isUsing',
+  //编辑客服
+  EDITMANAGE:"/simpleTax/userWeb/editManage",
+  //新增客服
+  ADDMANAGE:"/simpleTax/userWeb/addManage",
 
   //客服列表
   MANAGERPAGE:"/simpleTax/managerWeb/managerPage",

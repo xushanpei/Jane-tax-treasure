@@ -89,6 +89,21 @@ function* uptorder(action) {
   }
 }
 
+function* getordercount(action) {
+  
+  try {
+   let data = yield call(Apis.getordercount,action.payload.data);
+    yield put({ type:orderTypes.GETORDERCOUNT_SUCCESS,data:data });
+    // if(data.status == 200){
+    //   message.success(data.message)
+    // }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    
+  }
+}
+
 
 
 export default function* watchAuthRoot() {
@@ -98,6 +113,7 @@ export default function* watchAuthRoot() {
   yield takeLatest(orderTypes.COMFIRMOFFLINEPAY, comfirmofflinepay);
   yield takeLatest(orderTypes.ADDREMARK, addremark);
   yield takeLatest(orderTypes.UPTORDER, uptorder);
+  yield takeLatest(orderTypes.GETORDERCOUNT, getordercount);
 }
 
 //ORDERDETAIL
@@ -105,3 +121,5 @@ export default function* watchAuthRoot() {
 //COMFIRMOFFLINEPAY
 //ADDREMARK
 //UPTORDER
+
+//GETORDERCOUNT

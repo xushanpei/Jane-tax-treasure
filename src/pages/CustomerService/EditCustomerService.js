@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import MasterPage from "../../components/layout/MasterPage";
-import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker,Radio } from "antd";
+import { Table, Divider, Tag, Breadcrumb, Select, Input, Button, Switch,Modal, Form, DatePicker,Radio,Cascader } from "antd";
 import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
+import dataList from "./city";
 
 const { Option } = Select;
 const { MonthPicker, RangePicker, TimePicker } = DatePicker;
@@ -15,6 +16,7 @@ class EditCustomerServices extends Component {
     super(props);
     this.state = {
         value: 1,
+        stt:false
     };
   }
 
@@ -38,9 +40,21 @@ class EditCustomerServices extends Component {
       value: e.target.value,
     });
   };
+  onChanges = e=>{
+    console.log(e)
+    if(e == 2){
+        this.setState({
+          stt: true
+        })
+    }else{
+      this.setState({
+        stt: false
+      })
+    }
+  }
 
   render() {
-    let { title, visible, onOk, onCancel } = this.props;
+    let { title, visible, onOk, onCancel,data } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
         labelCol: {
@@ -52,6 +66,7 @@ class EditCustomerServices extends Component {
           sm: { span: 16 },
         },
       };
+      console.log("",data)
 
     return (
         <Modal
@@ -64,37 +79,46 @@ class EditCustomerServices extends Component {
 
        <Form {...formItemLayout}>
           <FormItem label="客服姓名">
-            {getFieldDecorator('productName', {
-              rules: [{required: true, message: '请输入分类名称'}],
+            {getFieldDecorator('name', { initialValue: data.name,
+              rules: [{required: true, message: '请输入客服姓名'}],
             })(
-              <Input placeholder="请输入分类名称"/>
+              <Input placeholder="请输入客服姓名"/>
             )}
           </FormItem>
-          <FormItem label="登录账号">
-            {getFieldDecorator('productName2', {
-              rules: [{required: true, message: '请输入分类排序'}],
+          {/* <FormItem label="登录账号">
+            {getFieldDecorator('num', { initialValue:data.username,
+              rules: [{required: true, message: '请输入登录账号'}],
             })(
-                <Input placeholder="请输入分类排序"/>
+                <Input disabled placeholder="请输入登录账号"/>
             )}
-          </FormItem>
+          </FormItem> */}
           <FormItem label="部门">
-            {getFieldDecorator('productName4', {
+            {getFieldDecorator('type', {initialValue: data.TYPE,
               rules: [{required: true, message: '请输入分类排序'}],
             })(
-                <Input.Password  placeholder="请输入分类排序"/>
+                <Select onChange={this.onChanges}>
+                  <Option value={"1"}>运营部</Option>
+                  <Option value={"2"}>园区拓展部</Option>
+                </Select>
             )}
           </FormItem>
-          <FormItem label="状态">
-            {getFieldDecorator('productName3', {initialValue:1,
-              rules: [{required: true, message: '请输入分类简介'}],
+
+          {/* {
+            data.TYPE == "2" || this.state.stt ? <FormItem label="地区选择">
+              {getFieldDecorator('type', {
+              rules: [{required: true, message: '请输入分类排序'}],
             })(
-                <Select placeholder="请选择产品分类" style={{width:"160px"}}>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
-              </Select>
+                <Cascader placeholder="请选择地区"
+                              options={dataList}
+                              changeOnSelect
+                              placeholder="地区选择"
+                          />  
             )}
-          </FormItem>
+
+
+            
+            </FormItem> : ""
+          } */}
           </Form>
           
       

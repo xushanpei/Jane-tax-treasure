@@ -223,6 +223,12 @@ const companyReducer = handleActions(
           uptbelonger: action.data
         });
       },
+
+      [companyTypes.GETCOMPANYSTATUSNUM_SUCCESS]: (state, action) => {
+        return state.merge({
+          getcompanystatusnum: action.data
+        });
+      },
   
   },
   initState
@@ -243,3 +249,4 @@ export default companyReducer;
 
 //NOTICELIST
 //UPTBELONGER
+//GETCOMPANYSTATUSNUM_SUCCESS

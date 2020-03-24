@@ -46,6 +46,8 @@ class Apis {
   addremark = data=> ApiRequest.put(`${urls.ADDREMARK}`,data);
   //订单修改
   uptorder = data=> ApiRequest.put(`${urls.UPTORDER}`,data);
+  //定单数
+  getordercount = data => ApiRequest.get(`${urls.GETORDERCOUNT}`);
 
   /**
    * 公司 API
@@ -114,6 +116,8 @@ class Apis {
   noticelist = data => ApiRequest.get(`${urls.NOTICELIST}?businessId=${data.businessId}&page=${data.page}&limit=${data.limit}`);
   //添加信息
   uptbelonger = data => ApiRequest.put(`${urls.UPTBELONGER}`,data);
+  //公司数据
+  getcompanystatusnum = data => ApiRequest.get(`${urls.GETCOMPANYSTATUSNUM}`);
 
 
 
@@ -171,7 +175,19 @@ class Apis {
    */
   userpage = data => ApiRequest.get(`${urls.USERPAGE}?page=${data.page}&limit=${data.limit}&startDate=${data.startDate}&endDate=${data.endDate}&search=${data.search}`);
   //删除
-  remove = data => ApiRequest.delete(`${urls.REMOVE}?userId=${data.userId}`);
+  remove = data => ApiRequest.delete(`${urls.REMOVE}`,data);
+  //用户详细信息
+  userinfo = data => ApiRequest.get(`${urls.USERINFO}?userId=${data.userId}`);
+  //用户详情订单列表
+  userorderlist = data => ApiRequest.get(`${urls.USERORDERLIST}?page=${data.page}&limit=${data.limit}&userId=${data.userId}`);
+  //启用/冻结
+  isusing = data => ApiRequest.put(`${urls.ISUSING}`,data);
+  //编辑客服
+  editmanage = data => ApiRequest.put(`${urls.EDITMANAGE}`,data);
+  //新增客服
+  addmanage = data => ApiRequest.post(`${urls.ADDMANAGE}`,data)
+   
+
 
   //客服列表
   managerpage = data => ApiRequest.get(`${urls.MANAGERPAGE}?page=${data.page}&limit=${data.limit}&search=${data.search}`)

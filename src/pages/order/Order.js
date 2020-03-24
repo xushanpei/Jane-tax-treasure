@@ -23,18 +23,20 @@ const { TextArea } = Input;
     orderlist: orderAction.orderlist,
     orderdetail: orderAction.orderdetail,
     addremark: orderAction.addremark,
-    uptorder:orderAction.uptorder
+    uptorder:orderAction.uptorder,
+    getordercount: orderAction.getordercount
   }
 )
 class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      number:"",
       total: "",
       id:"",
       visible:false,
       remark:"",
-
+      current:1,
       //订单修改
       updateVisible:false,
       //需要修改的订单详情
@@ -44,7 +46,7 @@ class Order extends Component {
       // 筛选属性
       select: {
         page: 1,
-        limit: 5,
+        limit: 20,
         status: "",
         companyTypeId: "",
         payType: "",
@@ -367,6 +369,9 @@ class Order extends Component {
   paginationChange = (current) => {
     console.log(current)
     this.setState({
+      current
+    })
+    this.setState({
       select: {
         page: current,
         limit: this.state.select.limit,
@@ -384,7 +389,12 @@ class Order extends Component {
   }
   //搜索
   searchList = () => {
-    this.props.orderlist(this.state.select)
+    this.setState({
+      current:1
+    },()=>{
+      this.props.orderlist(Object.assign(this.state.select,{page:1}))
+    })
+    
   }
 
   // /////////////////////////////////////////////////
@@ -394,7 +404,10 @@ class Order extends Component {
       limit: 100
     })
     //获取订单列表
-    this.props.orderlist(this.state.select)
+    this.props.orderlist(this.state.select);
+
+    //数据
+    this.props.getordercount();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -427,6 +440,14 @@ class Order extends Component {
         updateOrder:nextProps.orderReducer.getIn(["orderdetail","data"]),
        })
     }
+
+    //数据
+    if(nextProps.orderReducer.getIn(["getordercount"])){
+      console.log("数据",nextProps.orderReducer.getIn(["getordercount"]))
+      this.setState({
+        number: nextProps.orderReducer.getIn(["getordercount","data"])
+      })
+    }
   }
 
 
@@ -434,7 +455,7 @@ class Order extends Component {
 
 
   render() {
-    let { routerList, DateValue, orderList } = this.state;
+    let { routerList, DateValue, orderList,number } = this.state;
     let { status, orderType, payType, createTime, companyTypeId, startDate, endDate } = this.state.select
 
     return (
@@ -449,10 +470,10 @@ class Order extends Component {
             <div>订单状态 ：</div>
             <div>
               <span onClick={this.setOrderState.bind(this, "")} className={status == "" ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={status == 1 ? "active-bg" : ""}>未支付</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={status == 2 ? "active-bg" : ""}>已支付</span>
-              <span onClick={this.setOrderState.bind(this, 3)} className={status == 3 ? "active-bg" : ""}>已取消</span>
-              <span onClick={this.setOrderState.bind(this, 4)} className={status == 4 ? "active-bg" : ""}>审核中</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={status == 1 ? "active-bg" : ""}>未支付({number.inpaidCount})</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={status == 2 ? "active-bg" : ""}>已支付({number.paidCount})</span>
+              <span onClick={this.setOrderState.bind(this, 3)} className={status == 3 ? "active-bg" : ""}>已取消({number.cancelCount})</span>
+              <span onClick={this.setOrderState.bind(this, 4)} className={status == 4 ? "active-bg" : ""}>审核中({number.examineCount})</span>
             </div>
           </div>
           <div className="line">
@@ -524,6 +545,7 @@ class Order extends Component {
               showTotal: (total) => `共 ${total} 条`,
               onChange: (current) => this.paginationChange(current),
               pageSize: this.state.select.limit,
+              current: this.state.current
             }}
             columns={this.state.columns} dataSource={this.state.data} />
         </div>

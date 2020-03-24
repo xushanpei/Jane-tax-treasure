@@ -37,6 +37,7 @@ class BillList extends Component {
         endDate:""
         // &startDate=${data.startDate}&endDate=${data.endDate}
       },
+      current:1,
       searchValue: "",
       routerList: [
         {
@@ -253,7 +254,8 @@ class BillList extends Component {
   paginationChange = (current)=>{
     console.log(current)
     this.setState({
-     select: Object.assign(this.state.select, { page: current} )
+     select: Object.assign(this.state.select, { page: current} ),
+     current
     },()=>{
       // 获取分页数据
       //获取发票列表
@@ -262,6 +264,11 @@ class BillList extends Component {
   }
   //搜索
   searchs = ()=>{
+    this.setState({
+      current:1
+    },()=>{
+      this.props.invoicepage(Object.assign(this.state.select,{page:1}))
+    })
     this.props.invoicepage(this.state.select)
   }
 
@@ -379,6 +386,7 @@ class BillList extends Component {
             showTotal: (total) => `共 ${total} 条`,
             onChange: (current) => this.paginationChange(current),
             pageSize: this.state.select.limit,
+            current:this.state.current
           }}
           bordered columns={this.state.columns} dataSource={this.state.data} />
         </div>

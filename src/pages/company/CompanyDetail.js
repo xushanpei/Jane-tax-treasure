@@ -285,6 +285,7 @@ class CompanyDetail extends Component {
 
     //对接人信息修改
     peopleBaseHandleOk = e => {
+        console.log("99999999999",e)
         // 数据格式修改
         let data = e;
         //设置行业id

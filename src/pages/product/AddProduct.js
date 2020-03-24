@@ -93,14 +93,14 @@ class AddProduct extends Component {
               rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
-                   <Input placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
+                   <Input suffix="%" placeholder="请输入" style={{width:"120px"}}/> &nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             )},
             {getFieldDecorator('taxRateSuf', {
               rules: [{required: true, message: '请输入实际税率'}],
             })(
               <span>
-                   <Input placeholder="请输入" style={{width:"120px"}}/>
+                   <Input suffix="%" placeholder="请输入" style={{width:"120px"}}/>
               </span>
             )}
           </FormItem>
@@ -108,14 +108,14 @@ class AddProduct extends Component {
             {getFieldDecorator('serviceMonth', {
               rules: [{required: true, message: '请输入服务时长'}],
             })(
-              <Input placeholder="请输入服务时长"/>
+              <Input suffix="h" placeholder="请输入服务时长"/>
             )}
           </FormItem>
           <FormItem label="赠送时长">
             {getFieldDecorator('giveMonth', {
               rules: [{required: true, message: '请输入赠送时长'}],
             })(
-                <Input placeholder="请输入赠送时长"/>
+                <Input suffix="h" placeholder="请输入赠送时长"/>
             )}
           </FormItem>
           <FormItem label="增值税返还">

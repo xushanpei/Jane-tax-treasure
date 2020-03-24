@@ -36,8 +36,8 @@ class OpenBills extends Component {
 
       disabledDate = (current) => {
         let curDate = new Date();
-        var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
-    return current <= moment(preDate)
+        var preDate = new Date(curDate.getTime() ); //前一天
+    return current >= moment(preDate)
   }
 
     render() {
@@ -57,9 +57,10 @@ class OpenBills extends Component {
         const props = {
             name: 'file',
             action: `${config.baseUrl}/simpleTax/document/upload`,
-            // headers: {
-            //     authorization: 'authorization-text',
-            // },
+            headers:{
+                Authorization: localStorage.getItem("token"),
+                "User-Client" : "web"
+            },
             data:{
                 type:2
             },

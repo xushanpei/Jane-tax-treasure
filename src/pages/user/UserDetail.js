@@ -5,19 +5,31 @@ import "./index.scss";
 import BreadeHeader from "../../components/breadeHeader/BreadeHeader";
 import moment from "moment";
 import { Link } from 'react-router-dom';
-
+import { connect } from "react-redux";
+import userAction from "../../redux/actions/userAction";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker
+//USERINFO
 
+@connect(
+    ({ userReducer }) => ({ userReducer }),
+    {
+        userinfo: userAction.userinfo,
+        userorderlist: userAction.userorderlist
+    }
+)
 class UserDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // 筛选属性
-            select: {
-                createTime: 0
+            page:{
+                page:1,
+                limit:100,
+                userId:""
             },
+            userinfo: "",
             searchValue: "",
             routerList: [
                 {
@@ -36,152 +48,126 @@ class UserDetail extends Component {
             columns: [
                 {
                     title: '订单号',
-                    dataIndex: 'key',
-                    key: 'key',
-                    render: text => text,
+                    dataIndex: 'orderNo',
+                    key: 'orderNo',
                 },
                 {
                     title: '手机号',
-                    dataIndex: 'name',
-                    key: 'name',
+                    dataIndex: 'phone',
+                    key: 'phone',
                 },
                 {
                     title: '产品名称',
-                    dataIndex: 'type',
-                    key: 'type',
+                    dataIndex: 'packageName',
+                    key: 'packageName',
                 },
                 {
                     title: '实际支付',
-                    key: 'number',
-                    dataIndex: 'number',
-                    //   render: tags => (
-                    //     <span>
-                    //       {tags.map(tag => {
-                    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-                    //         if (tag === 'loser') {
-                    //           color = 'volcano';
-                    //         }
-                    //         return (
-                    //           <Tag color={color} key={tag}>
-                    //             {tag.toUpperCase()}
-                    //           </Tag>
-                    //         );
-                    //       })}
-                    //     </span>
-                    //   ),
+                    key: 'amount',
+                    dataIndex: 'amount',
+                    
                 },
                 {
                     title: '支付方式',
-                    key: 'state',
-                    dataIndex: 'state',
-                    // render: (text, record) => (
-                    //   <span>
-                    //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-                    //     <Switch  defaultChecked  />
-                    //   </span>
-                    // ),
+                    key: 'payType',
+                    // dataIndex: 'state',
+                    render: (text, record) => {
+                        if(record.payType == 1){
+                            return <span>支付宝</span>
+                        }
+                        if(record.payType == 2){
+                            return <span>线下支付</span>
+                        }
+                        if(record.payType == 3){
+                            return <span>微信支付</span>
+                        }
+                        if(record.payType == 4){
+                            return <span>余额支付</span>
+                        }
+                    }
                 },
                 {
                     title: '订单状态',
-                    key: 'states',
-                    dataIndex: 'states',
-                    // render: (text, record) => (
-                    //   <span>
-                    //     <span>{record.state == 1 ? "上架" : "下架"}</span> &nbsp;
-                    //     <Switch  defaultChecked  />
-                    //   </span>
-                    // ),
+                    key: 'status',
+                    // dataIndex: 'states',
+                    render: (text, record) => {
+                        if(record.status == 1){
+                            return <span>未付款</span>
+                        }
+                        if(record.status == 2){
+                            return <span>已支付</span>
+                        }
+                        if(record.status == 3){
+                            return <span>已取消</span>
+                        }
+                        if(record.status == 4){
+                            return <span>审核中</span>
+                        }
+                    }
                 },
                 {
                     title: '下单时间',
-                    key: 'time',
-                    render: (text, record) => (
-                        <span>
-                            <span>{record.time}</span>
-                        </span>
-                    ),
+                    key: 'createTime',
+                    dataIndex:"createTime"
                 },
                 {
                     title: '操作',
                     key: 'action',
                     render: (text, record) => (
-                        <a>查看详情</a>
+                        <Link to={`/orderDetail/${record.orderId}`}>
+                        查看详情
+                    </Link>
                     ),
                 },
             ],
             data: [
-                {
-                    key: '1',
-                    name: '套餐一',
-                    type: '个人独资',
-                    number: 100,
-                    state: 1,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '2',
-                    name: '套餐二',
-                    type: "个人独资",
-                    number: 100,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
-                {
-                    key: '3',
-                    name: '套餐三',
-                    type: "个人独资",
-                    number: 20,
-                    state: 0,
-                    payType: "支付宝",
-                    orderState: "已支付",
-                    time: "2019.01.20",
-                    action: "操作"
-                },
+               
             ],
             visible: false,
             editVisible: false
         };
     }
 
-
-    //设立时间
-    setCreateTime = (value) => {
-        if (value == "") {
+    componentWillMount() {
+        // this.props.
+        // this.props.match.params.id
+        console.log(this.props.match.params.id)
+        this.props.userinfo({
+            userId: this.props.match.params.id
+        })
+        //table
+        this.setState({
+            page:{
+                page:1,
+                limit:100,
+                userId: this.props.match.params.id
+            }
+        },()=>{
+            this.props.userorderlist(this.state.page)
+        })
+        
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.userReducer.getIn(["userinfo"])) {
+            console.log("用户信息", nextProps.userReducer.getIn(["userinfo"]))
             this.setState({
-                select: {
-                    orderState: this.state.select.orderState,
-                    orderType: this.state.select.orderType,
-                    payType: this.state.select.payType,
-                    createTime: value
-                },
-                searchValue: value
+                userinfo: nextProps.userReducer.getIn(["userinfo", "data"])
             })
         }
 
-    }
-    onChange = (date, dateString) => {
-        console.log(date, dateString)
-        this.setState({
-            select: {
-                orderState: this.state.select.orderState,
-                orderType: this.state.select.orderType,
-                payType: this.state.select.payType,
-                createTime: date
-            },
-            searchValue: date
-        })
+        //table
+        if(nextProps.userReducer.getIn(["userorderlist"])){
+
+          this.setState({
+              data: nextProps.userReducer.getIn(["userorderlist","data","rows"])
+          })
+        }
     }
 
 
     render() {
-        let { routerList, searchValue } = this.state;
-        let { orderState, orderType, payType, createTime } = this.state.select
+        let { routerList, searchValue, userinfo } = this.state;
+        // let { orderState, orderType, payType, createTime } = this.state.select
 
         return (
             <div className="product-container">
@@ -193,21 +179,21 @@ class UserDetail extends Component {
                     {/* top1 */}
                     <div className="userContent-base">
                         <div>
-                            <img src={require("../../assets/image/sfz.png")} alt="" />
+                            <img src={userinfo.photo} alt="" />
                         </div>
                         <div>
-                            <p>13288123456</p>
-                            <p>注册时间: 2020-02-15  18:26:29
-                                <span>最近登录时间: 2020-02-15  18:26:29 </span>
+                            <p>{userinfo.phone}</p>
+                            <p>注册时间: {userinfo.crtTime}
+                                <span>最近登录时间: {userinfo.lastLoginTime} </span>
                             </p>
                         </div>
                         <div>
                             <span className="btn-diy">
 
-                                <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>修改</Button>
+                                {/* <Button onClick={this.editShowModal} style={{ backgroundColor: "#17A2A9", color: "#FFF", marginRight: "10px" }}>修改</Button> */}
 
                             </span>
-                            <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button>
+                            {/* <Button onClick={this.showDeleteConfirm} type="danger" style={{ backgroundColor: "#FF4D4F", color: "#FFF", marginRight: "10px" }}>锁定</Button> */}
                         </div>
                     </div>
                     {/* 基本信息 */}
@@ -216,16 +202,16 @@ class UserDetail extends Component {
                         <div className="userBase-content">
                             {/* 基本信息3列 */}
                             <div>
-                                <span>手机号: 18861851261</span><br />
-                                <span>微信号: 1129197725</span>
+                                <span>手机号: {userinfo.phone}</span><br />
+                                <span>微信号: {userinfo.wechat}</span>
                             </div>
                             <div>
-                                <span>姓名: 未完善</span><br />
-                                <span>联系地址: 南京市北京东路330号</span>
+                                <span>姓名: {userinfo.name}</span><br />
+                                <span>联系地址: {userinfo.contactAddress}</span>
                             </div>
                             <div>
-                                <span>法人邮箱: 18861851261@163.com</span><br />
-                                <span>注册时间: 2020-56-89 88:88:88</span>
+                                <span>法人邮箱: {userinfo.email}</span><br />
+                                <span>注册时间: {userinfo.crtTime}</span>
                             </div>
                         </div>
                     </div>

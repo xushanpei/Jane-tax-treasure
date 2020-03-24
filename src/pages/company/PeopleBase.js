@@ -66,6 +66,13 @@ class PeopleBases extends Component {
       >
        
        <Form {...formItemLayout}>
+       <FormItem label="公司名称">
+            {getFieldDecorator('companyName', {initialValue:baseInfo.companyName,
+              rules: [{required: true, message: '请输入公司名称'}],
+            })(
+                <Input placeholder={"请输入公司名称"} ></Input>
+            )}
+          </FormItem>
        <FormItem label="公司类型">
             {getFieldDecorator('typeName', {initialValue:baseInfo.companyType,
               rules: [{required: true, message: '请选择公司类型'}],
@@ -73,7 +80,7 @@ class PeopleBases extends Component {
                 <Select>
                     {
                         type? type.map((item,key)=>{
-                        return <Option key={key} value={item.id}>{item.name}</Option>
+                        return <Option key={key} value={item.name}>{item.name}</Option>
                         }) : ""
                     }
                 </Select>
@@ -100,7 +107,7 @@ class PeopleBases extends Component {
                <Select>
                    {
                        htype ? htype.map((item,key)=>{
-                       return <Option key={key} value={item.value}>{item.label}</Option>
+                       return <Option key={key} value={item.label}>{item.label}</Option>
                        }) : ""
                    }
                </Select>

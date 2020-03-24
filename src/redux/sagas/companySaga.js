@@ -576,6 +576,18 @@ function* companyweblist(action) {
     }
   }
 
+  function* getcompanystatusnum(action) {
+    try {
+     let data = yield call(Apis.getcompanystatusnum,action.payload.data);
+      yield put({ type:companyTypes.GETCOMPANYSTATUSNUM_SUCCESS,data:data });
+    
+    } catch (error) {
+      console.log(error)
+    } finally {
+      
+    }
+  }
+
 
 export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.COMPANYWEBLIST, companyweblist);
@@ -621,6 +633,7 @@ export default function* watchAuthRoot() {
   yield takeLatest(companyTypes.GETMANAGERLIST, getmanagerlist);
   yield takeLatest(companyTypes.NOTICELIST, noticelist);
   yield takeLatest(companyTypes.UPTBELONGER, uptbelonger);
+  yield takeLatest(companyTypes.GETCOMPANYSTATUSNUM, getcompanystatusnum);
 }
 
 
@@ -638,5 +651,7 @@ export default function* watchAuthRoot() {
 //NOTICELIST
 
 //UPTBELONGER
+
+//GETCOMPANYSTATUSNUM_SUCCESS
 
 

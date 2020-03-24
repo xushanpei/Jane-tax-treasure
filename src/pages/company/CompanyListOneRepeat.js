@@ -352,7 +352,7 @@ twoHandleCancel = () => {
                         <p>基本信息   <span onClick={this.props.updateBase} className="updateData">修改</span> </p>
                         <div className="base-content">
                             <div>
-                                <span>申请人 : {baseInfo.applyPhone}</span>
+                                <span>申请人 : {headerData.applyName}</span>
                                 <span>公司名称 : {baseInfo.companyName}</span>
                                 <span>纳税人类型 : {baseInfo.taxpayerType == 1 ? "一般纳税人" : "小规模纳税人"}</span>
                                 <span>简税宝服务期限 : {baseInfo.serviceEndTime}</span>

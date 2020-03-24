@@ -35,13 +35,14 @@ class ApplyBill extends Component {
             // 筛选属性
             select: {
                 page: 1,
-                limit: 5,
+                limit: 20,
                 invoiceType: "",
                 billStatus: "",
                 companyType: "",
                 startDate: "",
                 endDate: ""
             },
+            current:1,
             searchValue: "",
             routerList: [
                 {
@@ -266,7 +267,12 @@ class ApplyBill extends Component {
     //搜索按钮
     search = () => {
         console.log(this.state.select)
-        this.props.applyinvoicepage(this.state.select)
+        this.setState({
+            current:1
+        },()=>{
+            this.props.applyinvoicepage(Object.assign(this.state.select,{page:1}))
+        })
+        
     }
 
 
@@ -284,7 +290,8 @@ class ApplyBill extends Component {
     paginationChange = (current) => {
         console.log(current)
         this.setState({
-            select: Object.assign(this.state.select, { page: current })
+            select: Object.assign(this.state.select, { page: current }),
+            current
         }, () => {
             // 获取分页数据
             this.props.applyinvoicepage(this.state.select)
@@ -408,6 +415,7 @@ class ApplyBill extends Component {
                             showTotal: (total) => `共 ${total} 条`,
                             onChange: (current) => this.paginationChange(current),
                             pageSize: this.state.select.limit,
+                            current: this.state.current
                         }}
                         bordered columns={this.state.columns} dataSource={this.state.data} />
                 </div>

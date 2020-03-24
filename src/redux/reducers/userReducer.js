@@ -25,6 +25,36 @@ const userReducer = handleActions(
         managerpage: action.data
       });
     },
+
+    [userTypes.USERINFO_SUCCESS]: (state, action) => {
+      return state.merge({
+        userinfo: action.data
+      });
+    },
+
+    [userTypes.USERORDERLIST_SUCCESS]: (state, action) => {
+      return state.merge({
+        userorderlist: action.data
+      });
+    },
+
+    [userTypes.ISUSING_SUCCESS]: (state, action) => {
+      return state.merge({
+        isusing: action.data
+      });
+    },
+
+    [userTypes.EDITMANAGE_SUCCESS]: (state, action) => {
+      return state.merge({
+        editmanage: action.data
+      });
+    },
+
+    [userTypes.ADDMANAGE_SUCCESS]: (state, action) => {
+      return state.merge({
+        addmanage: action.data
+      });
+    },
  
   },
   initState
@@ -37,3 +67,8 @@ export default userReducer;
 //DELETE
 
 //MANAGERPAGE
+//USERINFO
+//USERORDERLIST
+//ISUSING
+//EDITMANAGE
+//ADDMANAGE

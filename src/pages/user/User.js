@@ -34,6 +34,7 @@ class User extends Component {
                 search:"",
                 // createTime: 0
             },
+            current:1,
             searchValue: "",
             total:"",
             routerList: [
@@ -106,7 +107,7 @@ class User extends Component {
                         <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key="0">
-                                    <Link to="/userDetail/0">
+                                    <Link to={`/userDetail/${record.userId}`}>
                                         用户详情
                                     </Link>
                                 </Menu.Item>
@@ -163,7 +164,7 @@ class User extends Component {
     }
 
     deleteUser = (id) => {
-        // console.log("提示是否需要删除"); remove
+        console.log("提示是否需要删除",id); 
         confirm({
             title: '是否确定删除此用户?',
             // content: '完成点击 是 ,未完成点击否',
@@ -187,7 +188,12 @@ class User extends Component {
     }
 //搜所
     search = ()=>{
-        this.props.userpage(this.state.select)
+        this.setState({
+            current:1
+        },()=>{
+            this.props.userpage(Object.assign(this.state.select,{page:1}))
+        })
+        
     }
 
     paginationChange = (current)=>{
@@ -200,6 +206,7 @@ class User extends Component {
                 endDate:this.state.select.endDate,
                 search:this.state.select.search,
           },
+          current
         },()=>{
           // 获取分页数据
           this.props.userpage(this.state.select)
@@ -273,6 +280,7 @@ class User extends Component {
                         showTotal: (total) => `共 ${total} 条`,
                         onChange: (current) => this.paginationChange(current),
                         pageSize: this.state.select.limit,
+                        current:this.state.current
                       }}
                     columns={this.state.columns} dataSource={this.state.data} />
                 </div>

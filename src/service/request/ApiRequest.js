@@ -27,6 +27,7 @@ class ApiRequest {
   setToken = token => {
     this.instance.defaults.headers.common["Authorization"] = token;
     this.instance.defaults.headers.common["User-Client"] = "web";
+    localStorage.setItem("token",token)
   };
 
   authentication = data => {
@@ -98,7 +99,7 @@ class ApiRequest {
   delete(url, params = {}) {
     return new Promise((resolve, reject) => {
       this.instance
-        .delete(url, { params: { ...params } })
+        .delete(url, { data: { ...params } })
         .then(({ data }) => {
           if(data.status == 50103 || data.status == 50102 || data.status == 50101){
             this.authentication(data);

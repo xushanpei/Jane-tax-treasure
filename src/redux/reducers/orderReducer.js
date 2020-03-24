@@ -44,8 +44,16 @@ const orderReducer = handleActions(
         uptorder: action.data
       });
     },
+
+    [orderTypes.GETORDERCOUNT_SUCCESS]: (state, action) => {
+      return state.merge({
+        getordercount: action.data
+      });
+    },
   },
   initState
 );
 
 export default orderReducer;
+
+//GETORDERCOUNT

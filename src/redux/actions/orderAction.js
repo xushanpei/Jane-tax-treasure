@@ -18,7 +18,10 @@ ADDREMARK:"ADDREMARK",
 ADDREMARK_SUCCESS:"ADDREMARK_SUCCESS",
 //订单修改
 UPTORDER:"UPTORDER",
-UPTORDER_SUCCESS:"UPTORDER_SUCCESS"
+UPTORDER_SUCCESS:"UPTORDER_SUCCESS",
+//订单数
+GETORDERCOUNT:"GETORDERCOUNT",
+GETORDERCOUNT_SUCCESS:"GETORDERCOUNT_SUCCESS"
 
 
 };
@@ -30,4 +33,5 @@ export default createActions({
 [orderTypes.COMFIRMOFFLINEPAY]: data=> ({data}),
 [orderTypes.ADDREMARK]: data=> ({data}),
 [orderTypes.UPTORDER]: data=> ({data}),
+[orderTypes.GETORDERCOUNT]: data=> ({data}),
 });

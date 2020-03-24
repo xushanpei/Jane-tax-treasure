@@ -79,9 +79,9 @@
 // /////////////////////////
 .userContent{
     width: 100%;
-    height: auto;
     padding: 20px;
     & > .userContent-base{
+        position: relative;
         width: 100%;
         background: #FFF;
         height: 120px;
@@ -147,7 +147,8 @@
     // 订单记录
     .orderList{
         width: 100%;
-        height: calc(100vh - 500px );
+        min-height: calc(100vh - 500px );
+        height: auto;
         background: #FFF;
         margin-top: 20px;;
         p{

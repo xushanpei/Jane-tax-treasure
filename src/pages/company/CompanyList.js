@@ -24,7 +24,9 @@ const { RangePicker } = DatePicker
     //获取归属人
     getdictlistbyvalue: companyAction.getdictlistbyvalue,
     //添加信息\
-    uptbelonger: companyAction.uptbelonger
+    uptbelonger: companyAction.uptbelonger,
+    //数据
+    getcompanystatusnum: companyAction.getcompanystatusnum
   }
 )
 class CompanyList extends Component {
@@ -33,10 +35,12 @@ class CompanyList extends Component {
     this.state = {
       //公司类型
       productclassify: [],
+      current:1,
+      number:"",
       // 筛选属性
       select: {
         page: 1,
-        limit: 5,
+        limit: 20,
         companyStatus: "",
         companyTypeId: "",
         establishBeginTime: "",
@@ -304,17 +308,26 @@ class CompanyList extends Component {
   searChange = (e) => {
     this.setState({
       select: Object.assign(this.state.select, {
-        search: e.target.value
+        search: e.target.value,
+        page:1
       }),
     })
   }
   // 搜所按钮
   searchClick = () => {
-    this.props.companyweblist(this.state.select)
+    this.setState({
+      current:1
+    },()=>{
+       this.props.companyweblist(Object.assign(this.state.select,{page:1}))
+    })
+    // this.props.companyweblist(this.state.select,{page:1})
   }
 
   paginationChange = (current)=>{
     console.log(current)
+    this.setState({
+      current
+    })
     this.setState({
       select: Object.assign(this.state.select,{page:current})
     },()=>{
@@ -336,6 +349,9 @@ class CompanyList extends Component {
     this.props.getdictlistbyvalue({
       type:"belonger"
     })
+
+    //数据
+    this.props.getcompanystatusnum();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.productReducer.getIn(["productclassify"])) {
@@ -367,14 +383,25 @@ class CompanyList extends Component {
       })
 
     }
+
+    //shuju
+    if(nextProps.companyReducer.getIn(["getcompanystatusnum"])){
+      this.setState({
+        number: nextProps.companyReducer.getIn(["getcompanystatusnum","data"])
+      })
+    }
   }
 
 
 
   render() {
-    let { routerList, searchValue, productclassify } = this.state;
+    let { routerList, searchValue, productclassify,number } = this.state;
     let { companyStatus, companyTypeId, establishBeginTime, establishEndTime } = this.state.select
+// if(number){
+//    let data = Object.values(number[0])
+//    console.log("123",data)
 
+// }
     return (
       <div className="product-container">
         {/* 产品列表 */}
@@ -387,10 +414,10 @@ class CompanyList extends Component {
             <div>公司状态 ：</div>
             <div>
               <span onClick={this.setOrderState.bind(this, "")} className={companyStatus == "" ? "active-bg" : ""}>全部</span>
-              <span onClick={this.setOrderState.bind(this, 1)} className={companyStatus == 1 ? "active-bg" : ""}>待设立</span>
-              <span onClick={this.setOrderState.bind(this, 2)} className={companyStatus == 2 ? "active-bg" : ""}>审核中</span>
-              <span onClick={this.setOrderState.bind(this, 3)} className={companyStatus == 3 ? "active-bg" : ""}>设立中</span>
-              <span onClick={this.setOrderState.bind(this, 4)} className={companyStatus == 4 ? "active-bg" : ""}>已设立</span>
+              <span onClick={this.setOrderState.bind(this, 1)} className={companyStatus == 1 ? "active-bg" : ""}>待设立({number ? Object.values(number[0])[1] : ""})</span>
+              <span onClick={this.setOrderState.bind(this, 2)} className={companyStatus == 2 ? "active-bg" : ""}>审核中({number ? Object.values(number[0])[0] : ""})</span>
+              <span onClick={this.setOrderState.bind(this, 3)} className={companyStatus == 3 ? "active-bg" : ""}>设立中({number ? Object.values(number[0])[2] : ""})</span>
+              <span onClick={this.setOrderState.bind(this, 4)} className={companyStatus == 4 ? "active-bg" : ""}>已设立({number ? Object.values(number[0])[3] : ""})</span>
             </div>
           </div>
           <div className="line">
@@ -446,6 +473,7 @@ class CompanyList extends Component {
             showTotal: (total) => `共 ${total} 条`,
             onChange: (current) => this.paginationChange(current),
             pageSize: this.state.select.limit,
+            current:this.state.current
           }}
           columns={this.state.columns} dataSource={this.state.data} />
         </div>
