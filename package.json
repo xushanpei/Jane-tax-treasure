@@ -34,7 +34,7 @@
     "react-redux-loading-bar": "^4.2.0",
     "react-router-config": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-split-pane": "^0.1.87",
     "react-zmage": "^0.8.5-beta.31",
     "redux": "^4.0.1",
